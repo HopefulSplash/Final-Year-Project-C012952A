@@ -134,8 +134,8 @@ public class Database {
                     + "					OR device_Type = \"Tablet\"\n"
                     + "					OR device_Type = \"Laptop\"\n"
                     + "					OR device_Type = \"Other\")\n"
+                    + "					OR device_Type = \"Default\")\n"
                     + ");";
-
             stmt.executeUpdate(createDevice);
 
             String createAccountDevice = "CREATE TABLE Account_Device_List\n"
@@ -211,24 +211,6 @@ public class Database {
                     + ");";
 
             stmt.executeUpdate(createFolderFile);
-
-            String createSettings = "CREATE TABLE Settings_Details\n"
-                    + "(\n"
-                    + "settings_Details_ID int NOT NULL AUTO_INCREMENT,\n"
-                    + "account_Details_ID int NOT NULL,\n"
-                    + "default_Folder_Option varchar (255) NOT NULL,\n"
-                    + "default_device_Option varchar (255) NOT NULL DEFAULT 'No Devices Connected',\n"
-                    + "device_Management_Timer int NOT NULL DEFAULT 3600,\n"
-                    + "device_Management_Reconnect boolean NOT NULL DEFAULT 1,\n"
-                    + "general_Timer int NOT NULL DEFAULT 1800, \n"
-                    + "\n"
-                    + "CONSTRAINT pk_Settings_ID PRIMARY KEY (settings_Details_ID),\n"
-                    + "CONSTRAINT chk_Settings_ID CHECK (settings_Details_ID > 0),\n"
-                    + "\n"
-                    + "CONSTRAINT fk_Account_Details_ID FOREIGN KEY (account_Details_ID) REFERENCES Account_Details (account_Details_ID)\n"
-                    + ");";
-
-            stmt.executeUpdate(createSettings);
 
         } catch (SQLException se) {
             //Handle errors for JDBC

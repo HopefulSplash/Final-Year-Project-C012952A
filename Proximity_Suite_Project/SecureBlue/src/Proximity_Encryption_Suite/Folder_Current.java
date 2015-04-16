@@ -33,27 +33,8 @@ import javax.swing.table.TableRowSorter;
  *
  * @author TheThoetha
  */
-public class viewCurrentlyFolder extends javax.swing.JDialog {
+public class Folder_Current extends javax.swing.JDialog {
 
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    //EDIT FINALIZE
-    
     int accountID;
     String folderName;
 
@@ -65,7 +46,7 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
      * @param accountID
      * @param folderName
      */
-    public viewCurrentlyFolder(java.awt.Frame parent, boolean modal, int accountID, String folderName) {
+    public Folder_Current(java.awt.Frame parent, boolean modal, int accountID, String folderName) {
         initComponents();
         this.getContentPane().setBackground(Color.WHITE);
 
@@ -86,61 +67,66 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        folder_Details_Panel = new javax.swing.JPanel();
+        name_Label = new javax.swing.JLabel();
+        type_Label = new javax.swing.JLabel();
+        description_Label = new javax.swing.JLabel();
+        created_Label = new javax.swing.JLabel();
+        description_Scroll_Pane = new javax.swing.JScrollPane();
+        description_Area = new javax.swing.JTextArea();
+        name_Field = new javax.swing.JTextField();
+        created_Field = new javax.swing.JTextField();
+        type_Field = new javax.swing.JTextField();
+        content_Table_Scroll_Pane = new javax.swing.JScrollPane();
+        content_Table = new javax.swing.JTable();
+        contents_Label = new javax.swing.JLabel();
+        button_Panel = new javax.swing.JPanel();
+        cancel_Button = new javax.swing.JButton();
+        modify_Button = new javax.swing.JButton();
+        ok_Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Current Folder");
+        setTitle("Proximity Suite | Current Folder");
         setBackground(new java.awt.Color(204, 204, 204));
         setMinimumSize(new java.awt.Dimension(565, 224));
         setModal(true);
         setResizable(false);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        folder_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Folder Name: ");
+        name_Label.setText("Folder Name: ");
 
-        jLabel2.setText("Folder Type: ");
+        type_Label.setText("Folder Type: ");
 
-        jLabel3.setText("Folder Description: ");
+        description_Label.setText("Folder Description: ");
 
-        jLabel4.setText("Folder Created: ");
+        created_Label.setText("Folder Created: ");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(240, 240, 240));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(null);
-        jScrollPane2.setViewportView(jTextArea1);
+        description_Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField2.setEditable(false);
-        jTextField2.setFocusable(false);
-        jTextField2.setRequestFocusEnabled(false);
+        description_Area.setColumns(20);
+        description_Area.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        description_Area.setRows(5);
+        description_Area.setBorder(null);
+        description_Area.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        description_Area.setFocusable(false);
+        description_Scroll_Pane.setViewportView(description_Area);
 
-        jTextField3.setEditable(false);
+        name_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        name_Field.setFocusable(false);
+        name_Field.setRequestFocusEnabled(false);
 
-        jTextField4.setEditable(false);
+        created_Field.setBackground(new java.awt.Color(255, 255, 255));
+        created_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        created_Field.setFocusable(false);
 
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        type_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        type_Field.setFocusable(false);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        content_Table_Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
+        content_Table_Scroll_Pane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        content_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -163,137 +149,140 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setFillsViewportHeight(true);
-        jTable1.setFocusable(false);
-        jTable1.setRowHeight(23);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getTableHeader().setReorderingAllowed(false);
+        content_Table.setFillsViewportHeight(true);
+        content_Table.setFocusable(false);
+        content_Table.setRowHeight(23);
+        content_Table_Scroll_Pane.setViewportView(content_Table);
+        content_Table.getTableHeader().setReorderingAllowed(false);
 
-        jTable1.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
-        jTable1.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
+        content_Table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
+        content_Table.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
 
-        jTable1.getColumnModel().getColumn(1).setMinWidth(60);
-        jTable1.getColumnModel().getColumn(1).setMaxWidth(60);
+        content_Table.getColumnModel().getColumn(1).setMinWidth(60);
+        content_Table.getColumnModel().getColumn(1).setMaxWidth(60);
 
-        jTable1.getColumnModel().getColumn(2).setMinWidth(60);
-        jTable1.getColumnModel().getColumn(2).setMaxWidth(60);
+        content_Table.getColumnModel().getColumn(2).setMinWidth(60);
+        content_Table.getColumnModel().getColumn(2).setMaxWidth(60);
 
-        jTable1.getColumnModel().getColumn(3).setMinWidth(60);
-        jTable1.getColumnModel().getColumn(3).setMaxWidth(60);
+        content_Table.getColumnModel().getColumn(3).setMinWidth(60);
+        content_Table.getColumnModel().getColumn(3).setMaxWidth(60);
 
-        TableCellRenderer rendererFromHeader = jTable1.getTableHeader().getDefaultRenderer();
+        TableCellRenderer rendererFromHeader = content_Table.getTableHeader().getDefaultRenderer();
         JLabel headerLabel = (JLabel) rendererFromHeader;
         headerLabel.setHorizontalAlignment(JLabel.CENTER);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        jTable1.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+        content_Table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 
-        for (int a = 0; a < jTable1.getColumnCount(); a++){
+        for (int a = 0; a < content_Table.getColumnCount(); a++){
 
-            jTable1.getColumnModel().getColumn(a).setResizable(false);
+            content_Table.getColumnModel().getColumn(a).setResizable(false);
 
         }
-        model = jTable1.getModel();
+        model = content_Table.getModel();
         sorter = new TableRowSorter<>(model);
-        jTable1.setRowSorter(sorter);
+        content_Table.setRowSorter(sorter);
 
-        jLabel7.setText("Folder Contents: ");
+        contents_Label.setText("Folder Contents: ");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout folder_Details_PanelLayout = new javax.swing.GroupLayout(folder_Details_Panel);
+        folder_Details_Panel.setLayout(folder_Details_PanelLayout);
+        folder_Details_PanelLayout.setHorizontalGroup(
+            folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(folder_Details_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(folder_Details_PanelLayout.createSequentialGroup()
+                        .addComponent(name_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(name_Field))
+                    .addGroup(folder_Details_PanelLayout.createSequentialGroup()
+                        .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(created_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(description_Label, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                            .addComponent(type_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(contents_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1))))
+                        .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(type_Field)
+                            .addComponent(description_Scroll_Pane, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(created_Field, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(content_Table_Scroll_Pane))))
                 .addGap(6, 6, 6))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        folder_Details_PanelLayout.setVerticalGroup(
+            folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(folder_Details_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name_Label)
+                    .addComponent(name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(type_Label)
+                    .addComponent(type_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(description_Label)
+                    .addComponent(description_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(contents_Label)
+                    .addComponent(content_Table_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(created_Label)
+                    .addComponent(created_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Cancel");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
+        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cancel_ButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Modify");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        modify_Button.setText("Modify");
+        modify_Button.setFocusPainted(false);
+        modify_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                modify_ButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("OK");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        ok_Button.setText("OK");
+        ok_Button.setFocusPainted(false);
+        ok_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                ok_ButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(304, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout button_PanelLayout = new javax.swing.GroupLayout(button_Panel);
+        button_Panel.setLayout(button_PanelLayout);
+        button_PanelLayout.setHorizontalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
+                .addContainerGap(296, Short.MAX_VALUE)
+                .addComponent(ok_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(modify_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+        button_PanelLayout.setVerticalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(button_PanelLayout.createSequentialGroup()
+                .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancel_Button)
+                    .addComponent(modify_Button)
+                    .addComponent(ok_Button))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -304,42 +293,43 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(folder_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(folder_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cancel_ButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void modify_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modify_ButtonActionPerformed
         // TODO add your handling code here:
         ManageFolder j1 = new ManageFolder((Frame) this.getParent(), true);
 
         this.setVisible(false);
         j1.setVisible(true);
+        getFolderFiles();
         this.setVisible(true);
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_modify_ButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void ok_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ok_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_ok_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -358,43 +348,44 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(viewCurrentlyFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(viewCurrentlyFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(viewCurrentlyFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(viewCurrentlyFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                viewCurrentlyFolder dialog = new viewCurrentlyFolder(new javax.swing.JFrame(), true, 1, "'admin''s Default Folder'");
+                Folder_Current dialog = new Folder_Current(new javax.swing.JFrame(), true, 1, "'admin''s Default Folder'");
                 dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JPanel button_Panel;
+    private javax.swing.JButton cancel_Button;
+    private javax.swing.JTable content_Table;
+    private javax.swing.JScrollPane content_Table_Scroll_Pane;
+    private javax.swing.JLabel contents_Label;
+    private javax.swing.JTextField created_Field;
+    private javax.swing.JLabel created_Label;
+    private javax.swing.JTextArea description_Area;
+    private javax.swing.JLabel description_Label;
+    private javax.swing.JScrollPane description_Scroll_Pane;
+    private javax.swing.JPanel folder_Details_Panel;
+    private javax.swing.JButton modify_Button;
+    private javax.swing.JTextField name_Field;
+    private javax.swing.JLabel name_Label;
+    private javax.swing.JButton ok_Button;
+    private javax.swing.JTextField type_Field;
+    private javax.swing.JLabel type_Label;
     // End of variables declaration//GEN-END:variables
 
     private TableModel model;
@@ -402,7 +393,7 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
 
     private void getFolderFiles() {
 
-        jTable1.setCellSelectionEnabled(false);
+        content_Table.setCellSelectionEnabled(false);
 
         ArrayList<Integer> fileIDList = new ArrayList<>();
 
@@ -437,10 +428,10 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
 
             while (rs.next()) {
                 folderID = rs.getInt("folder_Details_ID");
-                jTextField2.setText(rs.getString("folder_Name"));
-                jTextField4.setText(rs.getString("folder_Type"));
-                jTextArea1.setText(rs.getString("folder_Description"));
-                jTextField3.setText(rs.getString("folder_Created"));
+                name_Field.setText(rs.getString("folder_Name"));
+                type_Field.setText(rs.getString("folder_Type"));
+                description_Area.setText(rs.getString("folder_Description"));
+                created_Field.setText(rs.getString("folder_Created"));
             }
 
             stmt = conn.createStatement();
@@ -548,7 +539,7 @@ public class viewCurrentlyFolder extends javax.swing.JDialog {
                 }
             }
 
-            DefaultTableModel dw = (DefaultTableModel) jTable1.getModel();
+            DefaultTableModel dw = (DefaultTableModel) content_Table.getModel();
 
             for (int i = 0; i < filelists.size(); i++) {
 

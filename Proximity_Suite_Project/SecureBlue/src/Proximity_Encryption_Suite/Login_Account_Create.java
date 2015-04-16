@@ -340,6 +340,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         accept_Button.setText("Accept");
+        accept_Button.setFocusPainted(false);
         accept_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accept_ButtonActionPerformed(evt);
@@ -347,6 +348,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         });
 
         clear_Button.setText("Clear");
+        clear_Button.setFocusPainted(false);
         clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clear_ButtonActionPerformed(evt);
@@ -354,6 +356,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         });
 
         cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
         cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_ButtonActionPerformed(evt);
@@ -492,22 +495,12 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         accountID = rs.getInt("account_Details_ID");
                     }
 
+                    // creates the default folder for the account so that it can load when the user logs into the suite
                     stmt = conn.createStatement();
                     String createFolder = "INSERT INTO Folder_Details "
-                            + "VALUES (NULL, " + accountID + ", '" + username + "''s"+ " Default Folder'" + ", 'Personal'" + ", 'Account Default Folder', DEFAULT );";
+                            + "VALUES (NULL, " + accountID + ", '" + username + "''s"+ " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
                     stmt.executeUpdate(createFolder);
 
-                    stmt = conn.createStatement();
-                    String createSettings = "INSERT INTO Settings_Details "
-                            + "VALUES (NULL"
-                            + ", " + accountID
-                            + ", '" + username + "''s"+ " Default Folder'"
-                            + ", DEFAULT"
-                            + ", DEFAULT"
-                            + ", DEFAULT"
-                            + ", DEFAULT);";
-
-                    stmt.executeUpdate(createSettings);
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.

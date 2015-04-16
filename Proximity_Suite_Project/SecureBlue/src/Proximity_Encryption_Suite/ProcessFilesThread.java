@@ -36,7 +36,7 @@ public class ProcessFilesThread implements Runnable {
         this.speficDir = speficDir;
     }
     
-      public ProcessFilesThread(viewCurrentlyFolder mainGUI, File speficDir) {
+      public ProcessFilesThread(Folder_Current mainGUI, File speficDir) {
         this.mainGUI = mainGUI;
         this.speficDir = speficDir;
     }

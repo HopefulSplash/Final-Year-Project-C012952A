@@ -154,6 +154,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         username_Label.setText("Username:");
 
         reset_Password_Button.setText("Reset Password");
+        reset_Password_Button.setFocusPainted(false);
         reset_Password_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reset_Password_ButtonActionPerformed(evt);
@@ -216,6 +217,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         email_Label.setText("Email Address:");
 
         recover_Username_Button.setText("Recover Username");
+        recover_Username_Button.setFocusPainted(false);
         recover_Username_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recover_Username_ButtonActionPerformed(evt);
@@ -272,6 +274,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         clear_Button.setText("Clear");
+        clear_Button.setFocusPainted(false);
         clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clear_ButtonActionPerformed(evt);
@@ -279,6 +282,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         });
 
         cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
         cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_ButtonActionPerformed(evt);

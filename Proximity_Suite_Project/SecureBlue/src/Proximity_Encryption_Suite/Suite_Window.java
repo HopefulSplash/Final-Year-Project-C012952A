@@ -171,15 +171,12 @@ public class Suite_Window extends javax.swing.JFrame {
         folder_Delete = new javax.swing.JMenuItem();
         folder_Separator2 = new javax.swing.JPopupMenu.Separator();
         folder_Manage = new javax.swing.JMenuItem();
-        menu_Settings = new javax.swing.JMenu();
-        settings_General = new javax.swing.JMenuItem();
-        settings_Separator1 = new javax.swing.JPopupMenu.Separator();
-        settings_Account = new javax.swing.JMenuItem();
-        settings_Device = new javax.swing.JMenuItem();
-        settings_Folder = new javax.swing.JMenuItem();
-        settings_Separator2 = new javax.swing.JPopupMenu.Separator();
-        settings_Extras = new javax.swing.JMenu();
-        settings_Shred = new javax.swing.JMenuItem();
+        menu_Account = new javax.swing.JMenu();
+        account_Create = new javax.swing.JMenuItem();
+        account_Separator1 = new javax.swing.JPopupMenu.Separator();
+        account_Modify = new javax.swing.JMenuItem();
+        account_Separator2 = new javax.swing.JPopupMenu.Separator();
+        account_Delete = new javax.swing.JMenuItem();
         menu_Support = new javax.swing.JMenu();
         support_Guide = new javax.swing.JMenuItem();
         support_Separator = new javax.swing.JPopupMenu.Separator();
@@ -722,66 +719,35 @@ public class Suite_Window extends javax.swing.JFrame {
 
         proximity_Menu.add(menu_Folder);
 
-        menu_Settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_Menu_Icon.png"))); // NOI18N
-        menu_Settings.setText("Settings");
+        menu_Account.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_User.png"))); // NOI18N
+        menu_Account.setText("Account Management");
 
-        settings_General.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_General.png"))); // NOI18N
-        settings_General.setText("General");
-        settings_General.addActionListener(new java.awt.event.ActionListener() {
+        account_Create.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        account_Create.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Create.png"))); // NOI18N
+        account_Create.setText("Create Account");
+        menu_Account.add(account_Create);
+        menu_Account.add(account_Separator1);
+
+        account_Modify.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Modify.png"))); // NOI18N
+        account_Modify.setText("Modify Account");
+        account_Modify.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settings_GeneralActionPerformed(evt);
+                account_ModifyActionPerformed(evt);
             }
         });
-        menu_Settings.add(settings_General);
-        menu_Settings.add(settings_Separator1);
+        menu_Account.add(account_Modify);
+        menu_Account.add(account_Separator2);
 
-        settings_Account.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_User.png"))); // NOI18N
-        settings_Account.setText("Account");
-        settings_Account.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settings_AccountActionPerformed(evt);
-            }
-        });
-        menu_Settings.add(settings_Account);
+        account_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Delete.png"))); // NOI18N
+        account_Delete.setText("Delete Account");
+        menu_Account.add(account_Delete);
 
-        settings_Device.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_Device.png"))); // NOI18N
-        settings_Device.setText("Device");
-        settings_Device.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settings_DeviceActionPerformed(evt);
-            }
-        });
-        menu_Settings.add(settings_Device);
-
-        settings_Folder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_Folder.png"))); // NOI18N
-        settings_Folder.setText("Folder ");
-        settings_Folder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settings_FolderActionPerformed(evt);
-            }
-        });
-        menu_Settings.add(settings_Folder);
-        menu_Settings.add(settings_Separator2);
-
-        settings_Extras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_Extras.png"))); // NOI18N
-        settings_Extras.setText("Extras");
-
-        settings_Shred.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Setting/settings_Shred.png"))); // NOI18N
-        settings_Shred.setText("File Shredding");
-        settings_Shred.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settings_ShredActionPerformed(evt);
-            }
-        });
-        settings_Extras.add(settings_Shred);
-
-        menu_Settings.add(settings_Extras);
-
-        proximity_Menu.add(menu_Settings);
+        proximity_Menu.add(menu_Account);
 
         menu_Support.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Support/support_Menu_Icon.png"))); // NOI18N
         menu_Support.setText("Support");
 
+        support_Guide.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         support_Guide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Support/support_Guide.png"))); // NOI18N
         support_Guide.setText("User Guide");
         support_Guide.addActionListener(new java.awt.event.ActionListener() {
@@ -939,15 +905,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_support_AboutActionPerformed
 
-    private void settings_FolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings_FolderActionPerformed
-        // TODO add your handling code here:
-        Settings sw = new Settings(this, true);
-        sw.getjTabbedPane1().setSelectedIndex(3);
-
-        sw.setVisible(true);
-
-    }//GEN-LAST:event_settings_FolderActionPerformed
-
     private void home_LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LogoutActionPerformed
         // TODO add your handling code here:
         //close script
@@ -1014,44 +971,15 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_support_GuideActionPerformed
 
-    private void settings_GeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings_GeneralActionPerformed
-        // TODO add your handling code here:
-
-        Settings sw = new Settings(this, true);
-        sw.getjTabbedPane1().setSelectedIndex(0);
-        sw.setVisible(true);
-
-
-    }//GEN-LAST:event_settings_GeneralActionPerformed
-
-    private void settings_AccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings_AccountActionPerformed
-        // TODO add your handling code here:
-        Settings sw = new Settings(this, true);
-        sw.getjTabbedPane1().setSelectedIndex(1);
-
-        sw.setVisible(true);
-
-
-    }//GEN-LAST:event_settings_AccountActionPerformed
-
-    private void settings_DeviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings_DeviceActionPerformed
-        // TODO add your handling code here:
-        Settings sw = new Settings(this, true);
-        sw.getjTabbedPane1().setSelectedIndex(2);
-
-        sw.setVisible(true);
-
-    }//GEN-LAST:event_settings_DeviceActionPerformed
-
     private void folder_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CurrentActionPerformed
         // TODO add your handling code here:
-        viewCurrentlyFolder vcf = new viewCurrentlyFolder(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
+        Folder_Current vcf = new Folder_Current(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         vcf.setVisible(true);
     }//GEN-LAST:event_folder_CurrentActionPerformed
 
     private void folder_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CreateActionPerformed
         // TODO add your handling code here:
-        addFolder af = new addFolder(this, true);
+        Folder_Create af = new Folder_Create(this, true, accountID);
         af.setVisible(true);
     }//GEN-LAST:event_folder_CreateActionPerformed
 
@@ -1060,16 +988,6 @@ public class Suite_Window extends javax.swing.JFrame {
         ManageFolder mf = new ManageFolder(this, true);
         mf.setVisible(true);
     }//GEN-LAST:event_folder_ManageActionPerformed
-
-    private void settings_ShredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settings_ShredActionPerformed
-        // TODO add your handling code here:
-        Settings sw = new Settings(this, true);
-        sw.getjTabbedPane1().setSelectedIndex(6);
-
-        sw.setVisible(true);
-
-
-    }//GEN-LAST:event_settings_ShredActionPerformed
 
     private void device_DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DisconnectActionPerformed
         // TODO add your handling code here:
@@ -1156,6 +1074,10 @@ public class Suite_Window extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchAll();
     }//GEN-LAST:event_table_Search_FieldCaretUpdate
+
+    private void account_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_ModifyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_account_ModifyActionPerformed
 
     private void searchAll() {
 
@@ -1295,6 +1217,11 @@ public class Suite_Window extends javax.swing.JFrame {
     private boolean selected = false;
     private javax.swing.JPopupMenu popup;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem account_Create;
+    private javax.swing.JMenuItem account_Delete;
+    private javax.swing.JMenuItem account_Modify;
+    private javax.swing.JPopupMenu.Separator account_Separator1;
+    private javax.swing.JPopupMenu.Separator account_Separator2;
     private javax.swing.JMenuItem device_Connect;
     private javax.swing.JMenuItem device_Current;
     private javax.swing.JMenuItem device_Disconnect;
@@ -1314,10 +1241,10 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator home_Separator;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JMenu menu_Account;
     private javax.swing.JMenu menu_Device;
     private javax.swing.JMenu menu_Folder;
     private javax.swing.JMenu menu_Home;
-    private javax.swing.JMenu menu_Settings;
     private javax.swing.JMenu menu_Social_Media;
     private javax.swing.JMenu menu_Support;
     private javax.swing.JPanel proximity_Extras_Panel;
@@ -1328,14 +1255,6 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JPanel proximity_Table_Button_Panel;
     private javax.swing.JPanel proximity_Table_Feature_Panel;
     private javax.swing.JScrollPane proximity_Table_Scroll_Pane;
-    private javax.swing.JMenuItem settings_Account;
-    private javax.swing.JMenuItem settings_Device;
-    private javax.swing.JMenu settings_Extras;
-    private javax.swing.JMenuItem settings_Folder;
-    private javax.swing.JMenuItem settings_General;
-    private javax.swing.JPopupMenu.Separator settings_Separator1;
-    private javax.swing.JPopupMenu.Separator settings_Separator2;
-    private javax.swing.JMenuItem settings_Shred;
     private javax.swing.JMenuItem social_Facebook;
     private javax.swing.JPopupMenu.Separator social_Separator1;
     private javax.swing.JMenuItem social_Twitter;

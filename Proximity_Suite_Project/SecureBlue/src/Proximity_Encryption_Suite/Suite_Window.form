@@ -179,83 +179,48 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menu_Settings">
+        <Menu class="javax.swing.JMenu" name="menu_Account">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Proximity/graphic_Setting/settings_Menu_Icon.png"/>
+              <Image iconType="3" name="/Proximity/graphic_Account/account_User.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Settings"/>
+            <Property name="text" type="java.lang.String" value="Account Management"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="settings_General">
+            <MenuItem class="javax.swing.JMenuItem" name="account_Create">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+A"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Proximity/graphic_Account/account_Create.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Create Account"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator1">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="account_Modify">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Setting/settings_General.png"/>
+                  <Image iconType="3" name="/Proximity/graphic_Account/account_Modify.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="General"/>
+                <Property name="text" type="java.lang.String" value="Modify Account"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settings_GeneralActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="account_ModifyActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="settings_Separator1">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator2">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="settings_Account">
+            <MenuItem class="javax.swing.JMenuItem" name="account_Delete">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Setting/settings_User.png"/>
+                  <Image iconType="3" name="/Proximity/graphic_Account/account_Delete.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Account"/>
+                <Property name="text" type="java.lang.String" value="Delete Account"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settings_AccountActionPerformed"/>
-              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="settings_Device">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Setting/settings_Device.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Device"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settings_DeviceActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="settings_Folder">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Setting/settings_Folder.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Folder "/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settings_FolderActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="settings_Separator2">
-            </MenuItem>
-            <Menu class="javax.swing.JMenu" name="settings_Extras">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Setting/settings_Extras.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Extras"/>
-              </Properties>
-              <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="settings_Shred">
-                  <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Proximity/graphic_Setting/settings_Shred.png"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="File Shredding"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settings_ShredActionPerformed"/>
-                  </Events>
-                </MenuItem>
-              </SubComponents>
-            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menu_Support">
@@ -271,6 +236,9 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="support_Guide">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+U"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Proximity/graphic_Support/support_Guide.png"/>
                 </Property>

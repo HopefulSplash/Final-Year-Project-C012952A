@@ -420,6 +420,7 @@
         <Component class="javax.swing.JButton" name="accept_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Accept"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="accept_ButtonActionPerformed"/>
@@ -428,6 +429,7 @@
         <Component class="javax.swing.JButton" name="clear_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clear_ButtonActionPerformed"/>
@@ -436,6 +438,7 @@
         <Component class="javax.swing.JButton" name="cancel_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancel_ButtonActionPerformed"/>

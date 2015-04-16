@@ -185,6 +185,7 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         create_Button.setText("Accept");
+        create_Button.setFocusPainted(false);
         create_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 create_ButtonActionPerformed(evt);
@@ -192,6 +193,7 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
         });
 
         clear_Button.setText("Clear");
+        clear_Button.setFocusPainted(false);
         clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clear_ButtonActionPerformed(evt);
@@ -199,6 +201,7 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
         });
 
         cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
         cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_ButtonActionPerformed(evt);

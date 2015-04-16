@@ -183,6 +183,7 @@
         <Component class="javax.swing.JButton" name="reset_Password_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reset Password"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reset_Password_ButtonActionPerformed"/>
@@ -267,6 +268,7 @@
         <Component class="javax.swing.JButton" name="recover_Username_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Recover Username"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recover_Username_ButtonActionPerformed"/>
@@ -327,6 +329,7 @@
         <Component class="javax.swing.JButton" name="clear_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clear_ButtonActionPerformed"/>
@@ -335,6 +338,7 @@
         <Component class="javax.swing.JButton" name="cancel_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancel_ButtonActionPerformed"/>
