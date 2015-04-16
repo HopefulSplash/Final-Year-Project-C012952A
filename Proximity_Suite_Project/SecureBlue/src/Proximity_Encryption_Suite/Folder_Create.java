@@ -1,6 +1,9 @@
 package Proximity_Encryption_Suite;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,8 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
@@ -32,9 +38,42 @@ public class Folder_Create extends javax.swing.JDialog {
      * @param accountID
      */
     public Folder_Create(java.awt.Frame parent, boolean modal, int accountID) {
-        initComponents();
         this.getContentPane().setBackground(Color.WHITE);
-        this.setLocationRelativeTo(this.getParent());
+        /**
+         * Declares the icons used for the windows icon and the frames icon.
+         */
+        URL icon16URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Small.png");
+        URL icon32URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Large.png");
+
+        /**
+         * Image list to store the icons in.
+         */
+        final List<Image> icons = new ArrayList<>();
+
+        /**
+         * loads the icons into the image list.
+         */
+        try {
+            icons.add(ImageIO.read(icon16URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            icons.add(ImageIO.read(icon32URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        initComponents();
+
+        /**
+         * sets the location of the application to the middle of the screen.
+         */
+        this.setLocationRelativeTo(null);
+        /**
+         * loads the appropriate icons.
+         */
+        this.setIconImages(icons);
         this.accountID = accountID;
 
     }
@@ -62,7 +101,7 @@ public class Folder_Create extends javax.swing.JDialog {
         Folder_Status_Label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Create Folder");
+        setTitle("Proximity Suite | Create Folder");
         setMinimumSize(new java.awt.Dimension(565, 215));
         setModal(true);
         setResizable(false);
@@ -76,7 +115,7 @@ public class Folder_Create extends javax.swing.JDialog {
             }
         });
 
-        create_Button.setText("Create");
+        create_Button.setText("Accept");
         create_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 create_ButtonActionPerformed(evt);
@@ -164,9 +203,7 @@ public class Folder_Create extends javax.swing.JDialog {
                     .addComponent(type_Label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(folder_Details_PanelLayout.createSequentialGroup()
-                        .addComponent(description_Label)
-                        .addGap(6, 6, 6))
+                    .addComponent(description_Label)
                     .addComponent(description_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
@@ -250,7 +287,7 @@ public class Folder_Create extends javax.swing.JDialog {
                     PreparedStatement pStmt = conn.prepareStatement(sql);
                     pStmt.setString(1, name);
                     pStmt.setString(2, description);
-                    
+
                     System.out.println(pStmt);
 
                     pStmt.executeUpdate();
@@ -294,7 +331,7 @@ public class Folder_Create extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_create_ButtonActionPerformed
 
-    private boolean checkUsernameExsists(String folderName) {
+    private boolean checkFolderNameExsists(String folderName) {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
@@ -358,7 +395,7 @@ public class Folder_Create extends javax.swing.JDialog {
     private void name_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_name_FieldCaretUpdate
         // TODO add your handling code here:
 
-        boolean folderIsTaken = checkUsernameExsists(name_Field.getText());
+        boolean folderIsTaken = checkFolderNameExsists(name_Field.getText());
 
         // checks if the username is taken and updates the status.
         if (folderIsTaken == true && name_Field.getText().length() > 0) {

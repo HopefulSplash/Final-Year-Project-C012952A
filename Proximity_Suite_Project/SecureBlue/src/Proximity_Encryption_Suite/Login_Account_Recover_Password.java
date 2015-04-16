@@ -522,27 +522,6 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
     }//GEN-LAST:event_cancel_ButtonActionPerformed
 
     /**
-     * This is the main method which launches the frame.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Login_Account_Recover_Password dialog = new Login_Account_Recover_Password(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
-    /**
      * a method to set the variable username.
      *
      * @param username

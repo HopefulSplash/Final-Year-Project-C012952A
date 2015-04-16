@@ -985,7 +985,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void folder_ManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_ManageActionPerformed
         // TODO add your handling code here:
-        ManageFolder mf = new ManageFolder(this, true);
+        Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
     }//GEN-LAST:event_folder_ManageActionPerformed
 
@@ -1016,7 +1016,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void folder_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_DeleteActionPerformed
         // TODO add your handling code here
-        DeleteFolder md = new DeleteFolder(this, true);
+        Delete_Folder md = new Delete_Folder(this, true, accountID);
         md.setVisible(true);
 
 

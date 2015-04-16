@@ -1,21 +1,7 @@
 package Proximity_Encryption_Suite;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.Timer;
-import javax.swing.text.BadLocationException;
 
 /*
  * To change this template, choose Tools | Templates
@@ -37,6 +23,10 @@ public class ProcessFilesThread implements Runnable {
     }
     
       public ProcessFilesThread(Folder_Current mainGUI, File speficDir) {
+        this.mainGUI = mainGUI;
+        this.speficDir = speficDir;
+    }
+            public ProcessFilesThread(Folder_Management mainGUI, File speficDir) {
         this.mainGUI = mainGUI;
         this.speficDir = speficDir;
     }

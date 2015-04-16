@@ -14,6 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -475,15 +476,18 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
                     //creates and SQL statement and executes it.
-                    stmt = conn.createStatement();
-                    String createAccount = "INSERT INTO Account_Details "
+                    String aSpql = "INSERT INTO Account_Details "
                             + "VALUES (NULL"
-                            + ", '" + username + "'"
+                            + ", ?"
                             + ", '" + passwordSha1 + "'"
                             + ", '" + email + "'"
                             + ", '" + question + "'"
-                            + ", '" + answer + "'" + ")";
-                    stmt.executeUpdate(createAccount);
+                            + ", ?" + ")";
+
+                     PreparedStatement createAccount = conn.prepareStatement(aSpql);
+                    createAccount.setString(1, username);
+                    createAccount.setString(2, answer);
+                     createAccount.executeUpdate();
 
                     stmt = conn.createStatement();
                     String sql = "SELECT account_Details_ID FROM Account_Details "

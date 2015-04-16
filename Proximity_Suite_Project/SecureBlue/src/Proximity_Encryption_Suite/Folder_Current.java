@@ -8,7 +8,10 @@ package Proximity_Encryption_Suite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +20,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -47,10 +54,44 @@ public class Folder_Current extends javax.swing.JDialog {
      * @param folderName
      */
     public Folder_Current(java.awt.Frame parent, boolean modal, int accountID, String folderName) {
-        initComponents();
+
         this.getContentPane().setBackground(Color.WHITE);
 
-        this.setLocationRelativeTo(this.getParent());
+        /**
+         * Declares the icons used for the windows icon and the frames icon.
+         */
+        URL icon16URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Small.png");
+        URL icon32URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Large.png");
+
+        /**
+         * Image list to store the icons in.
+         */
+        final List<Image> icons = new ArrayList<>();
+
+        /**
+         * loads the icons into the image list.
+         */
+        try {
+            icons.add(ImageIO.read(icon16URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            icons.add(ImageIO.read(icon32URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        initComponents();
+
+        /**
+         * sets the location of the application to the middle of the screen.
+         */
+        this.setLocationRelativeTo(null);
+        /**
+         * loads the appropriate icons.
+         */
+        this.setIconImages(icons);
 
         this.accountID = 1;
         this.folderName = "admin's Default Folder";
@@ -317,7 +358,7 @@ public class Folder_Current extends javax.swing.JDialog {
 
     private void modify_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modify_ButtonActionPerformed
         // TODO add your handling code here:
-        ManageFolder j1 = new ManageFolder((Frame) this.getParent(), true);
+        Folder_Management j1 = new Folder_Management((Frame) this.getParent(), true, accountID, name_Field.getText());
 
         this.setVisible(false);
         j1.setVisible(true);
