@@ -187,18 +187,45 @@
             <Property name="text" type="java.lang.String" value="Account Management"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="account_Create">
+            <MenuItem class="javax.swing.JMenuItem" name="account_Current">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Alt+A"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Proximity/graphic_Account/account_User.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Current Account"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="account_CurrentActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator1">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="account_Create">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Proximity/graphic_Account/account_Create.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Create Account"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="account_CreateActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator1">
+            <MenuItem class="javax.swing.JMenuItem" name="account_Delete">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Proximity/graphic_Account/account_Delete.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Delete Account"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="account_DeleteActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator2">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="account_Modify">
               <Properties>
@@ -210,16 +237,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="account_ModifyActionPerformed"/>
               </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="account_Separator2">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="account_Delete">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Account/account_Delete.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Delete Account"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

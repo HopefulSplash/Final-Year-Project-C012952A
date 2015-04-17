@@ -7,9 +7,6 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
-    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="null"/>
-    </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="null"/>
     </Property>
@@ -278,7 +275,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="quesion_ComboBox" alignment="0" max="32767" attributes="0"/>
+                      <Component id="question_ComboBox" alignment="0" max="32767" attributes="0"/>
                       <Component id="answer_Status_Label" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -300,7 +297,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="quesion_ComboBox" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="question_ComboBox" min="-2" pref="20" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="answer_Label" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -324,7 +321,7 @@
             <Property name="text" type="java.lang.String" value="Answer:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="quesion_ComboBox">
+        <Component class="javax.swing.JComboBox" name="question_ComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="16">
@@ -348,7 +345,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="quesion_ComboBoxActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="question_ComboBoxActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="answer_Field">

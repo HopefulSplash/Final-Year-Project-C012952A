@@ -40,8 +40,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
 
     /**
      * Creates new form Login_Account_Create
+     *
+     * @param Parent
      */
-    public Login_Account_Create() {
+    public Login_Account_Create(String Parent) {
 
         /**
          * Declares the icons used for the windows icon and the frames icon.
@@ -89,6 +91,11 @@ public class Login_Account_Create extends javax.swing.JFrame {
         confirm_email_Field.setEditable(false);
         accept_Button.setEnabled(false);
 
+        password_Field.setEditable(false);
+        question_ComboBox.setEnabled(false);
+        email_Field.setEditable(false);
+        this.parent_Window = Parent;
+
     }
 
     /**
@@ -116,7 +123,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         createPasswordLabel1 = new javax.swing.JLabel();
         account_Recovery_Panel = new javax.swing.JPanel();
         answer_Label = new javax.swing.JLabel();
-        quesion_ComboBox = new javax.swing.JComboBox();
+        question_ComboBox = new javax.swing.JComboBox();
         answer_Field = new javax.swing.JTextField();
         confirm_Answer_Field = new javax.swing.JTextField();
         confirm_Answer_Label = new javax.swing.JLabel();
@@ -129,7 +136,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Proximity Suite | Create Account");
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(null);
         setMinimumSize(null);
         setName("createAccountFrame"); // NOI18N
         setResizable(false);
@@ -275,10 +281,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
 
         answer_Label.setText("Answer:");
 
-        quesion_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select A Question", "What was your childhood nickname?", "In what city did you meet your spouse/significant other?", "What is the name of your favorite childhood friend?", "What street did you live on in third grade?", "What is the middle name of your oldest child?", "What school did you attend for sixth grade?", "What the name of your first pet?", "What was the name of your first stuffed animal?", "In what city or town did your mother and father meet?", "Where were you when you had your first kiss?", "What is the first name of the boy or girl that you first kissed?", "What was the last name of your third grade teacher?", "In what city does your nearest sibling live?", "In what city or town was your first job?", "What is the name of the place your wedding reception was held?" }));
-        quesion_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+        question_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select A Question", "What was your childhood nickname?", "In what city did you meet your spouse/significant other?", "What is the name of your favorite childhood friend?", "What street did you live on in third grade?", "What is the middle name of your oldest child?", "What school did you attend for sixth grade?", "What the name of your first pet?", "What was the name of your first stuffed animal?", "In what city or town did your mother and father meet?", "Where were you when you had your first kiss?", "What is the first name of the boy or girl that you first kissed?", "What was the last name of your third grade teacher?", "In what city does your nearest sibling live?", "In what city or town was your first job?", "What is the name of the place your wedding reception was held?" }));
+        question_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quesion_ComboBoxActionPerformed(evt);
+                question_ComboBoxActionPerformed(evt);
             }
         });
 
@@ -308,7 +314,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, account_Recovery_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(account_Recovery_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(quesion_ComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(question_ComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(answer_Status_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, account_Recovery_PanelLayout.createSequentialGroup()
                         .addGroup(account_Recovery_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -324,7 +330,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             account_Recovery_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(account_Recovery_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(quesion_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(question_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addGroup(account_Recovery_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(answer_Label)
@@ -424,11 +430,12 @@ public class Login_Account_Create extends javax.swing.JFrame {
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
 
         // creares the variables that will be added to the databse.
-        String username = username_Field.getText();
+        String username = username_Field.getText().trim();
         String passwordSha1 = null;
-        String email = email_Field.getText();
-        String question = quesion_ComboBox.getSelectedItem().toString();
-        String answer = answer_Field.getText();
+        String email = email_Field.getText().trim();
+        String question = question_ComboBox.getSelectedItem().toString();
+        String answer = answer_Field.getText().trim();
+        System.out.println(username);
         int accountID = 0;
 
         /*
@@ -484,10 +491,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
                             + ", '" + question + "'"
                             + ", ?" + ")";
 
-                     PreparedStatement createAccount = conn.prepareStatement(aSpql);
+                    PreparedStatement createAccount = conn.prepareStatement(aSpql);
                     createAccount.setString(1, username);
                     createAccount.setString(2, answer);
-                     createAccount.executeUpdate();
+                    createAccount.executeUpdate();
 
                     stmt = conn.createStatement();
                     String sql = "SELECT account_Details_ID FROM Account_Details "
@@ -502,7 +509,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     // creates the default folder for the account so that it can load when the user logs into the suite
                     stmt = conn.createStatement();
                     String createFolder = "INSERT INTO Folder_Details "
-                            + "VALUES (NULL, " + accountID + ", '" + username + "''s"+ " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
+                            + "VALUES (NULL, " + accountID + ", '" + username + "''s" + " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
                     stmt.executeUpdate(createFolder);
 
                 } catch (SQLException | ClassNotFoundException se) {
@@ -525,14 +532,14 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         tickIcon);
 
                 //clears all the data a user has entered.
-                quesion_ComboBox.setSelectedIndex(0);
+                question_ComboBox.setSelectedIndex(0);
                 password_Field.setText(null);
                 confirm_password_Field.setText(null);
                 username_Field.setText(null);
                 email_Field.setText(null);
                 answer_Field.setText(null);
                 confirm_Answer_Field.setText(null);
-                quesion_ComboBox.setSelectedIndex(0);
+                question_ComboBox.setSelectedIndex(0);
                 confirm_email_Field.setText(null);
                 username_Status_Label.setForeground(Color.WHITE);
                 password_Status_Label.setForeground(Color.WHITE);
@@ -540,9 +547,16 @@ public class Login_Account_Create extends javax.swing.JFrame {
                 answer_Status_Label.setForeground(Color.WHITE);
                 password_Strength_Label.setForeground(Color.WHITE);
 
-                //closes this window and opens the login window.
-                this.dispose();
-                new Login_Account().setVisible(true);
+                //when the window closes it opens the relevant screen so that a user can login with thier new details.
+                if (parent_Window.equals("Login")) {
+                    this.dispose();
+                    new Login_Account().setVisible(true);
+                } else if (parent_Window.equals("Device")) {
+                    this.dispose();
+                    new DeviceLoginSample().setVisible(true);
+                } else if (parent_Window.equals("Main")) {
+                    this.dispose();
+                }
 
             } else {
 
@@ -563,9 +577,9 @@ public class Login_Account_Create extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void quesion_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quesion_ComboBoxActionPerformed
+    private void question_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_question_ComboBoxActionPerformed
         //checks if the user has selected a question.
-        if (quesion_ComboBox.getSelectedIndex() != 0) {
+        if (question_ComboBox.getSelectedIndex() != 0) {
             answer_Field.setEditable(true);
         } //resets the fields if the user have change the combo box to index 0.
         else {
@@ -576,7 +590,8 @@ public class Login_Account_Create extends javax.swing.JFrame {
         }
 
 
-    }//GEN-LAST:event_quesion_ComboBoxActionPerformed
+    }//GEN-LAST:event_question_ComboBoxActionPerformed
+
 
     /**
      * a method that will close the window and open the standard login window.
@@ -585,9 +600,16 @@ public class Login_Account_Create extends javax.swing.JFrame {
      */
     private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
 
-        //when the window closes it opens the login screen so that a user can login with thier new details.
-        this.dispose();
-        new Login_Account().setVisible(true);
+        //when the window closes it opens the relevant screen so that a user can login with thier new details.
+        if (parent_Window.equals("Login")) {
+            this.dispose();
+            new Login_Account().setVisible(true);
+        } else if (parent_Window.equals("Device")) {
+            this.dispose();
+            new DeviceLoginSample().setVisible(true);
+        } else if (parent_Window.equals("Main")) {
+            this.dispose();
+        }
 
     }//GEN-LAST:event_cancel_ButtonActionPerformed
     /**
@@ -598,14 +620,14 @@ public class Login_Account_Create extends javax.swing.JFrame {
      */
     private void clear_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_ButtonActionPerformed
         // clears all the data a user may have entered.
-        quesion_ComboBox.setSelectedIndex(0);
+        question_ComboBox.setSelectedIndex(0);
         password_Field.setText(null);
         confirm_password_Field.setText(null);
         username_Field.setText(null);
         email_Field.setText(null);
         answer_Field.setText(null);
         confirm_Answer_Field.setText(null);
-        quesion_ComboBox.setSelectedIndex(0);
+        question_ComboBox.setSelectedIndex(0);
         confirm_email_Field.setText(null);
         username_Status_Label.setForeground(Color.WHITE);
         password_Status_Label.setForeground(Color.WHITE);
@@ -621,10 +643,16 @@ public class Login_Account_Create extends javax.swing.JFrame {
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
 
-        //when the window closes it opens the login screen so that a user can login with thier new details.
-        this.dispose();
-        new Login_Account().setVisible(true);
-
+        //when the window closes it opens the relevant screen so that a user can login with thier new details.
+        if (parent_Window.equals("Login")) {
+            this.dispose();
+            new Login_Account().setVisible(true);
+        } else if (parent_Window.equals("Device")) {
+            this.dispose();
+            new DeviceLoginSample().setVisible(true);
+        } else if (parent_Window.equals("Main")) {
+            this.dispose();
+        }
     }//GEN-LAST:event_formWindowClosing
     /**
      * a method that will check if the username entered by the user already
@@ -774,27 +802,43 @@ public class Login_Account_Create extends javax.swing.JFrame {
         boolean userIsTaken = checkUsernameExsists(username_Field.getText());
 
         // checks if the username is taken and updates the status.
-        if (userIsTaken == true && username_Field.getText().length() > 0) {
+        if (userIsTaken == true && !username_Field.getText().startsWith(" ")) {
             username_Status_Label.setText("Username Already In Use");
             username_Status_Label.setForeground(darkRed);
+            password_Field.setEditable(false);
+            password_Field.setText(null);
             validUser = false;
 
         } // checks if the username field is empty and updates the status.
         else if (username_Field.getText().length() == 0) {
             username_Status_Label.setText("Username Place Holder");
             username_Status_Label.setForeground(Color.WHITE);
+            password_Field.setEditable(false);
+            password_Field.setText(null);
+            answer_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
             validUser = false;
 
         } // checks if the username is too long for the database and updates the status.
-        else if (username_Field.getText().length() > 255) {
+        else if (username_Field.getText().length() > 255 && !username_Field.getText().startsWith(" ")) {
             username_Status_Label.setText("Username Is Too Long");
             username_Status_Label.setForeground(darkRed);
+            password_Field.setEditable(false);
+            password_Field.setText(null);
             validUser = false;
         } //if non of the above statements are met then they username is approved and the status updated.
-        else {
+        else if (!username_Field.getText().startsWith(" ")) {
             validUser = true;
             username_Status_Label.setText("Username Approved");
             username_Status_Label.setForeground(darkGreen);
+            password_Field.setEditable(true);
+
+        } else {
+            username_Status_Label.setText("Username Cannot Start With A Space");
+            username_Status_Label.setForeground(darkRed);
+            password_Field.setEditable(false);
+            password_Field.setText(null);
+            validUser = false;
         }
     }//GEN-LAST:event_username_FieldCaretUpdate
 
@@ -808,6 +852,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         // checks if the passwords the user has entered match eachother.
         if (Arrays.equals(password_Field.getPassword(), confirm_password_Field.getPassword()) && confirm_password_Field.getPassword().length > 0) {
             validPass = true;
+            email_Field.setEditable(true);
             password_Status_Label.setText("Passowrd Approved");
             password_Status_Label.setForeground(darkGreen);
 
@@ -819,6 +864,8 @@ public class Login_Account_Create extends javax.swing.JFrame {
             confirm_password_Field.setEditable(false);
             confirm_password_Field.setText(null);
             validPass = false;
+            email_Field.setEditable(false);
+            email_Field.setText(null);
 
         } // if the passwords do not match the statements above then they do not match eachother.
         else {
@@ -826,6 +873,8 @@ public class Login_Account_Create extends javax.swing.JFrame {
             password_Status_Label.setForeground(darkRed);
             confirm_password_Field.setEditable(true);
             validPass = false;
+            email_Field.setEditable(false);
+            email_Field.setText(null);
 
         }
 
@@ -875,6 +924,8 @@ public class Login_Account_Create extends javax.swing.JFrame {
         // checks if the passwords the user has entered match eachother.
         if (Arrays.equals(confirm_password_Field.getPassword(), password_Field.getPassword()) && password_Field.getPassword().length > 0) {
             validPass = true;
+            email_Field.setEditable(true);
+
             password_Status_Label.setText("Passowrd Approved");
             password_Status_Label.setForeground(darkGreen);
         } // if the password field is empty then they status is updated.
@@ -884,11 +935,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
             password_Strength_Label.setForeground(Color.WHITE);
             confirm_password_Field.setEditable(false);
             validPass = false;
+            email_Field.setEditable(false);
+            email_Field.setText(null);
+
         } // if the passwords do not match the statements above then they do not match eachother.
         else {
             password_Status_Label.setText("Passwords Do Not Match");
             password_Status_Label.setForeground(darkRed);
             validPass = false;
+            email_Field.setEditable(false);
+            email_Field.setText(null);
+
         }
     }//GEN-LAST:event_confirm_password_FieldCaretUpdate
 
@@ -909,13 +966,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
             email_Status_Label.setForeground(darkRed);
             confirm_email_Field.setEditable(false);
             confirm_email_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            confirm_Answer_Field.setText(null);
             validEmail = false;
 
         } /**
          * if the email addresses match and are not already in the database and
          * in the valid format then the status will be updated and approved.
          */
-        else if (email_Field.getText().equals(confirm_email_Field.getText()) && validateEmail(email_Field.getText()) == true && email_Field.getText().length() != 0 && isTaken == false) {
+        else if (email_Field.getText().equals(confirm_email_Field.getText()) && validateEmail(email_Field.getText()) == true && email_Field.getText().length() != 0 && isTaken == false && !email_Field.getText().startsWith(" ")) {
             validEmail = true;
             email_Status_Label.setText("Email Address Approved");
             email_Status_Label.setForeground(darkGreen);
@@ -924,34 +985,59 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * if the email address field is empty then the status text will become
          * hidden.
          */
-        else if (email_Field.getText().length() == 0) {
+        else if (email_Field.getText().length() == 0 && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Place Holder");
             email_Status_Label.setForeground(Color.WHITE);
             email_Status_Label.setForeground(Color.WHITE);
             confirm_email_Field.setEditable(false);
             confirm_email_Field.setText(null);
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
+
+            confirm_Answer_Field.setText(null);
             validEmail = false;
 
         } /**
          * if the email addresses are invalid then the status is updated.
          */
-        else if (email_Field.getText().length() != 0 && validateEmail(email_Field.getText()) == false) {
+        else if (email_Field.getText().length() != 0 && validateEmail(email_Field.getText()) == false && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Is Invalid");
             email_Status_Label.setForeground(darkRed);
             confirm_email_Field.setEditable(false);
             confirm_email_Field.setText(null);
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
+
+            confirm_Answer_Field.setText(null);
             validEmail = false;
 
         } /**
          * if the email address do not met the above if statements then they do
          * not match.
          */
-        else if (isTaken == false) {
+        else if (isTaken == false && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Do Not Match");
             email_Status_Label.setForeground(darkRed);
             confirm_email_Field.setEditable(true);
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
+
+            confirm_Answer_Field.setText(null);
             validEmail = false;
 
+        } else {
+            email_Status_Label.setText("Email Addresses Cannot Start With A Space");
+            email_Status_Label.setForeground(darkRed);
+            confirm_email_Field.setEditable(true);
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            question_ComboBox.setSelectedIndex(0);
+
+            confirm_Answer_Field.setText(null);
+            validEmail = false;
         }
     }//GEN-LAST:event_email_FieldCaretUpdate
 
@@ -964,7 +1050,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
     private void answer_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_answer_FieldCaretUpdate
 
 //checks if the answers the user has given match eachother.
-        if (answer_Field.getText().equals(confirm_Answer_Field.getText()) == true && answer_Field.getText().length() != 0) {
+        if (answer_Field.getText().equals(confirm_Answer_Field.getText()) == true && answer_Field.getText().length() != 0 && !answer_Field.getText().startsWith(" ")) {
             validAnswer = true;
             accept_Button.setEnabled(true);
             answer_Status_Label.setText("Security Answer Approved");
@@ -973,7 +1059,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * if the email address field is empty then the status text will become
          * hidden.
          */
-        else if (answer_Field.getText().length() == 0) {
+        else if (answer_Field.getText().length() == 0 && !answer_Field.getText().startsWith(" ")) {
             answer_Status_Label.setText("Security Answers Place Holder");
             answer_Status_Label.setForeground(Color.WHITE);
             answer_Status_Label.setForeground(Color.WHITE);
@@ -984,14 +1070,21 @@ public class Login_Account_Create extends javax.swing.JFrame {
             validAnswer = false;
 
         } // if the answers given do not match the status is updated.
-        else {
-            answer_Status_Label.setText("Security Answers Do Not Match ");
+        else if (!answer_Field.getText().startsWith(" ")) {
+            answer_Status_Label.setText("Security Answers Do Not Match");
             answer_Status_Label.setForeground(darkRed);
             confirm_Answer_Field.setEditable(true);
             accept_Button.setEnabled(false);
 
             validAnswer = false;
 
+        } else {
+            answer_Status_Label.setText("Security Answers Cannot Start With A Space");
+            answer_Status_Label.setForeground(darkRed);
+            confirm_Answer_Field.setEditable(true);
+            accept_Button.setEnabled(false);
+
+            validAnswer = false;
         }
 
     }//GEN-LAST:event_answer_FieldCaretUpdate
@@ -1005,7 +1098,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
     private void confirm_Answer_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_confirm_Answer_FieldCaretUpdate
 
         //checks if the answers the user has given match eachother.
-        if (confirm_Answer_Field.getText().equals(answer_Field.getText()) == true && confirm_Answer_Field.getText().length() != 0) {
+        if (confirm_Answer_Field.getText().equals(answer_Field.getText()) == true && confirm_Answer_Field.getText().length() != 0 && !confirm_Answer_Field.getText().startsWith(" ")) {
             validAnswer = true;
             accept_Button.setEnabled(true);
             answer_Status_Label.setText("Security Answer Approved");
@@ -1014,7 +1107,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * if the email address field is empty then the status text will become
          * hidden.
          */
-        else if (confirm_Answer_Field.getText().length() == 0 && answer_Field.getText().length() == 0) {
+        else if (confirm_Answer_Field.getText().length() == 0 && answer_Field.getText().length() == 0 && !confirm_Answer_Field.getText().startsWith(" ")) {
             answer_Status_Label.setText("Security Answers Place Holder");
             answer_Status_Label.setForeground(Color.WHITE);
             answer_Status_Label.setForeground(Color.WHITE);
@@ -1023,13 +1116,20 @@ public class Login_Account_Create extends javax.swing.JFrame {
             validAnswer = false;
 
         } // if the answers given do not match the status is updated.
-        else {
+        else if (!confirm_Answer_Field.getText().startsWith(" ")) {
             answer_Status_Label.setText("Security Answers Do Not Match ");
             answer_Status_Label.setForeground(darkRed);
             accept_Button.setEnabled(false);
 
             validAnswer = false;
 
+        } else {
+            answer_Status_Label.setText("Security Answers Cannot Start With A Space");
+            answer_Status_Label.setForeground(darkRed);
+            confirm_Answer_Field.setEditable(true);
+            accept_Button.setEnabled(false);
+
+            validAnswer = false;
         }
     }//GEN-LAST:event_confirm_Answer_FieldCaretUpdate
 
@@ -1048,29 +1148,50 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * if the email addresses match and are not already in the database and
          * in the valid format then the status will be updated and approved.
          */
-        if (confirm_email_Field.getText().equals(email_Field.getText()) && validateEmail(email_Field.getText()) == true && email_Field.getText().length() != 0 && isTaken == false) {
+        if (confirm_email_Field.getText().equals(email_Field.getText()) && validateEmail(email_Field.getText()) == true && email_Field.getText().length() != 0 && isTaken == false && !confirm_email_Field.getText().startsWith(" ")) {
             validEmail = true;
+            question_ComboBox.setEnabled(true);
+
             email_Status_Label.setText("Email Address Approved");
             email_Status_Label.setForeground(darkGreen);
         } /**
          * if the email address field is empty then the status text will become
          * hidden.
          */
-        else if (confirm_email_Field.getText().length() == 0 && email_Field.getText().length() == 0) {
+        else if (confirm_email_Field.getText().length() == 0 && email_Field.getText().length() == 0 && !confirm_email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Place Holder");
             email_Status_Label.setForeground(Color.WHITE);
             email_Status_Label.setForeground(Color.WHITE);
+            question_ComboBox.setEnabled(false);
+            question_ComboBox.setSelectedIndex(0);
+
+            answer_Field.setText(null);
+            confirm_Answer_Field.setText(null);
             validEmail = false;
 
         } /**
          * if the email address do not met the above if statements then they do
          * not match.
          */
-        else if (isTaken == false) {
+        else if (isTaken == false && !confirm_email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Do Not Match");
             email_Status_Label.setForeground(darkRed);
             validEmail = false;
+            question_ComboBox.setSelectedIndex(0);
 
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            confirm_Answer_Field.setText(null);
+
+        } else {
+            email_Status_Label.setText("Email Addresses Cannot Start With A Space");
+            email_Status_Label.setForeground(darkRed);
+            validEmail = false;
+            question_ComboBox.setSelectedIndex(0);
+
+            question_ComboBox.setEnabled(false);
+            answer_Field.setText(null);
+            confirm_Answer_Field.setText(null);
         }
     }//GEN-LAST:event_confirm_email_FieldCaretUpdate
 
@@ -1168,40 +1289,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
         return statusPercentage;
     }
 
-    /**
-     * This is the main method which launches the frame.
-     *
-     * @param args
-     */
-    public static void main(String args[]) {
-        /* Set the Windows look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login_Account_Create.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Login_Account_Create().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Password_Label;
     private javax.swing.JButton accept_Button;
@@ -1226,11 +1313,12 @@ public class Login_Account_Create extends javax.swing.JFrame {
     private javax.swing.JPasswordField password_Field;
     private javax.swing.JLabel password_Status_Label;
     private javax.swing.JLabel password_Strength_Label;
-    private javax.swing.JComboBox quesion_ComboBox;
+    private javax.swing.JComboBox question_ComboBox;
     private javax.swing.JTextField username_Field;
     private javax.swing.JLabel username_Label;
     private javax.swing.JLabel username_Status_Label;
     // End of variables declaration//GEN-END:variables
+    private final String parent_Window;
     private boolean validUser = false;
     private boolean validPass = false;
     private boolean validEmail = false;

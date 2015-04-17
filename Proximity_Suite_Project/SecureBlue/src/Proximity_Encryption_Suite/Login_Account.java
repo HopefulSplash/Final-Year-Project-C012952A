@@ -462,7 +462,7 @@ public class Login_Account extends javax.swing.JFrame {
      * @param evt
      */
     private void account_Creation_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_Creation_ButtonActionPerformed
-        Login_Account_Create cASameple = new Login_Account_Create();
+        Login_Account_Create cASameple = new Login_Account_Create("Login");
         cASameple.setVisible(true);
         this.dispose();
 

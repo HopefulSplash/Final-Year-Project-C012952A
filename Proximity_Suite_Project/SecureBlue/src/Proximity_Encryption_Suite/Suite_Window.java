@@ -101,8 +101,7 @@ public class Suite_Window extends javax.swing.JFrame {
          */
         this.setIconImages(icons);
 
-                this.getContentPane().setBackground(Color.WHITE);
-
+        this.getContentPane().setBackground(Color.WHITE);
 
         java.util.Date now = new java.util.Date();
         String ss = DateFormat.getDateTimeInstance().format(now);
@@ -172,11 +171,12 @@ public class Suite_Window extends javax.swing.JFrame {
         folder_Separator2 = new javax.swing.JPopupMenu.Separator();
         folder_Manage = new javax.swing.JMenuItem();
         menu_Account = new javax.swing.JMenu();
-        account_Create = new javax.swing.JMenuItem();
+        account_Current = new javax.swing.JMenuItem();
         account_Separator1 = new javax.swing.JPopupMenu.Separator();
-        account_Modify = new javax.swing.JMenuItem();
-        account_Separator2 = new javax.swing.JPopupMenu.Separator();
+        account_Create = new javax.swing.JMenuItem();
         account_Delete = new javax.swing.JMenuItem();
+        account_Separator2 = new javax.swing.JPopupMenu.Separator();
+        account_Modify = new javax.swing.JMenuItem();
         menu_Support = new javax.swing.JMenu();
         support_Guide = new javax.swing.JMenuItem();
         support_Separator = new javax.swing.JPopupMenu.Separator();
@@ -722,11 +722,35 @@ public class Suite_Window extends javax.swing.JFrame {
         menu_Account.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_User.png"))); // NOI18N
         menu_Account.setText("Account Management");
 
-        account_Create.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        account_Current.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
+        account_Current.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_User.png"))); // NOI18N
+        account_Current.setText("Current Account");
+        account_Current.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                account_CurrentActionPerformed(evt);
+            }
+        });
+        menu_Account.add(account_Current);
+        menu_Account.add(account_Separator1);
+
         account_Create.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Create.png"))); // NOI18N
         account_Create.setText("Create Account");
+        account_Create.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                account_CreateActionPerformed(evt);
+            }
+        });
         menu_Account.add(account_Create);
-        menu_Account.add(account_Separator1);
+
+        account_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Delete.png"))); // NOI18N
+        account_Delete.setText("Delete Account");
+        account_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                account_DeleteActionPerformed(evt);
+            }
+        });
+        menu_Account.add(account_Delete);
+        menu_Account.add(account_Separator2);
 
         account_Modify.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Modify.png"))); // NOI18N
         account_Modify.setText("Modify Account");
@@ -736,11 +760,6 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         });
         menu_Account.add(account_Modify);
-        menu_Account.add(account_Separator2);
-
-        account_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_Delete.png"))); // NOI18N
-        account_Delete.setText("Delete Account");
-        menu_Account.add(account_Delete);
 
         proximity_Menu.add(menu_Account);
 
@@ -963,12 +982,9 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void support_GuideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_support_GuideActionPerformed
         // TODO add your handling code here:
-
         String pathPDF = this.getClass().getResource("/Proximity/user_Guide/Proximity_User_Guide.pdf").getPath();
         File filePDF = new File(pathPDF);
         openFile(filePDF);
-
-
     }//GEN-LAST:event_support_GuideActionPerformed
 
     private void folder_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CurrentActionPerformed
@@ -981,12 +997,40 @@ public class Suite_Window extends javax.swing.JFrame {
         // TODO add your handling code here:
         Folder_Create af = new Folder_Create(this, true, accountID);
         af.setVisible(true);
+
+        if (af.isCreatedFolder() == true) {
+            folderIDList.clear();
+            folderNameList.clear();
+            clearTableFiles();
+            getAccountFolders();
+            table_Folder_ComboBox.setSelectedIndex(table_Folder_ComboBox.getItemCount() - 1);
+        } else {
+        }
     }//GEN-LAST:event_folder_CreateActionPerformed
+
+    private void clearTableFiles() {
+        filelists.clear();
+        DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
+
+        while (tableModel.getRowCount() > 0) {
+            tableModel.removeRow(0);
+
+        }
+    }
 
     private void folder_ManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_ManageActionPerformed
         // TODO add your handling code here:
         Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
+
+        if (mf.isModifyFolder() == true) {
+            folderIDList.clear();
+            folderNameList.clear();
+            clearTableFiles();
+            getAccountFolders();
+            table_Folder_ComboBox.setSelectedItem(mf.getCurrentFolder());
+        } else {
+        }
     }//GEN-LAST:event_folder_ManageActionPerformed
 
     private void device_DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DisconnectActionPerformed
@@ -1068,6 +1112,13 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void table_Folder_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Folder_ComboBoxActionPerformed
         // TODO add your handling code here:
+
+        filelists.clear();
+
+        clearTableFiles();
+
+        getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
+
     }//GEN-LAST:event_table_Folder_ComboBoxActionPerformed
 
     private void table_Search_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_table_Search_FieldCaretUpdate
@@ -1077,7 +1128,26 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void account_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_ModifyActionPerformed
         // TODO add your handling code here:
+          Acccount_Management md = new Acccount_Management(this, true, accountID);
+        md.setVisible(true);
     }//GEN-LAST:event_account_ModifyActionPerformed
+
+    private void account_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CreateActionPerformed
+        // TODO add your handling code here:
+        new Login_Account_Create("Main").setVisible(true);
+    }//GEN-LAST:event_account_CreateActionPerformed
+
+    private void account_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_DeleteActionPerformed
+        // TODO add your handling code here:
+         Delete_Account md = new Delete_Account(this, true, accountID);
+        md.setVisible(true);
+    }//GEN-LAST:event_account_DeleteActionPerformed
+
+    private void account_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CurrentActionPerformed
+        // TODO add your handling code here:
+         Account_Current md = new Account_Current(this, true, accountID);
+        md.setVisible(true);
+    }//GEN-LAST:event_account_CurrentActionPerformed
 
     private void searchAll() {
 
@@ -1218,6 +1288,7 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JPopupMenu popup;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem account_Create;
+    private javax.swing.JMenuItem account_Current;
     private javax.swing.JMenuItem account_Delete;
     private javax.swing.JMenuItem account_Modify;
     private javax.swing.JPopupMenu.Separator account_Separator1;
@@ -1833,10 +1904,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private int accountID;
     private String accountName;
-    private String accountPassword;
-    private String accountEmail;
-    private String accountQuestion;
-    private String accountAnswer;
 
     public int getAccountID() {
         return accountID;
@@ -1852,38 +1919,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
-    }
-
-    public String getAccountPassword() {
-        return accountPassword;
-    }
-
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
-    }
-
-    public String getAccountEmail() {
-        return accountEmail;
-    }
-
-    public void setAccountEmail(String accountEmail) {
-        this.accountEmail = accountEmail;
-    }
-
-    public String getAccountQuestion() {
-        return accountQuestion;
-    }
-
-    public void setAccountQuestion(String accountQuestion) {
-        this.accountQuestion = accountQuestion;
-    }
-
-    public String getAccountAnswer() {
-        return accountAnswer;
-    }
-
-    public void setAccountAnswer(String accountAnswer) {
-        this.accountAnswer = accountAnswer;
     }
 
     public void getAccountDetails() {
@@ -1913,10 +1948,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
             while (rs.next()) {
                 accountName = rs.getString("account_Username");
-                accountPassword = rs.getString("account_Password");
-                accountEmail = rs.getString("account_Email");
-                accountQuestion = rs.getString("account_Question");
-                accountAnswer = rs.getString("account_Answer");
             }
 
         } catch (SQLException | ClassNotFoundException se) {
@@ -1928,6 +1959,8 @@ public class Suite_Window extends javax.swing.JFrame {
                 }
             }
         }
+        account_Current.setText(accountName);
+
         getAccountFolders();
     }
 
@@ -1996,7 +2029,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 folder_Current.setText(table_Folder_ComboBox.getSelectedItem().toString());
             }
         }
-        getFolderFiles(table_Folder_ComboBox.getSelectedItem().toString());
+
     }
 
     private void getFolderFiles(String folderName) {
@@ -2047,7 +2080,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 fileIDList.add(fileID);
             }
 
-            getAccountFiles(fileIDList);
+            getFolderFiles(fileIDList);
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
@@ -2059,7 +2092,7 @@ public class Suite_Window extends javax.swing.JFrame {
         }
     }
 
-    public void getAccountFiles(ArrayList<Integer> fileIDList) {
+    public void getFolderFiles(ArrayList<Integer> fileIDList) {
         ArrayList<String> fileDirList = new ArrayList<>();
         ArrayList<Boolean> fileStatusList = new ArrayList<>();
 
@@ -2180,30 +2213,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
-    // not sure what used for 
-//    public void addFiles(File file) {
-//
-//        if (file.exists()) {
-//
-//            if (file.isDirectory()) {
-//                if (file.canRead()) {
-//
-//                    File[] listOfFiles = file.listFiles();
-//                    if (listOfFiles != null) {
-//                        for (int i = 0; i < listOfFiles.length; i++) {
-//                            addFiles(listOfFiles[i]);
-//                        }
-//                    }
-//                }
-//            } else if (file.isFile()) {
-//
-//                if (file.canRead()) {
-//                    filelists.add(file);
-//                }
-//            }
-//        }
-//
-//    }
     public String getFileSize(double fileLength) {
         int unitSize = 1024;
         if (fileLength < unitSize) {

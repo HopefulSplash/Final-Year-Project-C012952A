@@ -304,7 +304,7 @@ public class DeviceLoginSample extends javax.swing.JFrame {
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
         // TODO add your handling code here:
-        Login_Account_Create cASameple = new Login_Account_Create();
+        Login_Account_Create cASameple = new Login_Account_Create("Device");
         cASameple.setVisible(true);
         this.dispose();
 

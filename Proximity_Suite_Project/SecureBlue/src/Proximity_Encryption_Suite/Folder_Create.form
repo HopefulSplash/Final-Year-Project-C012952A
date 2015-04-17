@@ -14,6 +14,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -29,11 +32,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="button_Panel" alignment="1" max="32767" attributes="0"/>
-                  <Component id="folder_Details_Panel" alignment="1" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="folder_Details_Panel" min="-2" max="-2" attributes="0"/>
+                  <Component id="button_Panel" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
@@ -42,8 +45,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="folder_Details_Panel" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Component id="folder_Details_Panel" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Component id="button_Panel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
           </Group>
@@ -62,8 +66,8 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="create_Button" min="-2" pref="90" max="-2" attributes="0"/>
+                  <EmptySpace pref="383" max="32767" attributes="0"/>
+                  <Component id="accept_Button" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="cancel_Button" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -76,7 +80,7 @@
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cancel_Button" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="create_Button" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="accept_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -87,17 +91,19 @@
         <Component class="javax.swing.JButton" name="cancel_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancel_ButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="create_Button">
+        <Component class="javax.swing.JButton" name="accept_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Accept"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="create_ButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="accept_ButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -106,6 +112,11 @@
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Folder Details"/>
+          </Border>
         </Property>
       </Properties>
 
@@ -124,7 +135,7 @@
                       <Component id="type_ComboBox" max="32767" attributes="0"/>
                       <Component id="name_Field" max="32767" attributes="0"/>
                       <Component id="description_ScrollPane" max="32767" attributes="0"/>
-                      <Component id="Folder_Status_Label" alignment="0" pref="446" max="32767" attributes="0"/>
+                      <Component id="folder_Status_Label" alignment="0" pref="446" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
@@ -139,7 +150,7 @@
                       <Component id="name_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="Folder_Status_Label" min="-2" max="-2" attributes="0"/>
+                  <Component id="folder_Status_Label" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="type_ComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -170,6 +181,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="type_ComboBoxActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="type_Label">
           <Properties>
@@ -209,7 +223,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="Folder_Status_Label">
+        <Component class="javax.swing.JLabel" name="folder_Status_Label">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>

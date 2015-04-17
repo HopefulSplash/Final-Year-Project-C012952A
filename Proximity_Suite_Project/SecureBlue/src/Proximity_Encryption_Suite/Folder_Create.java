@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -75,6 +73,12 @@ public class Folder_Create extends javax.swing.JDialog {
          */
         this.setIconImages(icons);
         this.accountID = accountID;
+        description_Area.setText(null);
+        description_Area.setEditable(false);
+        type_ComboBox.setSelectedIndex(0);
+        type_ComboBox.setEnabled(false);
+        description_Area.setBackground(darkGrey);
+        accept_Button.setEnabled(false);
 
     }
 
@@ -89,7 +93,7 @@ public class Folder_Create extends javax.swing.JDialog {
 
         button_Panel = new javax.swing.JPanel();
         cancel_Button = new javax.swing.JButton();
-        create_Button = new javax.swing.JButton();
+        accept_Button = new javax.swing.JButton();
         folder_Details_Panel = new javax.swing.JPanel();
         type_ComboBox = new javax.swing.JComboBox();
         type_Label = new javax.swing.JLabel();
@@ -98,27 +102,34 @@ public class Folder_Create extends javax.swing.JDialog {
         name_Field = new javax.swing.JTextField();
         description_ScrollPane = new javax.swing.JScrollPane();
         description_Area = new javax.swing.JTextArea();
-        Folder_Status_Label = new javax.swing.JLabel();
+        folder_Status_Label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Proximity Suite | Create Folder");
         setMinimumSize(new java.awt.Dimension(565, 215));
         setModal(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
         cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_ButtonActionPerformed(evt);
             }
         });
 
-        create_Button.setText("Accept");
-        create_Button.addActionListener(new java.awt.event.ActionListener() {
+        accept_Button.setText("Accept");
+        accept_Button.setFocusPainted(false);
+        accept_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                create_ButtonActionPerformed(evt);
+                accept_ButtonActionPerformed(evt);
             }
         });
 
@@ -127,8 +138,8 @@ public class Folder_Create extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(create_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(383, Short.MAX_VALUE)
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
@@ -139,13 +150,19 @@ public class Folder_Create extends javax.swing.JDialog {
                 .addGap(0, 0, 0)
                 .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancel_Button)
-                    .addComponent(create_Button))
+                    .addComponent(accept_Button))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         folder_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        folder_Details_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
 
         type_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please Select Folder Type", "Work", "Home", "Personal", "Important", "Archive", "Other" }));
+        type_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                type_ComboBoxActionPerformed(evt);
+            }
+        });
 
         type_Label.setText("Folder Type: ");
 
@@ -164,11 +181,11 @@ public class Folder_Create extends javax.swing.JDialog {
         description_Area.setRows(5);
         description_ScrollPane.setViewportView(description_Area);
 
-        Folder_Status_Label.setBackground(new java.awt.Color(255, 255, 255));
-        Folder_Status_Label.setForeground(new java.awt.Color(255, 255, 255));
-        Folder_Status_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Folder_Status_Label.setText("Please Enter A Username");
-        Folder_Status_Label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        folder_Status_Label.setBackground(new java.awt.Color(255, 255, 255));
+        folder_Status_Label.setForeground(new java.awt.Color(255, 255, 255));
+        folder_Status_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        folder_Status_Label.setText("Please Enter A Username");
+        folder_Status_Label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout folder_Details_PanelLayout = new javax.swing.GroupLayout(folder_Details_Panel);
         folder_Details_Panel.setLayout(folder_Details_PanelLayout);
@@ -185,7 +202,7 @@ public class Folder_Create extends javax.swing.JDialog {
                     .addComponent(type_ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(name_Field)
                     .addComponent(description_ScrollPane)
-                    .addComponent(Folder_Status_Label, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+                    .addComponent(folder_Status_Label, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         folder_Details_PanelLayout.setVerticalGroup(
@@ -196,7 +213,7 @@ public class Folder_Create extends javax.swing.JDialog {
                     .addComponent(name_Label)
                     .addComponent(name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addComponent(Folder_Status_Label)
+                .addComponent(folder_Status_Label)
                 .addGap(6, 6, 6)
                 .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(type_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,18 +229,19 @@ public class Folder_Create extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(button_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(folder_Details_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(folder_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(folder_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(6, 6, 6)
+                .addComponent(folder_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -231,19 +249,20 @@ public class Folder_Create extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    boolean createdFolder = true;
+
     private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         // TODO add your handling code here:
+        createdFolder = false;
         this.dispose();
     }//GEN-LAST:event_cancel_ButtonActionPerformed
 
-    private void create_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_ButtonActionPerformed
+    private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // creares the variables that will be added to the databse.
 
-        System.out.print(validFolder);
-
-        String name = name_Field.getText();
+        String name = name_Field.getText().trim();
         String type = (String) type_ComboBox.getSelectedItem();
-        String description = description_Area.getText();
+        String description = description_Area.getText().trim();
 
         /*
          * declares and new instance of the Database class and then checks if the
@@ -288,8 +307,6 @@ public class Folder_Create extends javax.swing.JDialog {
                     pStmt.setString(1, name);
                     pStmt.setString(2, description);
 
-                    System.out.println(pStmt);
-
                     pStmt.executeUpdate();
 
                 } catch (SQLException | ClassNotFoundException se) {
@@ -306,8 +323,8 @@ public class Folder_Create extends javax.swing.JDialog {
                 //a popup windows telling the user thier account have been created
                 Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
                 JOptionPane.showMessageDialog(this,
-                        "Your Account Has Been Created Successfully.",
-                        "Account Created!",
+                        "Your Folder Has Been Created Successfully.",
+                        "Folder Created!",
                         JOptionPane.INFORMATION_MESSAGE,
                         tickIcon);
 
@@ -315,6 +332,8 @@ public class Folder_Create extends javax.swing.JDialog {
                 name_Field.setText(null);
                 type_ComboBox.setSelectedIndex(0);
                 description_Area.setText(null);
+
+                this.dispose();
 
             } else {
 
@@ -324,12 +343,12 @@ public class Folder_Create extends javax.swing.JDialog {
                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                 JOptionPane.showMessageDialog(this,
                         "One Or More Fields Are Incorrect. Please Try Again.",
-                        "Account Creation Error!",
+                        "Folder Creation Error!",
                         JOptionPane.INFORMATION_MESSAGE,
                         crossIcon);
             }
         }
-    }//GEN-LAST:event_create_ButtonActionPerformed
+    }//GEN-LAST:event_accept_ButtonActionPerformed
 
     private boolean checkFolderNameExsists(String folderName) {
         // creates a variable call isTaken and sets it to false.
@@ -398,83 +417,101 @@ public class Folder_Create extends javax.swing.JDialog {
         boolean folderIsTaken = checkFolderNameExsists(name_Field.getText());
 
         // checks if the username is taken and updates the status.
-        if (folderIsTaken == true && name_Field.getText().length() > 0) {
-            Folder_Status_Label.setText("Folder Name Already In Use");
-            Folder_Status_Label.setForeground(darkRed);
+        if (folderIsTaken == true && name_Field.getText().length() > 0 && !name_Field.getText().startsWith(" ")) {
+            folder_Status_Label.setText("Folder Name Already In Use");
+            folder_Status_Label.setForeground(darkRed);
+            description_Area.setText(null);
+            description_Area.setEditable(false);
+            description_Area.setBackground(darkGrey);
+            type_ComboBox.setSelectedIndex(0);
+            type_ComboBox.setEnabled(false);
             validFolder = false;
 
         } // checks if the username field is empty and updates the status.
-        else if (name_Field.getText().length() == 0) {
-            Folder_Status_Label.setText("Folder Name Place Holder");
-            Folder_Status_Label.setForeground(Color.WHITE);
+        else if (name_Field.getText().length() == 0 && !name_Field.getText().startsWith(" ")) {
+            folder_Status_Label.setText("Folder Name Place Holder");
+            folder_Status_Label.setForeground(Color.WHITE);
+            description_Area.setText(null);
+            description_Area.setEditable(false);
+            description_Area.setBackground(darkGrey);
+            type_ComboBox.setSelectedIndex(0);
+            type_ComboBox.setEnabled(false);
             validFolder = false;
 
         } // checks if the username is too long for the database and updates the status.
-        else if (name_Field.getText().length() > 255) {
-            Folder_Status_Label.setText("Folder Name Is Too Long");
-            Folder_Status_Label.setForeground(darkRed);
+        else if (name_Field.getText().length() > 255 && !name_Field.getText().startsWith(" ")) {
+            folder_Status_Label.setText("Folder Name Is Too Long");
+            folder_Status_Label.setForeground(darkRed);
+            description_Area.setText(null);
+            description_Area.setEditable(false);
+            description_Area.setBackground(darkGrey);
+            type_ComboBox.setSelectedIndex(0);
+            type_ComboBox.setEnabled(false);
             validFolder = false;
         } //if non of the above statements are met then they username is approved and the status updated.
-        else {
+        else if (!name_Field.getText().startsWith(" ")) {
             validFolder = true;
-            Folder_Status_Label.setText("Folder Name Approved");
-            Folder_Status_Label.setForeground(darkGreen);
+            type_ComboBox.setEnabled(true);
+            folder_Status_Label.setText("Folder Name Approved");
+            folder_Status_Label.setForeground(darkGreen);
+        } else {
+            folder_Status_Label.setText("Folder Name Cannot Start With A Space");
+            folder_Status_Label.setForeground(darkRed);
+            description_Area.setEditable(false);
+            description_Area.setText(null);
+            type_ComboBox.setSelectedIndex(0);
+            type_ComboBox.setEnabled(false);
+            validFolder = false;
         }
     }//GEN-LAST:event_name_FieldCaretUpdate
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void type_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type_ComboBoxActionPerformed
+        // TODO add your handling code here:
+        if (type_ComboBox.getSelectedIndex() != 0) {
+            description_Area.setEditable(true);
+            description_Area.setBackground(Color.WHITE);
+            accept_Button.setEnabled(true);
+        } //resets the fields if the user have change the combo box to index 0.
+        else {
+            description_Area.setText(null);
+            description_Area.setEditable(false);
+            accept_Button.setEnabled(false);
+            description_Area.setBackground(darkGrey);
         }
-        //</editor-fold>
-        //</editor-fold>
+    }//GEN-LAST:event_type_ComboBoxActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Folder_Create dialog = new Folder_Create(new javax.swing.JFrame(), true, 1);
-                dialog.setVisible(true);
-            }
-        });
+    public boolean isCreatedFolder() {
+        return createdFolder;
     }
+
+    public void setCreatedFolder(boolean createdFolder) {
+        this.createdFolder = createdFolder;
+    }
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        createdFolder = false;
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Folder_Status_Label;
+    private javax.swing.JButton accept_Button;
     private javax.swing.JPanel button_Panel;
     private javax.swing.JButton cancel_Button;
-    private javax.swing.JButton create_Button;
     private javax.swing.JTextArea description_Area;
     private javax.swing.JLabel description_Label;
     private javax.swing.JScrollPane description_ScrollPane;
     private javax.swing.JPanel folder_Details_Panel;
+    private javax.swing.JLabel folder_Status_Label;
     private javax.swing.JTextField name_Field;
     private javax.swing.JLabel name_Label;
     private javax.swing.JComboBox type_ComboBox;
     private javax.swing.JLabel type_Label;
     // End of variables declaration//GEN-END:variables
-    private int accountID;
+    private final int accountID;
     private boolean validFolder;
     private Color darkGreen = new Color(0x006400);
     private Color darkRed = new Color(0x640000);
+    private Color darkGrey = new Color(240, 240, 240);
 
 }

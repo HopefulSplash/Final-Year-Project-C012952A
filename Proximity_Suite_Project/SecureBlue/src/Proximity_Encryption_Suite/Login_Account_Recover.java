@@ -379,9 +379,9 @@ public class Login_Account_Recover extends javax.swing.JFrame {
              */
             stmt = conn.createStatement();
             String sql = "SELECT account_Details_ID FROM Account_Details "
-                    + "WHERE account_Username = '" + username_Field.getText()
+                    + "WHERE account_Username = '" + username_Field.getText().trim()
                     + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
-                    + "' AND account_Answer = '" + answer_Field.getText() + "';";
+                    + "' AND account_Answer = '" + answer_Field.getText().trim() + "';";
 
             /*
              * extracts the data from the results of the SQL statment.
@@ -401,9 +401,9 @@ public class Login_Account_Recover extends javax.swing.JFrame {
 
                     // transfers the data to new window so the user can enter the desired password.
                     Login_Account_Recover_Password resetPassword = new Login_Account_Recover_Password((Frame) this.getParent(), true);
-                    resetPassword.setAnswer(answer_Field.getText());
+                    resetPassword.setAnswer(answer_Field.getText().trim());
                     resetPassword.setQuestion(question_ComboBox.getSelectedItem().toString());
-                    resetPassword.setUsername(username_Field.getText());
+                    resetPassword.setUsername(username_Field.getText().trim());
 
                     resetPassword.setVisible(true);
 
@@ -414,9 +414,9 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                          */
                         stmt = conn.createStatement();
                         sql = "UPDATE Account_Details "
-                                + "SET account_Password = '" + resetPassword.getPasswordSha1() + "' WHERE account_Username = '" + username_Field.getText()
+                                + "SET account_Password = '" + resetPassword.getPasswordSha1() + "' WHERE account_Username = '" + username_Field.getText().trim()
                                 + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
-                                + "' AND account_Answer = '" + answer_Field.getText() + "';";
+                                + "' AND account_Answer = '" + answer_Field.getText().trim() + "';";
                         stmt.executeUpdate(sql);
 
                         // a popup that will appear when the information a user has entered is correct showing that the data has changed.
@@ -592,13 +592,13 @@ public class Login_Account_Recover extends javax.swing.JFrame {
     private void email_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_email_FieldCaretUpdate
 
         //checks if the email address is valid and changes the status
-        if (validateEmail(email_Field.getText())) {
+        if (validateEmail(email_Field.getText()) && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Address Valid");
             email_Status_Label.setForeground(darkGreen);
             password_Field.setEditable(true);
 
         } //checks if the email field is empty and changes the status
-        else if (email_Field.getText().length() == 0) {
+        else if (email_Field.getText().length() == 0 && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Place Holder");
             email_Status_Label.setForeground(Color.WHITE);
             email_Status_Label.setForeground(Color.WHITE);
@@ -607,12 +607,16 @@ public class Login_Account_Recover extends javax.swing.JFrame {
             password_Field.setText(null);
 
         } //checks if the email adddresss isnt valid and changes the status
-        else if (email_Field.getText().length() != 0 && validateEmail(email_Field.getText()) == false) {
+        else if (email_Field.getText().length() != 0 && validateEmail(email_Field.getText()) == false && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Is Invalid");
             email_Status_Label.setForeground(darkRed);
             recover_Username_Button.setEnabled(false);
             password_Field.setEditable(false);
             password_Field.setText(null);
+
+        } else {
+            email_Status_Label.setText("Email Addresses Cannot Start With A Space");
+            email_Status_Label.setForeground(darkRed);
 
         }
 
@@ -711,11 +715,18 @@ public class Login_Account_Recover extends javax.swing.JFrame {
      * @param evt
      */
     private void answer_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_answer_FieldCaretUpdate
-        // checks the length of the text in the answer field.
-        if (answer_Field.getText().length() > 0) {
+       
+//checks if the answers the user has given match eachother.
+        if (answer_Field.getText().length() != 0) {
             reset_Password_Button.setEnabled(true);
-        } // if the field is empty the button is will be disabled.
-        else {
+        } /**
+         * if the email address field is empty then the status text will become
+         * hidden.
+         */
+        else if (answer_Field.getText().length() == 0) {
+            reset_Password_Button.setEnabled(false);
+        }
+        else{
             reset_Password_Button.setEnabled(false);
         }
 

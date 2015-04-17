@@ -43,17 +43,17 @@ import javax.swing.table.TableRowSorter;
 public class Folder_Current extends javax.swing.JDialog {
 
     int accountID;
-    String folderName;
+    String currentName;
 
     /**
      * Creates new form viewCurrentlyFolder
      *
      * @param parent
      * @param modal
-     * @param accountID
+     * @param account_ID
      * @param folderName
      */
-    public Folder_Current(java.awt.Frame parent, boolean modal, int accountID, String folderName) {
+    public Folder_Current(java.awt.Frame parent, boolean modal, int account_ID, String folderName) {
 
         this.getContentPane().setBackground(Color.WHITE);
 
@@ -93,8 +93,8 @@ public class Folder_Current extends javax.swing.JDialog {
          */
         this.setIconImages(icons);
 
-        this.accountID = 1;
-        this.folderName = "admin's Default Folder";
+        this.accountID = account_ID;
+        this.currentName = folderName;
 
         getFolderFiles();
     }
@@ -113,11 +113,11 @@ public class Folder_Current extends javax.swing.JDialog {
         type_Label = new javax.swing.JLabel();
         description_Label = new javax.swing.JLabel();
         created_Label = new javax.swing.JLabel();
-        description_Scroll_Pane = new javax.swing.JScrollPane();
-        description_Area = new javax.swing.JTextArea();
         name_Field = new javax.swing.JTextField();
         created_Field = new javax.swing.JTextField();
         type_Field = new javax.swing.JTextField();
+        description_Scroll_Pane = new javax.swing.JScrollPane();
+        description_Area = new javax.swing.JTextArea();
         content_Table_Scroll_Pane = new javax.swing.JScrollPane();
         content_Table = new javax.swing.JTable();
         contents_Label = new javax.swing.JLabel();
@@ -128,12 +128,13 @@ public class Folder_Current extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Proximity Suite | Current Folder");
-        setBackground(new java.awt.Color(204, 204, 204));
+        setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(565, 224));
         setModal(true);
         setResizable(false);
 
         folder_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        folder_Details_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
 
         name_Label.setText("Folder Name: ");
 
@@ -142,6 +143,16 @@ public class Folder_Current extends javax.swing.JDialog {
         description_Label.setText("Folder Description: ");
 
         created_Label.setText("Folder Created: ");
+
+        name_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        name_Field.setFocusable(false);
+        name_Field.setRequestFocusEnabled(false);
+
+        created_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        created_Field.setFocusable(false);
+
+        type_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        type_Field.setFocusable(false);
 
         description_Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -152,17 +163,6 @@ public class Folder_Current extends javax.swing.JDialog {
         description_Area.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         description_Area.setFocusable(false);
         description_Scroll_Pane.setViewportView(description_Area);
-
-        name_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        name_Field.setFocusable(false);
-        name_Field.setRequestFocusEnabled(false);
-
-        created_Field.setBackground(new java.awt.Color(255, 255, 255));
-        created_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        created_Field.setFocusable(false);
-
-        type_Field.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        type_Field.setFocusable(false);
 
         content_Table_Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
         content_Table_Scroll_Pane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -242,8 +242,8 @@ public class Folder_Current extends javax.swing.JDialog {
                         .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(created_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(description_Label, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(type_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(contents_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(contents_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(type_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(type_Field)
@@ -260,9 +260,9 @@ public class Folder_Current extends javax.swing.JDialog {
                     .addComponent(name_Label)
                     .addComponent(name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(type_Label)
-                    .addComponent(type_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(type_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(type_Label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(description_Label)
@@ -309,7 +309,7 @@ public class Folder_Current extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
-                .addContainerGap(296, Short.MAX_VALUE)
+                .addContainerGap(308, Short.MAX_VALUE)
                 .addComponent(ok_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(modify_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,7 +343,7 @@ public class Folder_Current extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(folder_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addGap(0, 0, 0)
                 .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -359,55 +359,14 @@ public class Folder_Current extends javax.swing.JDialog {
     private void modify_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modify_ButtonActionPerformed
         // TODO add your handling code here:
         Folder_Management j1 = new Folder_Management((Frame) this.getParent(), true, accountID, name_Field.getText());
-
-        this.setVisible(false);
+        this.dispose();
         j1.setVisible(true);
-        getFolderFiles();
-        this.setVisible(true);
-
     }//GEN-LAST:event_modify_ButtonActionPerformed
 
     private void ok_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ok_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_ok_ButtonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Folder_Current.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Folder_Current dialog = new Folder_Current(new javax.swing.JFrame(), true, 1, "'admin''s Default Folder'");
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel button_Panel;
@@ -463,7 +422,7 @@ public class Folder_Current extends javax.swing.JDialog {
             String sql = "SELECT folder_Details_ID, folder_Name, folder_Type, folder_Description, folder_Created FROM Folder_Details WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
 
             PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, folderName);
+            pStmt.setString(1, currentName);
 
             ResultSet rs = pStmt.executeQuery();
 
