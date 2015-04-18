@@ -92,7 +92,7 @@ public class Folder_Current extends javax.swing.JDialog {
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-
+        ok_Button.requestFocus();
         this.accountID = account_ID;
         this.currentName = folderName;
 

@@ -1023,7 +1023,7 @@ public class Suite_Window extends javax.swing.JFrame {
         Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
 
-        if (mf.isModifyFolder() == true) {
+        if (mf.isModifyFolder()== true) {
             folderIDList.clear();
             folderNameList.clear();
             clearTableFiles();

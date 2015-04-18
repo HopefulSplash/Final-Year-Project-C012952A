@@ -988,7 +988,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
         else if (email_Field.getText().length() == 0 && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Place Holder");
             email_Status_Label.setForeground(Color.WHITE);
-            email_Status_Label.setForeground(Color.WHITE);
             confirm_email_Field.setEditable(false);
             confirm_email_Field.setText(null);
             question_ComboBox.setEnabled(false);
@@ -1160,7 +1159,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
          */
         else if (confirm_email_Field.getText().length() == 0 && email_Field.getText().length() == 0 && !confirm_email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Place Holder");
-            email_Status_Label.setForeground(Color.WHITE);
             email_Status_Label.setForeground(Color.WHITE);
             question_ComboBox.setEnabled(false);
             question_ComboBox.setSelectedIndex(0);
