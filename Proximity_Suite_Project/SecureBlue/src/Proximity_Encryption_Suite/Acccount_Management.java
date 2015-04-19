@@ -174,13 +174,13 @@ public class Acccount_Management extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
+                .addContainerGap(145, Short.MAX_VALUE)
                 .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(apply_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addGap(0, 0, 0))
         );
         button_PanelLayout.setVerticalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -413,7 +413,7 @@ public class Acccount_Management extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    boolean modifyFolder = false;
+    boolean modifyAccount = false;
     private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -421,19 +421,20 @@ public class Acccount_Management extends javax.swing.JDialog {
 
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
-
+        sendAccountDetails("Accept");
     }//GEN-LAST:event_accept_ButtonActionPerformed
 
     private void apply_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apply_ButtonActionPerformed
+        sendAccountDetails("Apply");
 
     }//GEN-LAST:event_apply_ButtonActionPerformed
 
-    public boolean isModifyFolder() {
-        return modifyFolder;
+    public boolean isModifyAccount() {
+        return modifyAccount;
     }
 
-    public void setModifyFolder(boolean modifyFolder) {
-        this.modifyFolder = modifyFolder;
+    public void setModifyAccount(boolean modifyFolder) {
+        this.modifyAccount = modifyFolder;
     }
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -510,10 +511,9 @@ public class Acccount_Management extends javax.swing.JDialog {
         else if (new_Password_Field.getPassword().length == 0) {
             password_Status_Label.setText("A Password Place Holder");
             password_Status_Label.setForeground(Color.WHITE);
-            password_Strength_Label.setForeground(Color.WHITE);
             confirm_New_Password_Field.setText(null);
             confirm_New_Password_Field.setEditable(false);
-            validPass = false;
+            validPass = true;
 
         } // if the passwords do not match the statements above then they do not match eachother.
         else {
@@ -570,8 +570,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         else if (confirm_New_Password_Field.getPassword().length == 0 && new_Password_Field.getPassword().length == 0) {
             password_Status_Label.setText("A Password Place Holder");
             password_Status_Label.setForeground(Color.WHITE);
-            password_Strength_Label.setForeground(Color.WHITE);
-            validPass = false;
+            validPass = true;
 
         } // if the passwords do not match the statements above then they do not match eachother.
         else {
@@ -590,9 +589,9 @@ public class Acccount_Management extends javax.swing.JDialog {
         if (isTaken == true && !email_Field.getText().equals(tempEmail) && email_Field.getText().length() > 0) {
             email_Status_Label.setText("Email Address Already In Use");
             email_Status_Label.setForeground(darkRed);
-            confirm_Email_Field.setEditable(false);
-            confirm_Email_Field.setFocusable(false);
             confirm_Email_Field.setText(null);
+            confirm_Email_Field.setEditable(false);
+            confirm_Email_Field.setEnabled(false);
             validEmail = false;
 
         } /**
@@ -604,7 +603,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             email_Status_Label.setText("Email Address Approved");
             email_Status_Label.setForeground(darkGreen);
             confirm_Email_Field.setEditable(true);
-            confirm_Email_Field.setFocusable(true);
+            confirm_Email_Field.setEnabled(true);
 
         } /**
          * if the email address field is empty then the status text will become
@@ -615,9 +614,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             email_Status_Label.setForeground(darkRed);
             confirm_Email_Field.setText(null);
             confirm_Email_Field.setEditable(false);
-            confirm_Email_Field.setFocusable(false);
-
-            email_Field.requestFocus();
+            confirm_Email_Field.setEnabled(false);
             validEmail = false;
 
         } /**
@@ -626,10 +623,9 @@ public class Acccount_Management extends javax.swing.JDialog {
         else if (email_Field.getText().length() != 0 && validateEmail(email_Field.getText()) == false && !email_Field.getText().startsWith(" ")) {
             email_Status_Label.setText("Email Addresses Is Invalid");
             email_Status_Label.setForeground(darkRed);
-            confirm_Email_Field.setEditable(false);
-            confirm_Email_Field.setFocusable(false);
-
             confirm_Email_Field.setText(null);
+            confirm_Email_Field.setEditable(false);
+            confirm_Email_Field.setEnabled(false);
             validEmail = false;
 
         } else if (email_Field.getText().equals(tempEmail) && confirm_Email_Field.getText().equals(tempEmail)) {
@@ -641,7 +637,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * not match.
          */
         else if (isTaken == false && !email_Field.getText().startsWith(" ") && !email_Field.getText().equals(tempEmail)) {
-            if (validateEmail(confirm_Email_Field.getText()) == false) {
+            if (validateEmail(confirm_Email_Field.getText()) == false && !confirm_Email_Field.getText().isEmpty()) {
                 email_Status_Label.setText("Email Addresses Is Invalid");
                 email_Status_Label.setForeground(darkRed);
                 validEmail = false;
@@ -649,7 +645,7 @@ public class Acccount_Management extends javax.swing.JDialog {
                 email_Status_Label.setText("Email Addresses Do Not Match");
                 email_Status_Label.setForeground(darkRed);
                 confirm_Email_Field.setEditable(true);
-                confirm_Email_Field.setFocusable(true);
+                confirm_Email_Field.setEnabled(true);
                 validEmail = false;
             }
 
@@ -658,18 +654,18 @@ public class Acccount_Management extends javax.swing.JDialog {
             email_Status_Label.setForeground(darkRed);
             confirm_Email_Field.setText(null);
             confirm_Email_Field.setEditable(false);
-            confirm_Email_Field.setFocusable(false);
+            confirm_Email_Field.setEnabled(false);
 
             validEmail = false;
         } else if (email_Field.getText().equals(tempEmail) && confirm_Email_Field.getText().length() == 0) {
             email_Status_Label.setText("Email Addresses Place Holder");
             email_Status_Label.setForeground(Color.WHITE);
             confirm_Email_Field.setEditable(true);
-            confirm_Email_Field.setFocusable(true);
+            confirm_Email_Field.setEnabled(true);
 
             validEmail = true;
         } else {
-            if (validateEmail(confirm_Email_Field.getText()) == false) {
+            if (validateEmail(confirm_Email_Field.getText()) == false && !confirm_Email_Field.getText().isEmpty()) {
                 email_Status_Label.setText("Email Addresses Is Invalid");
                 email_Status_Label.setForeground(darkRed);
                 validEmail = false;
@@ -677,7 +673,7 @@ public class Acccount_Management extends javax.swing.JDialog {
                 email_Status_Label.setText("Email Addresses Do Not Match");
                 email_Status_Label.setForeground(darkRed);
                 confirm_Email_Field.setEditable(true);
-                confirm_Email_Field.setFocusable(true);
+                confirm_Email_Field.setEnabled(true);
 
                 validEmail = false;
             }
@@ -719,23 +715,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * if the email address do not met the above if statements then they do
          * not match.
          */
-        else if (isTaken == false && !confirm_Email_Field.getText().startsWith(" ") && !confirm_Email_Field.getText().equals(tempEmail)) {
-            if (email_Field.getText().isEmpty()) {
-                email_Status_Label.setText("Email Addresses Cannot Be Blank");
-                email_Status_Label.setForeground(darkRed);
-                confirm_Email_Field.setText(null);
-                confirm_Email_Field.setEditable(false);
-                confirm_Email_Field.setFocusable(false);
-
-                email_Field.requestFocus();
-                validEmail = false;
-            } else {
-                email_Status_Label.setText("Email Addresses Do Not Match");
-                email_Status_Label.setForeground(darkRed);
-                validEmail = false;
-            }
-
-        } else if (confirm_Email_Field.getText().startsWith(" ") && !confirm_Email_Field.getText().equals(tempEmail)) {
+        else if (confirm_Email_Field.getText().startsWith(" ") && !confirm_Email_Field.getText().equals(tempEmail)) {
             email_Status_Label.setText("Email Addresses Cannot Start With A Space");
             email_Status_Label.setForeground(darkRed);
             validEmail = false;
@@ -744,7 +724,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             email_Status_Label.setForeground(Color.WHITE);
 
             validEmail = true;
-        } else {
+        } else if (!confirm_Email_Field.getText().isEmpty()) {
             email_Status_Label.setText("Email Addresses Do Not Match");
             email_Status_Label.setForeground(darkRed);
             validEmail = false;
@@ -914,13 +894,26 @@ public class Acccount_Management extends javax.swing.JDialog {
 
     private void sendAccountDetails(String buttonPressed) {
 
-        //change to send account details
-        //change to send account details
-        //change to send account details
-        //change to send account details
-        //change to send account details
-        //change to send account details
-        int folderID = 0;
+        String username = username_Field.getText().trim();
+        String passwordSha1 = null;
+        String email = email_Field.getText().trim();
+        String question = question_ComboBox.getSelectedItem().toString();
+        String answer = answer_Field.getText().trim();
+
+        /*
+         * creates the SHA1 hash of the password the user has entered.
+         */
+        if (new_Password_Field.getPassword().length != 0) {
+            try {
+                String strPassword = new String(new_Password_Field.getPassword());
+                passwordSha1 = convertToSha1(strPassword);
+
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Login_Account_Create.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            passwordSha1 = tempPass;
+        }
         /*
          * declares and new instance of the Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
@@ -948,36 +941,24 @@ public class Acccount_Management extends javax.swing.JDialog {
         // if the user has clicked confirm.
         if (n == 0) {
 
+            System.out.println(validPass + "" + validEmail + validUser + validAnswer);
             //checks if the data the user has entered is correct before storing it in the database.
-            if (true) {
+            if (validPass == true && validEmail == true && validUser == true && validAnswer && true) {
                 try {
                     // Register JDBC driver
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-                    stmt = conn.createStatement();
-                    String sql = "SELECT folder_Details_ID FROM Folder_Details "
-                            + "WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
-                    PreparedStatement getFolderID = conn.prepareStatement(sql);
-
-                    /*
-                     * extracts the data from the results of the SQL statment
-                     */
-                    try (ResultSet rs = getFolderID.executeQuery()) {
-                        while (rs.next()) {
-                            folderID = rs.getInt("folder_Details_ID");
-                        }
-                    }
-
                     //creates and SQL statement and executes it.
-                    String aSpql = "UPDATE Folder_Details SET folder_Name = ? , folder_Type = ?, folder_Description = ? WHERE folder_Details_ID = ? AND account_Details_ID = ? ;";
+                    String aSpql = "UPDATE Account_Details SET account_Username = ? , account_Password = ?, account_Email = ? , account_Question = ? , account_Answer = ? WHERE account_Details_ID = ? ;";
 
                     PreparedStatement updateFolder = conn.prepareStatement(aSpql);
-                    // updateFolder.setString(1, name_Field.getText());
-                    // updateFolder.setString(2, (String) type_ComboBox.getSelectedItem());
-                    // updateFolder.setString(3, description_Area.getText());
-                    updateFolder.setInt(4, folderID);
-                    updateFolder.setInt(5, accountID);
+                    updateFolder.setString(1, username);
+                    updateFolder.setString(2, passwordSha1);
+                    updateFolder.setString(3, email);
+                    updateFolder.setString(4, question);
+                    updateFolder.setString(5, answer);
+                    updateFolder.setInt(6, accountID);
                     updateFolder.executeUpdate();
 
                 } catch (SQLException | ClassNotFoundException se) {
@@ -1001,13 +982,17 @@ public class Acccount_Management extends javax.swing.JDialog {
 
                 //when the window closes it opens the relevant screen so that a user can login with thier new details.
                 if (buttonPressed.equals("Apply")) {
-
-                    modifyFolder = true;
+                    getAccountDetails(accountID);
+                    modifyAccount = true;
                 } else if (buttonPressed.equals("Accept")) {
                     //clears all the data a user has entered.
-
-                    fileIDList.clear();
-                    modifyFolder = true;
+                    username_Field.setText(null);
+                    email_Field.setText(null);
+                    question_ComboBox.setSelectedItem(0);
+                    answer_Field.setText(null);
+                    confirm_New_Password_Field.setText(null);
+                    confirm_Answer_Field.setText(null);
+                    modifyAccount = true;
                     this.dispose();
                 }
 
@@ -1273,15 +1258,12 @@ public class Acccount_Management extends javax.swing.JDialog {
     private javax.swing.JLabel username_Label;
     private javax.swing.JLabel username_Status_Label;
     // End of variables declaration//GEN-END:variables
-    private boolean validUser = false;
-    private boolean validPass = false;
-    private boolean validEmail = false;
-    private boolean validAnswer = false;
+    private boolean validUser = true;
+    private boolean validPass = true;
+    private boolean validEmail = true;
+    private boolean validAnswer = true;
     private Color darkGreen = new Color(0x006400);
     private Color darkRed = new Color(0x640000);
-    ArrayList<Integer> fileIDList = new ArrayList<>();
-    private TableModel model;
-    TableRowSorter<TableModel> sorter;
     String tempUser;
     String tempPass;
     String tempEmail;

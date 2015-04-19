@@ -75,6 +75,9 @@ public class Support_About extends javax.swing.JDialog {
          *  setups up all the GUI components 
          */
         initComponents();
+        
+        this.getContentPane().setBackground(Color.WHITE);
+        
         // put the customised text into the relavant components
         setupTextArea();
 
@@ -123,11 +126,13 @@ public class Support_About extends javax.swing.JDialog {
         );
 
         about_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        about_Details_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Software Details"));
 
         details_Project__Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
         details_Project__Scroll_Pane.setBorder(null);
         details_Project__Scroll_Pane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         details_Project__Scroll_Pane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        details_Project__Scroll_Pane.setFocusable(false);
 
         details_Text_Pane1.setEditable(false);
         details_Text_Pane1.setContentType("text/html"); // NOI18N
@@ -151,6 +156,7 @@ public class Support_About extends javax.swing.JDialog {
 
         details_System_Scroll_Pane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         details_System_Scroll_Pane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        details_System_Scroll_Pane.setFocusable(false);
 
         details_Text_Pane2.setEditable(false);
         details_Text_Pane2.setContentType("text/html"); // NOI18N
@@ -172,21 +178,27 @@ public class Support_About extends javax.swing.JDialog {
         about_Details_Panel.setLayout(about_Details_PanelLayout);
         about_Details_PanelLayout.setHorizontalGroup(
             about_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(details_System_Scroll_Pane)
-            .addComponent(details_Project__Scroll_Pane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(about_Details_PanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(about_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(details_Project__Scroll_Pane)
+                    .addGroup(about_Details_PanelLayout.createSequentialGroup()
+                        .addComponent(details_System_Scroll_Pane)
+                        .addGap(6, 6, 6))))
         );
         about_Details_PanelLayout.setVerticalGroup(
             about_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(about_Details_PanelLayout.createSequentialGroup()
                 .addComponent(details_Project__Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
 
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         close_Button.setText("Close");
+        close_Button.setFocusPainted(false);
         close_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 close_ButtonActionPerformed(evt);
@@ -198,14 +210,14 @@ public class Support_About extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(button_PanelLayout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(close_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(224, Short.MAX_VALUE))
+                .addGap(319, 319, 319)
+                .addComponent(close_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(335, Short.MAX_VALUE))
         );
         button_PanelLayout.setVerticalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(button_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addGap(0, 0, 0)
                 .addComponent(close_Button)
                 .addGap(0, 0, 0))
         );
@@ -217,9 +229,9 @@ public class Support_About extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(about_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(about_Logo_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(about_Details_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(about_Logo_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
@@ -227,7 +239,7 @@ public class Support_About extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(about_Logo_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(about_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,6 +300,8 @@ public class Support_About extends javax.swing.JDialog {
      */
     private void setupTextArea() {
 
+        
+        
         aboutJava = System.getProperty("java.version") + " " + System.getProperty("java.vm.name")
                 + " " + System.getProperty("java.vm.version");
 
@@ -321,16 +335,13 @@ public class Support_About extends javax.swing.JDialog {
                 + "	<head>\n"
                 + "	</head>\n"
                 + "	<body>\n"
-                + "The Proximity Encryption Suite"
-                + "offers its users flexible encryption and decryption of sensitive "
-                + "<div>\n"
-                + "documents with a variety of industry standard algorithms with Bluetooth functionality."
-                + "<div>\n"
-                + "For more information, please "
-                + "visit&nbsp;<a href=\"http://www.proximitysuite.wix.com/proximitysuite\">www.proximitysuite.wix.com/proximitysuite</a></div>\n"
+                + "The Proximity Encryption Suite offers its users flexible encryption and decryption of sensitive documents with a variety of industry standard algorithms with Bluetooth functionality."
+                + " For more information, please visit&nbsp;<a href=\"http://www.proximitysuite.wix.com/proximitysuite\">www.proximitysuite.wix.com/proximitysuite</a></div>\n"
                 + "	</body>\n"
                 + "</html>\n"
                 + "");
+        
+        
     }
 
     private String aboutJava;

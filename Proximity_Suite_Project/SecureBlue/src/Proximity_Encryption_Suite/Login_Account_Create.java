@@ -435,7 +435,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
         String email = email_Field.getText().trim();
         String question = question_ComboBox.getSelectedItem().toString();
         String answer = answer_Field.getText().trim();
-        System.out.println(username);
         int accountID = 0;
 
         /*
@@ -476,7 +475,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         if (n == 0) {
 
             //checks if the data the user has entered is correct before storing it in the database.
-            if (validPass == true && validEmail == true && validUser == true && validAnswer) {
+            if (validPass == true && validEmail == true && validUser == true && validAnswer == true) {
                 try {
                     // Register JDBC driver
                     Class.forName("com.mysql.jdbc.Driver");

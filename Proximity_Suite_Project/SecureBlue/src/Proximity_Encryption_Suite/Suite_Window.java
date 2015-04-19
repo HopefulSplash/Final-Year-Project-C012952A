@@ -880,10 +880,8 @@ public class Suite_Window extends javax.swing.JFrame {
     private void table_Add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Add_ButtonActionPerformed
         // TODO add your handling code here:
 
-        AddWindow aw = new AddWindow(this, true);
+        AddWindow aw = new AddWindow(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         aw.setVisible(true);
-
-        addFiles = aw.getArrayFiles();
 
         for (int i = 0; i < addFiles.size(); i++) {
             //validation
@@ -989,8 +987,18 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void folder_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CurrentActionPerformed
         // TODO add your handling code here:
+
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
+
         Folder_Current vcf = new Folder_Current(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         vcf.setVisible(true);
+
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountFolders();
+        table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
     }//GEN-LAST:event_folder_CurrentActionPerformed
 
     private void folder_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CreateActionPerformed
@@ -1023,7 +1031,7 @@ public class Suite_Window extends javax.swing.JFrame {
         Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
 
-        if (mf.isModifyFolder()== true) {
+        if (mf.isModifyFolder() == true) {
             folderIDList.clear();
             folderNameList.clear();
             clearTableFiles();
@@ -1063,6 +1071,14 @@ public class Suite_Window extends javax.swing.JFrame {
         Delete_Folder md = new Delete_Folder(this, true, accountID);
         md.setVisible(true);
 
+        //if (md.didDelete()== true) {
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountFolders();
+        table_Folder_ComboBox.setSelectedIndex(0);
+        //} else {
+        //}
 
     }//GEN-LAST:event_folder_DeleteActionPerformed
 
@@ -1128,8 +1144,15 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void account_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_ModifyActionPerformed
         // TODO add your handling code here:
-          Acccount_Management md = new Acccount_Management(this, true, accountID);
+        Acccount_Management md = new Acccount_Management(this, true, accountID);
         md.setVisible(true);
+
+        if (md.isModifyAccount() == true) {
+
+            getAccountDetails();
+
+        } else {
+        }
     }//GEN-LAST:event_account_ModifyActionPerformed
 
     private void account_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CreateActionPerformed
@@ -1139,14 +1162,23 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void account_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_DeleteActionPerformed
         // TODO add your handling code here:
-         Delete_Account md = new Delete_Account(this, true, accountID);
+        Delete_Account md = new Delete_Account(this, true, accountID);
         md.setVisible(true);
+        
+        //logout account
+        
     }//GEN-LAST:event_account_DeleteActionPerformed
 
     private void account_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CurrentActionPerformed
         // TODO add your handling code here:
-         Account_Current md = new Account_Current(this, true, accountID);
+
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
+
+        Account_Current md = new Account_Current(this, true, accountID);
         md.setVisible(true);
+
+        getAccountDetails();
+
     }//GEN-LAST:event_account_CurrentActionPerformed
 
     private void searchAll() {

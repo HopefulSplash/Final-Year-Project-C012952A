@@ -1,10 +1,36 @@
 package Proximity_Encryption_Suite;
 
+import static Proximity_Encryption_Suite.AddWindow.addFilesList;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,23 +41,217 @@ import javax.swing.JFileChooser;
  *
  * @author TheThoetha
  */
-public class AddWindow extends javax.swing.JDialog {
+public class AddWindow extends javax.swing.JDialog implements ActionListener,
+        PropertyChangeListener {
 
     private DefaultListModel listModel;
+    private String Current_Folder;
+    private final int Account_ID;
+    boolean canClose;
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    class Task extends SwingWorker<Void, Void> {
+
+        int progress = 0;
+        int fileIndex;
+        boolean addedFile = false;
+        Object o1;
+
+        public void setO1(Object o1) {
+            this.o1 = o1;
+        }
+
+        public int getFileIndex() {
+            return fileIndex;
+        }
+
+        public void setFileIndex(int fileIndex) {
+            this.fileIndex = fileIndex;
+        }
+
+        /*
+         * Main task. Executed in background thread.
+         */
+        @Override
+        public Void doInBackground() {
+            canClose = false;
+            progress = 0;
+            progressBar.setValue(0);
+            progressBar.setMaximum(filelist.size());
+
+            create_Button.setEnabled(false);
+            add_Button.setEnabled(false);
+            remove_Button.setEnabled(false);
+            clear_Button.setEnabled(false);
+            accept_Button.setEnabled(false);
+            cancel_Button.setEnabled(false);
+            jComboBox2.setEnabled(false);
+            jComboBox1.setEnabled(false);
+
+            //Initialize progress property.
+            setProgress(0);
+
+            while (progress < filelist.size()) {
+                progressBar.setIndeterminate(true);
+
+                //Sleep for up to one second.
+                for (int i = 0; i < filelist.size(); i++) {
+                    Search(filelist.get(i));
+                    progress += 1;
+                    setProgress(progress);
+                }
+
+            }
+            return null;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            canClose = true;
+            setCursor(null); //turn off the wait cursor
+            progressBar.setIndeterminate(false);
+            progressBar.setValue(progressBar.getMaximum());
+            create_Button.setEnabled(true);
+            add_Button.setEnabled(true);
+            remove_Button.setEnabled(true);
+            clear_Button.setEnabled(true);
+            accept_Button.setEnabled(true);
+            cancel_Button.setEnabled(true);
+            jComboBox2.setEnabled(true);
+            jComboBox1.setEnabled(true);
+
+            if (addFilesList.isEmpty()) {
+                /*
+                 * shows an error message due one or more fields being incorrect.
+                 */
+                Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                JOptionPane.showMessageDialog((Component) o1,
+                        "One Or More Fields Are Incorrect. Please Try Again.",
+                        "Account Creation Error!",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        crossIcon);
+            }
+
+        }
+
+        public void Search(File file) {
+
+            if (file.exists()) {
+
+                if (file.isDirectory()) {
+                    if (file.canRead()) {
+
+                        File[] listOfFiles = file.listFiles();
+                        if (listOfFiles != null) {
+                            for (int i = 0; i < listOfFiles.length; i++) {
+                                Search(listOfFiles[i]);
+
+                            }
+                        }
+                    }
+                } else if (file.isFile()) {
+
+                    if (file.canRead()) {
+
+                        if (addFilesList.contains(file)) {
+
+                            addedFile = false;
+                        } else {
+                            addFilesList.add(file);
+
+                            fileIndex = addFilesList.size() - 1;
+
+                            addedFile = true;
+
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
+
+    int temp = 0;
+
+    public void propertyChange(PropertyChangeEvent evt) {
+
+        if ("progress" == evt.getPropertyName()) {
+            if (!addFilesList.isEmpty()) {
+                for (int i = task.getFileIndex(); i >= temp; i--) {
+
+                    listModel.addElement(addFilesList.get(i).getAbsolutePath() + "\n");
+
+                }
+            }
+            temp = task.getFileIndex();
+        }
+    }
 
     /**
      *
      *
      * Creates new form AddWindow
+     *
+     * @param parent
+     * @param Current_Folder
+     * @param Account_ID
+     * @param modal
      */
-    public AddWindow(java.awt.Frame parent, boolean modal) {
+    public AddWindow(java.awt.Frame parent, boolean modal, int Account_ID, String Current_Folder) {
         super(parent, modal);
-            listModel = new DefaultListModel();
+
+        /**
+         * Declares the icons used for the windows icon and the frames icon.
+         */
+        URL icon16URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Small.png");
+        URL icon32URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Large.png");
+
+        /**
+         * Image list to store the icons in.
+         */
+        final List<Image> icons = new ArrayList<>();
+
+        /**
+         * loads the icons into the image list.
+         */
+        try {
+            icons.add(ImageIO.read(icon16URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            icons.add(ImageIO.read(icon32URL));
+        } catch (IOException ex) {
+            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        listModel = new DefaultListModel();
+
         initComponents();
-    
+
+        /**
+         * sets the location of the application to the middle of the screen.
+         */
+        this.setLocationRelativeTo(null);
+        /**
+         * loads the appropriate icons.
+         */
+        this.setIconImages(icons);
 
         this.getContentPane().setBackground(Color.WHITE);
-        this.setLocationRelativeTo(this.getParent());
+        this.Current_Folder = Current_Folder;
+        this.Account_ID = Account_ID;
+        accept_Button.requestFocus();
+
+        getAccountFolders();
 
     }
 
@@ -49,16 +269,19 @@ public class AddWindow extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox();
-        jButton5 = new javax.swing.JButton();
+        add_Button = new javax.swing.JButton();
+        clear_Button = new javax.swing.JButton();
+        remove_Button = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jLabel3 = new javax.swing.JLabel();
+        taskOutput = new javax.swing.JList();
+        progressBar = new javax.swing.JProgressBar();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        accept_Button = new javax.swing.JButton();
+        cancel_Button = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox();
+        create_Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Files");
@@ -66,38 +289,40 @@ public class AddWindow extends javax.swing.JDialog {
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("File Addition Details"));
 
-        jLabel1.setText("Select Files:");
+        jLabel1.setText("Selected Files:");
 
         jLabel2.setText("Select Item To Add:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "File", "Folder", "Drive", "External Device" }));
 
-        jButton3.setText("Add");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        add_Button.setText("Add");
+        add_Button.setFocusPainted(false);
+        add_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                add_ButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Clear");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        clear_Button.setText("Clear");
+        clear_Button.setFocusPainted(false);
+        clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                clear_ButtonActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Remove");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        remove_Button.setText("Remove");
+        remove_Button.setFocusPainted(false);
+        remove_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                remove_ButtonActionPerformed(evt);
             }
         });
 
-        jList1.setModel(listModel);
-        jScrollPane2.setViewportView(jList1);
-
-        jLabel3.setText("Select Folder:");
+        taskOutput.setModel(listModel);
+        jScrollPane2.setViewportView(taskOutput);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -107,66 +332,70 @@ public class AddWindow extends javax.swing.JDialog {
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(6, 6, 6))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(add_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(remove_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(clear_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(6, 6, 6))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(add_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)
+                        .addComponent(remove_Button)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(clear_Button))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Accept");
-        jButton1.setMaximumSize(new java.awt.Dimension(90, 23));
-        jButton1.setMinimumSize(new java.awt.Dimension(90, 23));
-        jButton1.setPreferredSize(new java.awt.Dimension(90, 23));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        accept_Button.setText("Accept");
+        accept_Button.setFocusPainted(false);
+        accept_Button.setMaximumSize(new java.awt.Dimension(90, 23));
+        accept_Button.setMinimumSize(new java.awt.Dimension(90, 23));
+        accept_Button.setPreferredSize(new java.awt.Dimension(90, 23));
+        accept_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                accept_ButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancel");
-        jButton2.setMaximumSize(new java.awt.Dimension(90, 23));
-        jButton2.setMinimumSize(new java.awt.Dimension(90, 23));
-        jButton2.setPreferredSize(new java.awt.Dimension(90, 23));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
+        cancel_Button.setMaximumSize(new java.awt.Dimension(90, 23));
+        cancel_Button.setMinimumSize(new java.awt.Dimension(90, 23));
+        cancel_Button.setPreferredSize(new java.awt.Dimension(90, 23));
+        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancel_ButtonActionPerformed(evt);
             }
         });
 
@@ -176,16 +405,62 @@ public class AddWindow extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
+
+        jLabel3.setText("Select Folder:");
+
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
+
+        create_Button.setText("Create");
+        create_Button.setFocusPainted(false);
+        create_Button.setMaximumSize(new java.awt.Dimension(90, 23));
+        create_Button.setMinimumSize(new java.awt.Dimension(90, 23));
+        create_Button.setPreferredSize(new java.awt.Dimension(90, 23));
+        create_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                create_ButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(create_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(create_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,16 +468,21 @@ public class AddWindow extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(6, 6, 6)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -210,22 +490,81 @@ public class AddWindow extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        sendFileDetials();
+    }//GEN-LAST:event_accept_ButtonActionPerformed
 
-    static ArrayList<File> arrayFiles = new ArrayList<>();
+    private void sendFileDetials() {
+        ArrayList<Boolean> fileStatusList = new ArrayList<>();
 
-    public ArrayList<File> getArrayFiles() {
-        return arrayFiles;
+        int fileID;
+        Boolean fileStatus;
+
+        /*
+         * declares and new instance of the Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Database d = new Database();
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            for (int i = 0; i < addFilesList.size(); i++) {
+                fileID = 0;
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Details_ID, file_Directory FROM File_Details "
+                        + "WHERE file_Directory = ?;";
+
+                PreparedStatement getFolderID = conn.prepareStatement(sql);
+                getFolderID.setString(1, addFilesList.get(i).getAbsolutePath());
+
+                /*
+                 * extracts the data from the results of the SQL statment
+                 */
+                try (ResultSet rs = getFolderID.executeQuery()) {
+                    while (rs.next()) {
+                        fileID = rs.getInt("file_Details_ID");
+
+                    }
+                }
+                if (fileID == 0) {
+                    //add new file
+                    //get file ID
+                    //get folderID
+                    //add to Folder
+                } else {
+                    //get folderID
+                    //add to Folder
+                }
+            }
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+
+        }
     }
 
-    public void setArrayFiles(ArrayList<File> arrayFiles) {
-        this.arrayFiles = arrayFiles;
-    }
+    static ArrayList<File> addFilesList = new ArrayList<>();
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_ButtonActionPerformed
         // TODO add your handling code here:
+
         File[] files = null;
         int n = 5;
 
@@ -312,69 +651,162 @@ public class AddWindow extends javax.swing.JDialog {
                 files = chooser3.getSelectedFiles();
 
             }
-        } else {
-            //no files selected
         }
 
         if (files != null) {
+
+            filelist.clear();
+
             for (int i = 0; i < files.length; i++) {
-                getFiles(files[i]);
+
+                filelist.add(files[i]);
+
             }
-            for (int i = 0; i < arrayFiles.size(); i++) {
-                listModel.addElement(arrayFiles.get(i).getAbsolutePath() + "\n");
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            task = new Task();
+            task.setO1(this);
+
+            if (listModel.isEmpty()) {
+                task.setFileIndex(0);
+                temp = 0;
+
+            } else {
+                task.setFileIndex(task.getFileIndex());
+                temp = listModel.getSize();
             }
+            task.addPropertyChangeListener(this);
+            task.execute();
+
         }
 
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_add_ButtonActionPerformed
+    ArrayList<File> filelist = new ArrayList();
 
-    public static void getFiles(File file) {
+    private Task task;
 
-        if (file.exists()) {
-
-            if (file.isDirectory()) {
-                if (file.canRead()) {
-
-                    File[] listOfFiles = file.listFiles();
-                    if (listOfFiles != null) {
-                        for (int i = 0; i < listOfFiles.length; i++) {
-                            getFiles(listOfFiles[i]);
-                        }
-                    }
-                }
-            } else if (file.isFile()) {
-
-                if (file.canRead()) {
-
-                    arrayFiles.add(file);
-
-                }
-
-            }
-
-        }
-
-    }
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_cancel_ButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void clear_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_ButtonActionPerformed
         // TODO add your handling code here:
-        arrayFiles.clear();
+        addFilesList.clear();
+        filelist.clear();
         listModel.clear();
+        progressBar.setValue(0);
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_clear_ButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void remove_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_ButtonActionPerformed
         // TODO add your handling code here:
-        int i = jList1.getSelectedIndex();
-        listModel.remove(i);
-        
-        
-    }//GEN-LAST:event_jButton5ActionPerformed
+
+        DefaultListModel dlm = (DefaultListModel) taskOutput.getModel();
+
+        if (this.taskOutput.getSelectedIndices().length > 0) {
+
+            int[] selectedIndices = taskOutput.getSelectedIndices();
+
+            for (int i = selectedIndices.length - 1; i >= 0; i--) {
+                listModel.removeElementAt(selectedIndices[i]);
+                addFilesList.remove(selectedIndices[i]);
+            }
+
+        }
+
+
+    }//GEN-LAST:event_remove_ButtonActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void create_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_ButtonActionPerformed
+        // TODO add your handling code here:
+
+        // TODO add your handling code here:
+        Folder_Create af = new Folder_Create((Frame) this.getParent(), true, Account_ID);
+        af.setVisible(true);
+
+        if (af.isCreatedFolder() == true) {
+            folderIDList.clear();
+            folderNameList.clear();
+            getAccountFolders();
+            jComboBox2.setSelectedIndex(jComboBox2.getItemCount() - 1);
+        } else {
+        }
+    }//GEN-LAST:event_create_ButtonActionPerformed
+
+    ArrayList<Integer> folderIDList = new ArrayList<>();
+    ArrayList<String> folderNameList = new ArrayList<>();
+
+    private void getAccountFolders() {
+
+        int folderID;
+        String folderName;
+
+        /*
+         * declares and new instance of the Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Database d = new Database();
+
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            stmt = conn.createStatement();
+            String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
+                    + "WHERE account_Details_ID = " + Account_ID + ";";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                folderID = rs.getInt("folder_Details_ID");
+                folderName = rs.getString("folder_Name");
+                folderIDList.add(folderID);
+                folderNameList.add(folderName);
+            }
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+
+        updateFolderListGUI();
+    }
+
+    private void updateFolderListGUI() {
+
+        String tempFolder = Current_Folder;
+        jComboBox2.removeAllItems();
+
+        for (int i = 0; i < folderIDList.size(); i++) {
+            if (!folderIDList.isEmpty()) {
+
+                jComboBox2.addItem(folderNameList.get(i));
+
+            }
+        }
+        jComboBox2.setSelectedItem(tempFolder);
+    }
 
     /**
      * @param args the command line arguments
@@ -406,7 +838,7 @@ public class AddWindow extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AddWindow dialog = new AddWindow(new javax.swing.JFrame(), true);
+                AddWindow dialog = new AddWindow(new javax.swing.JFrame(), true, 1, "Admin's Default Folder");
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -419,20 +851,23 @@ public class AddWindow extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton accept_Button;
+    private javax.swing.JButton add_Button;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton cancel_Button;
+    private javax.swing.JButton clear_Button;
+    private javax.swing.JButton create_Button;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JButton remove_Button;
+    private javax.swing.JList taskOutput;
     // End of variables declaration//GEN-END:variables
 }
