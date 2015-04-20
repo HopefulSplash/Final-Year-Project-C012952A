@@ -210,9 +210,9 @@ public class Support_About extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(button_PanelLayout.createSequentialGroup()
-                .addGap(319, 319, 319)
+                .addGap(328, 328, 328)
                 .addComponent(close_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(335, Short.MAX_VALUE))
+                .addContainerGap(326, Short.MAX_VALUE))
         );
         button_PanelLayout.setVerticalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

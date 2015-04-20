@@ -47,6 +47,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -112,8 +113,6 @@ public class Suite_Window extends javax.swing.JFrame {
         filelists.clear();
         getAccountDetails();
 
-        File f1 = new File("C:/Users/HopefulSplash/Desktop/Final_Year_Project_C012952A/Test");
-
     }
 
     /**
@@ -148,8 +147,7 @@ public class Suite_Window extends javax.swing.JFrame {
         status_Session_Label = new javax.swing.JLabel();
         status_Device_Label = new javax.swing.JLabel();
         proximity_System_Panel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
         proximity_Menu = new javax.swing.JMenuBar();
         menu_Home = new javax.swing.JMenu();
         home_Login = new javax.swing.JMenuItem();
@@ -367,8 +365,32 @@ public class Suite_Window extends javax.swing.JFrame {
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
                 if (me.getClickCount() == 2) {
-                    // your valueChanged overridden method
-                    openFile(filelists.get(table_View.getSelectedRow()));
+                    String fname;
+                    int pos;
+                    //date
+
+                    for (int i = 0; i < filelists.size(); i++) {
+
+                        fname = filelists.get(i).getName();
+                        pos = fname.lastIndexOf('.');
+
+                        if (pos > 0) {
+                            fname = fname.substring(0, pos);
+
+                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {
+                                openFile(filelists.get(i));
+
+                            }
+
+                        } else {
+
+                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {
+                                openFile(filelists.get(i));
+
+                            }
+                        }
+
+                    }
                 }
             }
         });
@@ -571,28 +593,23 @@ public class Suite_Window extends javax.swing.JFrame {
         proximity_System_Panel.setBackground(new java.awt.Color(255, 255, 255));
         proximity_System_Panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(204, 51, 0));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabel1.setText("jLabel1");
 
         javax.swing.GroupLayout proximity_System_PanelLayout = new javax.swing.GroupLayout(proximity_System_Panel);
         proximity_System_Panel.setLayout(proximity_System_PanelLayout);
         proximity_System_PanelLayout.setHorizontalGroup(
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1)
-                .addGap(6, 6, 6))
+                .addGap(49, 49, 49)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         proximity_System_PanelLayout.setVerticalGroup(
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1)
-                .addGap(6, 6, 6))
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         proximity_Menu.setBorder(null);
@@ -880,14 +897,17 @@ public class Suite_Window extends javax.swing.JFrame {
     private void table_Add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Add_ButtonActionPerformed
         // TODO add your handling code here:
 
-        AddWindow aw = new AddWindow(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
+        Files_Add aw = new Files_Add(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         aw.setVisible(true);
 
-        for (int i = 0; i < addFiles.size(); i++) {
-            //validation
-            //add to program
-
+        if (aw.isDidAdd() == true) {
+            folderIDList.clear();
+            folderNameList.clear();
+            clearTableFiles();
+            getAccountFolders();
+            table_Folder_ComboBox.setSelectedItem(aw.getCurrent_Folder());
         }
+
 
     }//GEN-LAST:event_table_Add_ButtonActionPerformed
 
@@ -1096,10 +1116,65 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_home_LoginActionPerformed
 
+    ArrayList<File> filesEncrypt = new ArrayList();
+    ArrayList<File> filesAlreadyEncrypt = new ArrayList();
+
     private void table_Encrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Encrypt_ButtonActionPerformed
         // TODO add your handling code here:
-        EncryptWindow ew = new EncryptWindow(this, true);
-        ew.setVisible(true);
+
+        filesEncrypt.clear();
+
+        for (int i = 0; i < table_View.getRowCount(); i++) {
+
+            if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+                filesEncrypt.add(filelists.get(i));
+
+            } else if (table_View.getValueAt(i, 5).equals("Encrypted")) {
+                filesAlreadyEncrypt.add(filelists.get(i));
+            }
+        }
+
+        if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
+
+            Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
+            ew.setVisible(true);
+
+        } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
+            Object[] options = {"Encrypt All",
+                "Encrypt UnEncrypted Files", "Canel"};
+            int n = JOptionPane.showOptionDialog(this,
+                    "One or More Files were Already Encrypted. Would you like To Conitue Without Encryption Them.",
+                    "Decrypt Files",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (n == 0) {
+
+                //check this works
+                filesEncrypt.addAll(filesAlreadyEncrypt);
+
+                Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
+                ew.setVisible(true);
+
+            } else if (n == 1) {
+
+                Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
+                ew.setVisible(true);
+
+            }
+        } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "No Files Selected. Please Try Again.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+        }
+
+
     }//GEN-LAST:event_table_Encrypt_ButtonActionPerformed
 
     private void table_Decrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Decrypt_ButtonActionPerformed
@@ -1134,6 +1209,8 @@ public class Suite_Window extends javax.swing.JFrame {
         clearTableFiles();
 
         getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
+        jLabel1.setText("" + table_View.getRowCount());
+
 
     }//GEN-LAST:event_table_Folder_ComboBoxActionPerformed
 
@@ -1164,9 +1241,9 @@ public class Suite_Window extends javax.swing.JFrame {
         // TODO add your handling code here:
         Delete_Account md = new Delete_Account(this, true, accountID);
         md.setVisible(true);
-        
+
         //logout account
-        
+
     }//GEN-LAST:event_account_DeleteActionPerformed
 
     private void account_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CurrentActionPerformed
@@ -1342,8 +1419,7 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JMenuItem home_Login;
     private javax.swing.JMenuItem home_Logout;
     private javax.swing.JPopupMenu.Separator home_Separator;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu menu_Account;
     private javax.swing.JMenu menu_Device;
     private javax.swing.JMenu menu_Folder;
@@ -1516,6 +1592,9 @@ public class Suite_Window extends javax.swing.JFrame {
                     file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dmg.png"));
                     break;
                 case ".docx":
+                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_doc.png"));
+                    break;
+                case ".doc":
                     file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_doc.png"));
                     break;
                 case ".dss":
@@ -1916,7 +1995,32 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 } else if (button.getText().equalsIgnoreCase("Open")) {
 
-                    openFile(filelists.get(table_View.getSelectedRow()));
+                    String fname;
+                    int pos;
+                    //date
+
+                    for (int i = 0; i < filelists.size(); i++) {
+                     
+                        fname = filelists.get(i).getName();
+                        pos = fname.lastIndexOf('.');
+
+                        if (pos > 0) {
+                            fname = fname.substring(0, pos);
+
+                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {
+                                openFile(filelists.get(i));
+
+                            }
+
+                        } else {
+
+                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {
+                                openFile(filelists.get(i));
+
+                            }
+                        }
+
+                    }
 
                 }
             }

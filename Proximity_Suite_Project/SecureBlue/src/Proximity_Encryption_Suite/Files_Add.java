@@ -1,6 +1,6 @@
 package Proximity_Encryption_Suite;
 
-import static Proximity_Encryption_Suite.AddWindow.addFilesList;
+import static Proximity_Encryption_Suite.Files_Add.addFilesList;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -41,13 +41,12 @@ import javax.swing.SwingWorker;
  *
  * @author TheThoetha
  */
-public class AddWindow extends javax.swing.JDialog implements ActionListener,
+public class Files_Add extends javax.swing.JDialog implements ActionListener,
         PropertyChangeListener {
 
     private DefaultListModel listModel;
     private String Current_Folder;
     private final int Account_ID;
-    boolean canClose;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -60,6 +59,23 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
         int fileIndex;
         boolean addedFile = false;
         Object o1;
+        String status;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public ArrayList<String> getDupList() {
+            return dupList;
+        }
+
+        public void setDupList(ArrayList<String> dupList) {
+            this.dupList = dupList;
+        }
 
         public void setO1(Object o1) {
             this.o1 = o1;
@@ -78,10 +94,8 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
-            canClose = false;
             progress = 0;
             progressBar.setValue(0);
-            progressBar.setMaximum(filelist.size());
 
             create_Button.setEnabled(false);
             add_Button.setEnabled(false);
@@ -95,16 +109,30 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             //Initialize progress property.
             setProgress(0);
 
-            while (progress < filelist.size()) {
-                progressBar.setIndeterminate(true);
+            if ("adding".equals(status)) {
+                while (progress < filelist.size()) {
+                    progressBar.setMaximum(filelist.size());
+                    progressBar.setIndeterminate(true);
 
-                //Sleep for up to one second.
-                for (int i = 0; i < filelist.size(); i++) {
-                    Search(filelist.get(i));
-                    progress += 1;
-                    setProgress(progress);
+                    //Sleep for up to one second.
+                    for (int i = 0; i < filelist.size(); i++) {
+                        Search(filelist.get(i));
+                        progress += 1;
+                        setProgress(progress);
+                    }
+
                 }
+            } else if ("accept".equals(status)) {
+                while (progress < addFilesList.size()) {
 
+                    progressBar.setMaximum(addFilesList.size());
+                    progressBar.setIndeterminate(true);
+                    for (int i = 0; i < addFilesList.size(); i++) {
+                        sendFileDetials(i);
+                        progress += 1;
+                        setProgress(progress);
+                    }
+                }
             }
             return null;
         }
@@ -114,7 +142,6 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public void done() {
-            canClose = true;
             setCursor(null); //turn off the wait cursor
             progressBar.setIndeterminate(false);
             progressBar.setValue(progressBar.getMaximum());
@@ -127,18 +154,36 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             jComboBox2.setEnabled(true);
             jComboBox1.setEnabled(true);
 
-            if (addFilesList.isEmpty()) {
-                /*
-                 * shows an error message due one or more fields being incorrect.
-                 */
-                Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                JOptionPane.showMessageDialog((Component) o1,
-                        "One Or More Fields Are Incorrect. Please Try Again.",
-                        "Account Creation Error!",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        crossIcon);
-            }
+            if ("adding".equals(status)) {
+                if (addFilesList.isEmpty()) {
+                    /*
+                     * shows an error message due one or more fields being incorrect.
+                     */
+                    Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                    JOptionPane.showMessageDialog((Component) o1,
+                            "One Or More Fields Are Incorrect. Please Try Again.",
+                            "Account Creation Error!",
+                            JOptionPane.INFORMATION_MESSAGE,
+                            crossIcon);
+                }
 
+            } else if ("accept".equals(task.getStatus())) {
+
+                if (!task.getDupList().isEmpty()) {
+                    Files_Add_Duplicates aw = new Files_Add_Duplicates((Frame) o1, true, task.getDupList());
+                    aw.setVisible(true);
+
+                } else {
+                    Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
+                    JOptionPane.showMessageDialog((Component) o1,
+                            "One Or More Fields Are Incorrect. Please Try Again.",
+                            "Account Creation Error!",
+                            JOptionPane.INFORMATION_MESSAGE,
+                            tickIcon);
+                }
+
+                clear_Button.doClick();
+            }
         }
 
         public void Search(File file) {
@@ -177,21 +222,281 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
                 }
             }
         }
+
+        private void sendFileDetials(int i) {
+
+            int fileID;
+            int newFileID = 0;
+
+            /*
+             * declares and new instance of the Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Database d = new Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                fileID = 0;
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Details_ID, file_Directory FROM File_Details "
+                        + "WHERE file_Directory = ?;";
+
+                PreparedStatement getFolderID = conn.prepareStatement(sql);
+                getFolderID.setString(1, addFilesList.get(i).getAbsolutePath());
+
+                /*
+                 * extracts the data from the results of the SQL statment
+                 */
+                try (ResultSet rs = getFolderID.executeQuery()) {
+                    while (rs.next()) {
+                        fileID = rs.getInt("file_Details_ID");
+
+                    }
+                }
+
+                if (fileID == 0) {
+
+                    addFile(addFilesList.get(i).getAbsolutePath());
+
+                    newFileID = getFileID(addFilesList.get(i).getAbsolutePath());
+
+                    if (getdupFile(newFileID, Current_Folder_ID) == true) {
+                        dupList.add(addFilesList.get(i).getAbsolutePath());
+                    } else {
+                        addFileFolder(newFileID);
+                    }
+                } else {
+
+                    if (getdupFile(fileID, Current_Folder_ID) == true) {
+                        dupList.add(addFilesList.get(i).getAbsolutePath());
+                    } else {
+                        addFileFolder(fileID);
+                    }
+
+                }
+                getFolderID.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+        }
+
+        private boolean getdupFile(int FileID, int FolderID) {
+            boolean dup = false;
+
+            /*
+             * declares and new instance of the Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Database d = new Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT folder_Details_ID FROM Folder_File_List WHERE folder_Details_ID = ? AND file_Details_ID = ?;";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, FolderID);
+                pStmt.setInt(2, FileID);
+
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    dup = true;
+                    pStmt.close();
+                    conn.close();
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+            return dup;
+        }
+
+        public void addFile(String filePath) {
+
+            /*
+             * declares and new instance of the Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Database d = new Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "INSERT INTO File_Details VALUES (NULL, ? , ? , 0 , DEFAULT);";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setString(1, filePath);
+                pStmt.setInt(2, 0);
+
+                pStmt.executeUpdate();
+
+                pStmt.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+        }
+        boolean alreadyInFolder = false;
+        ArrayList<String> dupList = new ArrayList<>();
+
+        public void addFileFolder(int FileID) {
+
+            /*
+             * declares and new instance of the Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Database d = new Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "INSERT INTO Folder_File_List VALUES (NULL, ?, ?);";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, Current_Folder_ID);
+                pStmt.setInt(2, FileID);
+
+                pStmt.executeUpdate();
+
+                pStmt.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+        }
+
+        public int getFileID(String file_Path) {
+
+            int fileID = 0;
+
+            /*
+             * declares and new instance of the Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Database d = new Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT file_Details_ID FROM File_Details WHERE folder_Name = ?;";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setString(1, file_Path);
+
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    fileID = rs.getInt("file_Details_ID");
+                }
+
+                pStmt.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+            return fileID;
+        }
+
     }
 
     int temp = 0;
 
     public void propertyChange(PropertyChangeEvent evt) {
 
-        if ("progress" == evt.getPropertyName()) {
-            if (!addFilesList.isEmpty()) {
-                for (int i = task.getFileIndex(); i >= temp; i--) {
+        if ("adding".equals(task.getStatus())) {
+            if ("progress".equals(evt.getPropertyName())) {
+                if (!addFilesList.isEmpty()) {
+                    for (int i = task.getFileIndex(); i >= temp; i--) {
 
-                    listModel.addElement(addFilesList.get(i).getAbsolutePath() + "\n");
+                        listModel.addElement(addFilesList.get(i).getAbsolutePath() + "\n");
 
+                    }
                 }
+                temp = task.getFileIndex();
             }
-            temp = task.getFileIndex();
         }
     }
 
@@ -205,7 +510,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
      * @param Account_ID
      * @param modal
      */
-    public AddWindow(java.awt.Frame parent, boolean modal, int Account_ID, String Current_Folder) {
+    public Files_Add(java.awt.Frame parent, boolean modal, int Account_ID, String Current_Folder) {
         super(parent, modal);
 
         /**
@@ -287,6 +592,11 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
         setTitle("Add Files");
         setModal(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("File Addition Details"));
@@ -321,7 +631,9 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             }
         });
 
+        taskOutput.setForeground(new java.awt.Color(51, 51, 51));
         taskOutput.setModel(listModel);
+        taskOutput.setFocusable(false);
         jScrollPane2.setViewportView(taskOutput);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -332,12 +644,12 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 670, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 759, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(add_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -369,7 +681,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
                         .addComponent(remove_Button)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clear_Button))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
@@ -491,73 +803,40 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
     }// </editor-fold>//GEN-END:initComponents
 
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
-        // TODO add your handling code here:
-        sendFileDetials();
+               // TODO add your handling code here:
+ if (!listModel.isEmpty()) {
+            Object[] options = {"Confirm", "Cancel"};
+            int n = JOptionPane.showOptionDialog(this,
+                    "Are You Sure You Want to Add The Files?",
+                    "Confirm Folder Creation",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, //do not use a custom Icon
+                    options, //the titles of buttons
+                    options[0]); //default button title
+
+            // if the user has clicked confirm.
+            if (n == 0) {
+                task = new Task();
+                task.setStatus("accept");
+                task.addPropertyChangeListener(this);
+                task.execute();
+
+                didAdd = true;
+            }
+        } else {
+            this.dispose();
+        }
+
+
     }//GEN-LAST:event_accept_ButtonActionPerformed
 
-    private void sendFileDetials() {
-        ArrayList<Boolean> fileStatusList = new ArrayList<>();
+    public boolean isDidAdd() {
+        return didAdd;
+    }
 
-        int fileID;
-        Boolean fileStatus;
-
-        /*
-         * declares and new instance of the Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Database d = new Database();
-        d.startDatabase();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            for (int i = 0; i < addFilesList.size(); i++) {
-                fileID = 0;
-                stmt = conn.createStatement();
-                String sql = "SELECT file_Details_ID, file_Directory FROM File_Details "
-                        + "WHERE file_Directory = ?;";
-
-                PreparedStatement getFolderID = conn.prepareStatement(sql);
-                getFolderID.setString(1, addFilesList.get(i).getAbsolutePath());
-
-                /*
-                 * extracts the data from the results of the SQL statment
-                 */
-                try (ResultSet rs = getFolderID.executeQuery()) {
-                    while (rs.next()) {
-                        fileID = rs.getInt("file_Details_ID");
-
-                    }
-                }
-                if (fileID == 0) {
-                    //add new file
-                    //get file ID
-                    //get folderID
-                    //add to Folder
-                } else {
-                    //get folderID
-                    //add to Folder
-                }
-            }
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-
-        }
+    public void setDidAdd(boolean didAdd) {
+        this.didAdd = didAdd;
     }
 
     static ArrayList<File> addFilesList = new ArrayList<>();
@@ -582,12 +861,12 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new File(System.getProperty("user.home") + File.separator + System.getProperty("user.name") + File.separator + "Documents"));
 
-            javax.swing.Action details = chooser.getActionMap().get("viewTypeDetails");
+            javax.swing.Action details = chooser.getActionMap().get("viewTypeList");
             details.actionPerformed(null);
             chooser.setMultiSelectionEnabled(true);
             chooser.setDragEnabled(true);
             chooser.setDialogTitle("Select A File");
-            chooser.setApproveButtonText("Add");
+            chooser.setApproveButtonText("Add File");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
             int returnVal = chooser.showOpenDialog(this);
@@ -599,7 +878,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
 
         } else if (n == 1) {
             JFileChooser chooser1 = new JFileChooser();
-            javax.swing.Action details = chooser1.getActionMap().get("viewTypeDetails");
+            javax.swing.Action details = chooser1.getActionMap().get("viewTypeList");
             details.actionPerformed(null);
             chooser1.setCurrentDirectory(new File(System.getProperty("user.home") + File.separator + System.getProperty("user.name") + File.separator + "Documents"));
             chooser1.setMultiSelectionEnabled(true);
@@ -617,7 +896,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             }
         } else if (n == 2) {
             JFileChooser chooser2 = new JFileChooser();
-            javax.swing.Action details = chooser2.getActionMap().get("viewTypeDetails");
+            javax.swing.Action details = chooser2.getActionMap().get("viewTypeList");
             details.actionPerformed(null);
             chooser2.setMultiSelectionEnabled(true);
 
@@ -635,7 +914,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
             }
         } else if (n == 3) {
             JFileChooser chooser3 = new JFileChooser();
-            javax.swing.Action details = chooser3.getActionMap().get("viewTypeDetails");
+            javax.swing.Action details = chooser3.getActionMap().get("viewTypeList");
             details.actionPerformed(null);
             chooser3.setMultiSelectionEnabled(true);
 
@@ -666,6 +945,7 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
 
             task = new Task();
             task.setO1(this);
+            task.setStatus("adding");
 
             if (listModel.isEmpty()) {
                 task.setFileIndex(0);
@@ -718,9 +998,56 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
 
 
     }//GEN-LAST:event_remove_ButtonActionPerformed
+    public int getSelectedFolder(String folder_Name) {
+
+        int folderID = 0;
+
+        /*
+         * declares and new instance of the Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Database d = new Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "SELECT folder_Details_ID FROM Folder_Details WHERE account_Details_ID = " + Account_ID + " AND folder_Name = ?;";
+
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, folder_Name);
+
+            ResultSet rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                folderID = rs.getInt("folder_Details_ID");
+            }
+            pStmt.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        return folderID;
+    }
+    int Current_Folder_ID;
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
 
+        Current_Folder_ID = getSelectedFolder((String) jComboBox2.getSelectedItem());
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void create_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_ButtonActionPerformed
@@ -739,6 +1066,17 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
         }
     }//GEN-LAST:event_create_ButtonActionPerformed
 
+    public String getCurrent_Folder() {
+        return Current_Folder;
+    }
+    boolean didAdd = false;
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        if (didAdd == true) {
+            Current_Folder = (String) jComboBox2.getSelectedItem();
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     ArrayList<Integer> folderIDList = new ArrayList<>();
     ArrayList<String> folderNameList = new ArrayList<>();
 
@@ -752,8 +1090,6 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
          * the database exists and if is does not then creates it for the system.
          */
         Database d = new Database();
-
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -779,6 +1115,8 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
                 folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
+            stmt.close();
+            conn.close();
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
@@ -808,47 +1146,6 @@ public class AddWindow extends javax.swing.JDialog implements ActionListener,
         jComboBox2.setSelectedItem(tempFolder);
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AddWindow dialog = new AddWindow(new javax.swing.JFrame(), true, 1, "Admin's Default Folder");
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accept_Button;
