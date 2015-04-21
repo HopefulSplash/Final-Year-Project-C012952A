@@ -171,6 +171,7 @@
         <Component class="javax.swing.JButton" name="clear_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -180,6 +181,7 @@
         <Component class="javax.swing.JButton" name="remove_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
@@ -242,6 +244,7 @@
         <Component class="javax.swing.JButton" name="accept_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Accept"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[90, 23]"/>

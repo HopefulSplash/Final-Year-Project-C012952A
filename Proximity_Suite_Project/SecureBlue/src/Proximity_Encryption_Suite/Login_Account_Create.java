@@ -45,6 +45,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
      */
     public Login_Account_Create(String Parent) {
 
+     this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -75,7 +76,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
@@ -448,10 +449,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
             Logger.getLogger(Login_Account_Create.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -664,10 +665,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
         /*
          * declares the variables for use in connecting and checking the database.
@@ -733,10 +734,10 @@ public class Login_Account_Create extends javax.swing.JFrame {
         boolean isTaken = false;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*

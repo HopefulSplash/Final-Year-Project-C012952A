@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Proximity_Encryption_Suite;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,14 +29,20 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 /**
  *
- * @author HopefulSplash
+ * @author TheThoetha
  */
-public class Delete_Folder extends java.awt.Dialog implements ActionListener,
+public class Files_Remove extends javax.swing.JDialog implements ActionListener,
         PropertyChangeListener {
 
     private DefaultListModel listModel;
+    private final int Account_ID;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -75,25 +77,29 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
+            int counter =0;
             progress = 0;
             progressBar.setValue(0);
-
+            progressBar.setMaximum(filelist.size());
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
             method.setEnabled(false);
-
-            //Initialize progress property.
-            setProgress(0);
-
+            jComboBox3.setEnabled(false);
+           
             if ("accept".equals(status)) {
-                progressBar.setMaximum(1);
-                progressBar.setIndeterminate(true);
+                while (counter != filelist.size()) {
 
-                //Sleep for up to one second.
-                getFolderFiles((String) method.getSelectedItem());
-                progress += 1;
-                setProgress(progress);
+                    progressBar.setIndeterminate(true);
 
+                    //Sleep for up to one second.
+                    for (int i = 0; i < filelist.size(); i++) {
+                        removeFiles(filelist.get(i));
+                        counter++;
+                        System.out.println(filelist.size());
+                        System.out.println(i);
+                    }
+
+                }
             }
             return null;
         }
@@ -110,141 +116,72 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
             accept_Button.setEnabled(true);
             cancel_Button.setEnabled(true);
             method.setEnabled(true);
+            jComboBox3.setEnabled(true);
 
-            Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
-            JOptionPane.showMessageDialog((Component) o1,
-                    "One Or More Fields Are Incorrect. Please Try Again.",
-                    "Account Creation Error!",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    tickIcon);
+            if ("accept".equals(task.getStatus())) {
 
-            cancel_Button.doClick();
+                Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
+                JOptionPane.showMessageDialog((Component) o1,
+                        "One Or More Fields Are Incorrect. Please Try Again.",
+                        "Account Creation Error!",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        tickIcon);
 
+                didAdd = true;
+                cancel_Button.doClick();
+
+            }
         }
 
-        private void getFolderFiles(String folderDelete) {
-
-            ArrayList<Integer> fileIDList = new ArrayList<>();
-
-            int folderID = 0;
+        private void removeFiles(File file) {
+            boolean didDecrypt = false;
             int fileID = 0;
 
+            if (method.getSelectedIndex() == 1) {
+                if (jComboBox3.getSelectedIndex() == 0) {
+                    removeFile(file, "Folder");
 
-            /*
-             * declares and new instance of the Suite_Database class and then checks if the
-             * the database exists and if is does not then creates it for the system.
-             */
-            Suite_Database d = new Suite_Database();
-            d.startDatabase();
+                } else if (jComboBox3.getSelectedIndex() == 1) {
 
-            /*
-             * declares the variables for use in connecting and checking the database.
-             */
-            Connection conn = null;
-            Statement stmt = null;
-            try {
+                    if (getFileEncryptionStatus(file.getAbsolutePath()).equals("AES Encryption")) {
+                        didDecrypt = decryptAES(file);
+                        removeFile(file, "Folder");
 
-                // Register JDBC driver
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+                    } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("DES Encryption")) {
+                        didDecrypt = decryptDES(file);
+                        removeFile(file, "Folder");
 
-                String sql = "SELECT folder_Details_ID FROM Folder_Details WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
-
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setString(1, folderDelete);
-
-                ResultSet rs = pStmt.executeQuery();
-
-                while (rs.next()) {
-                    folderID = rs.getInt("folder_Details_ID");
-
-                }
-                pStmt.close();
-
-                stmt = conn.createStatement();
-                sql = "SELECT file_Details_ID FROM Folder_File_List "
-                        + "WHERE folder_Details_ID = " + folderID + ";";
-
-                rs = stmt.executeQuery(sql);
-
-                while (rs.next()) {
-                    fileID = rs.getInt("file_Details_ID");
-                    fileIDList.add(fileID);
-
-                }
-
-                stmt.close();
-                conn.close();
-
-                for (int i = 0; i < fileIDList.size(); i++) {
-
-                    if (getFileEncryptionStatus(fileIDList.get(i)).equals("AES Encryption")) {
-                        decryptAES(new File(getFileID(fileIDList.get(i))));
-                        removeFile(fileIDList.get(i), folderID);
-
-                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("DES Encryption")) {
-                        decryptDES(new File(getFileID(fileIDList.get(i))));
-                        removeFile(fileIDList.get(i), folderID);
-
-                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("Triple DES Encryption")) {
-                        decryptTripleDES(new File(getFileID(fileIDList.get(i))));
-                        removeFile(fileIDList.get(i), folderID);
-                    } else {
-                        removeFile(fileIDList.get(i), folderID);
+                    } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("Triple DES Encryption")) {
+                        didDecrypt = decryptTripleDES(file);
+                        removeFile(file, "Folder");
                     }
 
                 }
+            } else if (method.getSelectedIndex() == 2) {
+                if (jComboBox3.getSelectedIndex() == 0) {
+                    removeFile(file, "Account");
 
-                deleteFolder(folderID);
+                } else if (jComboBox3.getSelectedIndex() == 1) {
 
-            } catch (SQLException | ClassNotFoundException se) {
-            } finally {
-                if (conn != null) {
-                    try {
-                        conn.close();
-                    } catch (SQLException ex) {
-                    }
-                }
-            }
-        }
+                    if (getFileEncryptionStatus(file.getAbsolutePath()).equals("AES Encryption")) {
+                        didDecrypt = decryptAES(file);
+                        removeFile(file, "Account");
 
-        public void deleteFolder(int folderid) {
-            /*
-             * declares and new instance of the Suite_Database class and then checks if the
-             * the database exists and if is does not then creates it for the system.
-             */
-            Suite_Database d = new Suite_Database();
+                    } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("DES Encryption")) {
+                        didDecrypt = decryptDES(file);
+                        removeFile(file, "Account");
 
-            /*
-             * declares the variables for use in connecting and checking the database.
-             */
-            Connection conn = null;
-            Statement stmt = null;
-            try {
-
-                // Register JDBC driver
-                Class.forName("com.mysql.jdbc.Driver");
-                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-                String sql = "DELETE FROM folder_Details WHERE folder_Details_ID = ?;";
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setInt(1, folderid);
-                pStmt.executeUpdate();
-                System.out.println(pStmt);
-
-            } catch (SQLException | ClassNotFoundException se) {
-            } finally {
-                if (conn != null) {
-                    try {
-                        conn.close();
-                    } catch (SQLException ex) {
+                    } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("Triple DES Encryption")) {
+                        didDecrypt = decryptTripleDES(file);
+                        removeFile(file, "Account");
                     }
                 }
 
             }
+
         }
 
-        public String getFileEncryptionStatus(int file_Path) {
+        public String getFileEncryptionStatus(String file_Path) {
 
             String fileID = null;
 
@@ -265,10 +202,10 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-                String sql = "SELECT file_EType FROM File_Details WHERE file_Details_ID = ?;";
+                String sql = "SELECT file_EType FROM File_Details WHERE file_Directory = ?;";
 
                 PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setInt(1, file_Path);
+                pStmt.setString(1, file_Path);
                 ResultSet rs = pStmt.executeQuery();
 
                 while (rs.next()) {
@@ -341,8 +278,6 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
             boolean decrypted = false;
 
             if (file.canRead() && file.canWrite() && file.canExecute()) {
-
-                System.out.println(file);
 
                 try {
 
@@ -471,7 +406,7 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
 
         }
 
-        public void removeFile(int fileid, int folderid) {
+        public void removeFile(File File, String tpye) {
 
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -490,21 +425,38 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-                String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ? AND folder_Details_ID = ?;";
-                PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setInt(2, folderid);
-                pStmt.setInt(1, fileid);
-                pStmt.executeUpdate();
-                System.out.println(pStmt);
+                switch (tpye) {
+                    case "Account": {
+                        String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ?;";
+                        PreparedStatement pStmt = conn.prepareStatement(sql);
+                        pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+                        pStmt.executeUpdate();
+                        sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
+                        pStmt = conn.prepareStatement(sql);
+                        pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+                        pStmt.executeUpdate();
+                        pStmt.close();
+                        conn.close();
+                        break;
+                    }
+                    case "Folder": {
+                        String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ? AND folder_Details_ID = ?;";
+                        PreparedStatement pStmt = conn.prepareStatement(sql);
+                        pStmt.setInt(2, getSelectedFolder(Current_Folder));
+                        pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+                        pStmt.executeUpdate();
 
-                if (checkFileInOtherFolders(fileid) == false) {
-                    sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
-                    pStmt = conn.prepareStatement(sql);
-                    pStmt.setInt(1, fileid);
-                    pStmt.executeUpdate();
-                    System.out.println(pStmt);
-                    pStmt.close();
-                    conn.close();
+                        if (checkFileInOtherFolders(getFileID(File.getAbsolutePath())) == false) {
+                            sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
+                            pStmt = conn.prepareStatement(sql);
+                            pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+                            pStmt.executeUpdate();
+
+                        }
+                        pStmt.close();
+                        conn.close();
+                        break;
+                    }
                 }
 
             } catch (SQLException | ClassNotFoundException se) {
@@ -574,63 +526,68 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
             return is;
         }
 
-    }
+        public int getFileID(String file_Path) {
 
-    public String getFileID(int file_Path) {
+            int fileID = 0;
 
-        String fileID = null;
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
 
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
 
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+                String sql = "SELECT file_Details_ID FROM File_Details WHERE file_Directory = ?;";
 
-            String sql = "SELECT file_Directory FROM File_Details WHERE file_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setString(1, file_Path);
+                ResultSet rs = pStmt.executeQuery();
 
-            PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setInt(1, file_Path);
-            ResultSet rs = pStmt.executeQuery();
+                while (rs.next()) {
+                    fileID = rs.getInt("file_Details_ID");
+                }
 
-            while (rs.next()) {
-                fileID = rs.getString("file_Directory");
-            }
+                pStmt.close();
+                conn.close();
 
-            pStmt.close();
-            conn.close();
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
                 }
             }
+            return fileID;
         }
-        return fileID;
+
     }
 
-    public int accountID = 0;
-
     /**
-     * Creates new form DeleteFolder
+     *
+     *
+     * Creates new form AddWindow
+     *
+     * @param parent
+     * @param Current_Folder
+     * @param Account_ID
+     * @param modal
      */
-    public Delete_Folder(java.awt.Frame parent, boolean modal, int accountID) {
+    public Files_Remove(java.awt.Frame parent, boolean modal, int Account_ID, ArrayList<File> Files_Encryption, String Folder) {
         super(parent, modal);
 
-     this.setBackground(Color.WHITE);
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -656,6 +613,8 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
             Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        listModel = new DefaultListModel();
+        Current_Folder = Folder;
         initComponents();
 
         /**
@@ -666,9 +625,31 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-        
-        this.accountID = accountID;
-        getAccountFolders();
+
+        this.Account_ID = Account_ID;
+        accept_Button.requestFocus();
+
+        addFilesList(Files_Encryption);
+
+    }
+
+    public boolean isDidAdd() {
+        return didAdd;
+    }
+
+    public void setDidAdd(boolean didAdd) {
+        this.didAdd = didAdd;
+    }
+
+    ArrayList<File> filelist = new ArrayList();
+
+    public void addFilesList(ArrayList<File> Files_Encryption) {
+
+        for (int i = 0; i < Files_Encryption.size(); i++) {
+            listModel.addElement(Files_Encryption.get(i).getAbsolutePath() + "\n");
+            filelist.add(Files_Encryption.get(i));
+        }
+
     }
 
     /**
@@ -676,168 +657,250 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
-        cancel_Button = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        taskOutput = new javax.swing.JList();
+        progressBar = new javax.swing.JProgressBar();
+        jPanel1 = new javax.swing.JPanel();
         accept_Button = new javax.swing.JButton();
+        cancel_Button = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         method = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox();
 
-        setTitle("Proximity Suite | Delete Folder");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Add Files");
+        setModal(true);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                closeDialog(evt);
+                formWindowClosing(evt);
             }
         });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Encryption FIles"));
 
-        cancel_Button.setText("Cancel");
-        cancel_Button.setFocusPainted(false);
-        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancel_ButtonActionPerformed(evt);
-            }
-        });
+        taskOutput.setModel(listModel);
+        taskOutput.setFocusable(false);
+        taskOutput.setRequestFocusEnabled(false);
+        taskOutput.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        taskOutput.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        jScrollPane2.setViewportView(taskOutput);
 
-        accept_Button.setText("Accept");
-        accept_Button.setFocusPainted(false);
-        accept_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accept_ButtonActionPerformed(evt);
-            }
-        });
+        progressBar.setMaximum(1000000000);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addGap(6, 6, 6))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancel_Button)
-                    .addComponent(accept_Button))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+        );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        accept_Button.setText("Accept");
+        accept_Button.setEnabled(false);
+        accept_Button.setFocusPainted(false);
+        accept_Button.setMaximumSize(new java.awt.Dimension(90, 23));
+        accept_Button.setMinimumSize(new java.awt.Dimension(90, 23));
+        accept_Button.setPreferredSize(new java.awt.Dimension(90, 23));
+        accept_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accept_ButtonActionPerformed(evt);
+            }
+        });
+
+        cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
+        cancel_Button.setMaximumSize(new java.awt.Dimension(90, 23));
+        cancel_Button.setMinimumSize(new java.awt.Dimension(90, 23));
+        cancel_Button.setPreferredSize(new java.awt.Dimension(90, 23));
+        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancel_ButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
 
-        jLabel1.setText("Select Folder:");
+        method.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please Select An Deletetion Method", "Remove From Folder", "Remove From Account" }));
+        method.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                methodActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Select Encryption Method:");
+
+        jLabel4.setText("Encrypt / Decrypt:");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Remove Files", "Remove And Decrypt  Files" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel3)
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(6, 6, 6)
-                        .addComponent(method, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6))
+                .addComponent(method, 0, 657, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox3, 0, 651, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(method, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Closes the dialog
-     */
-    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
-        dispose();
-    }//GEN-LAST:event_closeDialog
-
-    Task task;
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
 
-        Object[] options = {"Yes",
-            "Cancel"};
-        int n = JOptionPane.showOptionDialog(this,
-                "Are You Sure You Want To Delete This Folder ",
-                "Create Folder",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[1]);
+        if (method.getSelectedIndex() != 0) {
 
-        if (n == 0) {
+            Object[] options = {"Confirm", "Cancel"};
+            int n = JOptionPane.showOptionDialog(this,
+                    "Are You Sure You Want to Encrypt The Files?",
+                    "Confirm Folder Creation",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, //do not use a custom Icon
+                    options, //the titles of buttons
+                    options[0]); //default button title
 
-            if (method.getSelectedIndex() != 0) {
+            // if the user has clicked confirm.
+            if (n == 0) {
                 task = new Task();
                 task.setStatus("accept");
                 task.addPropertyChangeListener(this);
                 task.execute();
-            } else {
-                Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                JOptionPane.showMessageDialog(this,
-                        "you cannot delete your default folder. Please Try Again.",
-                        "Account Creation Error!",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        crossIcon);
-            }
 
+            }
+        } else {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog(this,
+                    "No Encryption Method Selected. Please Try Again.",
+                    "Folder Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
         }
 
-
     }//GEN-LAST:event_accept_ButtonActionPerformed
+    boolean didAdd = false;
+    private Task task;
 
-    private void getAccountFolders() {
+    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_cancel_ButtonActionPerformed
 
-        int folderID;
-        String folderName;
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+
+    }//GEN-LAST:event_formWindowClosing
+
+    private void methodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_methodActionPerformed
+        // TODO add your handling code here:
+
+        //checks if the user has selected a question.
+        if (method.getSelectedIndex() != 0) {
+            accept_Button.setEnabled(true);
+        } //resets the fields if the user have change the combo box to index 0.
+        else {
+            accept_Button.setEnabled(false);
+        }
+    }//GEN-LAST:event_methodActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    public int getSelectedFolder(String folder_Name) {
+
+        int folderID = 0;
 
         /*
          * declares and new instance of the Suite_Database class and then checks if the
@@ -845,32 +908,29 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
          */
         Suite_Database d = new Suite_Database();
 
-        d.startDatabase();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
         Statement stmt = null;
-
         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
-            String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
-                    + "WHERE account_Details_ID = " + accountID + ";";
+            String sql = "SELECT folder_Details_ID FROM Folder_Details WHERE account_Details_ID = " + Account_ID + " AND folder_Name = ?;";
 
-            ResultSet rs = stmt.executeQuery(sql);
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, folder_Name);
+
+            ResultSet rs = pStmt.executeQuery();
 
             while (rs.next()) {
                 folderID = rs.getInt("folder_Details_ID");
-                folderName = rs.getString("folder_Name");
-                folderIDList.add(folderID);
-                folderNameList.add(folderName);
             }
+            pStmt.close();
+            conn.close();
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
@@ -881,36 +941,23 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
                 }
             }
         }
-        updateFolderListGUI();
+        return folderID;
     }
-
-    private void updateFolderListGUI() {
-
-        method.removeAllItems();
-
-        for (int i = 0; i < folderIDList.size(); i++) {
-            if (!folderIDList.isEmpty()) {
-
-                method.addItem(folderNameList.get(i));
-            }
-        }
-
-    }
-
-    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_cancel_ButtonActionPerformed
+    String Current_Folder;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accept_Button;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_Button;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox method;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JList taskOutput;
     // End of variables declaration//GEN-END:variables
-  ArrayList<Integer> folderIDList = new ArrayList<>();
-    ArrayList<String> folderNameList = new ArrayList<>();
 }

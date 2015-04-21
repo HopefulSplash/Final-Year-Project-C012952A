@@ -3,14 +3,14 @@ package Proximity_Encryption_Suite;
 //STEP 1. Import required packages
 import java.sql.*;
 
-public class Database {
+public class Suite_Database {
 
     // JDBC driver name and database URL
     final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     final String DB_URL = "jdbc:mysql://localhost:8888";
     final String CONNECT_DB_URL = "jdbc:mysql://localhost:8888/Proximity_Suite_DB";
 
-    //  Database credentials
+    //  Suite_Database credentials
     final String USER = "root";
     final String PASS = "Password123$";
 
@@ -133,9 +133,8 @@ public class Database {
                     + "					OR device_Type = \"Smartband\"\n"
                     + "					OR device_Type = \"Tablet\"\n"
                     + "					OR device_Type = \"Laptop\"\n"
-                    + "					OR device_Type = \"Other\")\n"
-                    + "					OR device_Type = \"Default\")\n"
-                    + ");";
+                    + "					OR device_Type = \"Other\"\n"
+                    + "					OR device_Type = \"Default\"))\n;";
             stmt.executeUpdate(createDevice);
 
             String createAccountDevice = "CREATE TABLE Account_Device_List\n"

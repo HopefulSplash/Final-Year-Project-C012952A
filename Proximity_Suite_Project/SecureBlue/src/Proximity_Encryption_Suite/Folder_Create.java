@@ -67,11 +67,12 @@ public class Folder_Create extends javax.swing.JDialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+
         this.accountID = accountID;
         description_Area.setText(null);
         description_Area.setEditable(false);
@@ -265,10 +266,10 @@ public class Folder_Create extends javax.swing.JDialog {
         String description = description_Area.getText().trim();
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -354,10 +355,10 @@ public class Folder_Create extends javax.swing.JDialog {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
         /*
          * declares the variables for use in connecting and checking the database.

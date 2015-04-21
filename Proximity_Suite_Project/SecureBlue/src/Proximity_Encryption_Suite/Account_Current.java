@@ -39,8 +39,7 @@ public class Account_Current extends javax.swing.JDialog {
      */
     public Account_Current(java.awt.Frame parent, boolean modal, int account_ID) {
 
-        this.getContentPane().setBackground(Color.WHITE);
-
+     this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -71,7 +70,7 @@ public class Account_Current extends javax.swing.JDialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
@@ -86,10 +85,10 @@ public class Account_Current extends javax.swing.JDialog {
     private void getAccountDetails(int accountID) {
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*

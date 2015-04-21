@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroup1.add(jRadioButton1);&#xa;buttonGroup1.add(jRadioButton2);&#xa;buttonGroup1.add(jRadioButton3);&#xa;buttonGroup1.add(jRadioButton4);&#xa;buttonGroup1.add(jRadioButton5);&#xa;buttonGroup1.add(jRadioButton6);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroup1.add(jRadioButton1);&#xa;buttonGroup1.add(jRadioButton2);&#xa;buttonGroup1.add(jRadioButton3);&#xa;buttonGroup1.add(jRadioButton4);&#xa;buttonGroup1.add(jRadioButton5);"/>
       </AuxValues>
     </Component>
   </NonVisualComponents>
@@ -84,7 +84,6 @@
                       <Component id="jRadioButton1" alignment="1" max="32767" attributes="0"/>
                       <Component id="jRadioButton4" alignment="0" max="32767" attributes="0"/>
                       <Component id="jRadioButton5" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jRadioButton6" alignment="0" max="32767" attributes="0"/>
                       <Component id="jTextField1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -112,9 +111,7 @@
                   <Component id="jRadioButton4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jRadioButton5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jRadioButton6" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -168,14 +165,6 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Delete Account (Encrypt Files)"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="jRadioButton6">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Delete Account (Shred Files)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1">

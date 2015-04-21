@@ -66,8 +66,7 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param account_ID
      */
     public Suite_Window(int account_ID) {
-        initComponents();
-
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -93,16 +92,16 @@ public class Suite_Window extends javax.swing.JFrame {
             Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        initComponents();
+
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-
-        this.getContentPane().setBackground(Color.WHITE);
 
         java.util.Date now = new java.util.Date();
         String ss = DateFormat.getDateTimeInstance().format(now);
@@ -133,8 +132,6 @@ public class Suite_Window extends javax.swing.JFrame {
         table_Deselect_Button = new javax.swing.JButton();
         proximity_Table_Scroll_Pane = new javax.swing.JScrollPane();
         table_View = new javax.swing.JTable();
-        proximity_Extras_Panel = new javax.swing.JPanel();
-        extras_Shred_Button = new javax.swing.JButton();
         proximity_Table_Feature_Panel = new javax.swing.JPanel();
         table_Search_Field = new javax.swing.JTextField();
         table_Search_Label = new javax.swing.JLabel();
@@ -305,14 +302,14 @@ public class Suite_Window extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Select", "Name", "Date modified", "Type", "Size", "Status", " ", "  "
+                "Select", "Name", "Date modified", "Type", "Size", "Status", " "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, true, true
+                true, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -329,10 +326,6 @@ public class Suite_Window extends javax.swing.JFrame {
         table_View.setRowHeight(23);
         table_View.getColumn(" ").setCellRenderer(new ButtonRenderer());
         table_View.getColumn(" ").setCellEditor(
-            new ButtonEditor(new JCheckBox()));
-
-        table_View.getColumn("  ").setCellRenderer(new ButtonRenderer());
-        table_View.getColumn("  ").setCellEditor(
             new ButtonEditor(new JCheckBox()));
 
         table_View.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
@@ -355,9 +348,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
         table_View.getColumnModel().getColumn(6).setMaxWidth(85);
         table_View.getColumnModel().getColumn(6).setMinWidth(85);
-
-        table_View.getColumnModel().getColumn(7).setMaxWidth(85);
-        table_View.getColumnModel().getColumn(7).setMinWidth(85);
 
         table_View.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -419,35 +409,6 @@ public class Suite_Window extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(model);
         table_View.setRowSorter(sorter);
         sorter.setSortable(6, false);
-        sorter.setSortable(7, false);
-
-        proximity_Extras_Panel.setBackground(new java.awt.Color(255, 255, 255));
-        proximity_Extras_Panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        extras_Shred_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Buttons/extras_Shred_Button.png"))); // NOI18N
-        extras_Shred_Button.setText("Shred Files     ");
-        extras_Shred_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                extras_Shred_ButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout proximity_Extras_PanelLayout = new javax.swing.GroupLayout(proximity_Extras_Panel);
-        proximity_Extras_Panel.setLayout(proximity_Extras_PanelLayout);
-        proximity_Extras_PanelLayout.setHorizontalGroup(
-            proximity_Extras_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(proximity_Extras_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(extras_Shred_Button, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
-        );
-        proximity_Extras_PanelLayout.setVerticalGroup(
-            proximity_Extras_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(proximity_Extras_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(extras_Shred_Button)
-                .addGap(6, 6, 6))
-        );
 
         proximity_Table_Feature_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -460,6 +421,7 @@ public class Suite_Window extends javax.swing.JFrame {
         table_Search_Label.setText("Search: ");
 
         table_Search_Clear_Button.setText("Clear");
+        table_Search_Clear_Button.setFocusPainted(false);
         table_Search_Clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 table_Search_Clear_ButtonActionPerformed(evt);
@@ -468,7 +430,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
         table_Folder_Label.setText("Current Folder: ");
 
-        table_Folder_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "No Folder Setup" }));
         table_Folder_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 table_Folder_ComboBoxActionPerformed(evt);
@@ -591,23 +552,24 @@ public class Suite_Window extends javax.swing.JFrame {
         timee1.start();
 
         proximity_System_Panel.setBackground(new java.awt.Color(255, 255, 255));
-        proximity_System_Panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        proximity_System_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Folder Details"));
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText(" ");
 
         javax.swing.GroupLayout proximity_System_PanelLayout = new javax.swing.GroupLayout(proximity_System_Panel);
         proximity_System_Panel.setLayout(proximity_System_PanelLayout);
         proximity_System_PanelLayout.setHorizontalGroup(
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
         proximity_System_PanelLayout.setVerticalGroup(
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(6, 6, 6)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -853,7 +815,6 @@ public class Suite_Window extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(proximity_Table_Button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(proximity_Extras_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(proximity_System_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -870,13 +831,12 @@ public class Suite_Window extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(proximity_Table_Button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(proximity_Extras_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(proximity_System_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(proximity_System_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(proximity_Table_Feature_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(proximity_Table_Scroll_Pane, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)))
+                        .addComponent(proximity_Table_Scroll_Pane, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)))
                 .addGap(3, 3, 3)
                 .addComponent(proximity_Separator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -888,10 +848,6 @@ public class Suite_Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void table_ViewFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_table_ViewFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_table_ViewFocusLost
-
     ArrayList<File> addFiles = new ArrayList();
 
     private void table_Add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Add_ButtonActionPerformed
@@ -900,22 +856,61 @@ public class Suite_Window extends javax.swing.JFrame {
         Files_Add aw = new Files_Add(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         aw.setVisible(true);
 
-        if (aw.isDidAdd() == true) {
-            folderIDList.clear();
-            folderNameList.clear();
-            clearTableFiles();
-            getAccountFolders();
-            table_Folder_ComboBox.setSelectedItem(aw.getCurrent_Folder());
-        }
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountFolders();
+        table_Folder_ComboBox.setSelectedItem(aw.getCurrent_Folder());
 
 
     }//GEN-LAST:event_table_Add_ButtonActionPerformed
 
+    ArrayList<File> filesRemove = new ArrayList();
+
     private void table_Remove_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Remove_ButtonActionPerformed
         // TODO add your handling code here:
 
-        DeleteWindow aw = new DeleteWindow(this, true);
-        aw.setVisible(true);
+        table_Search_Field.setText("");
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
+        filesRemove.clear();
+
+        for (int i = 0; i < table_View.getRowCount(); i++) {
+
+            if (table_View.getValueAt(i, 0).equals(true)) {
+
+                filesRemove.add(filelists.get(i));
+            }
+
+        }
+
+        if (!filesRemove.isEmpty()) {
+
+            Files_Remove aw = new Files_Remove(this, true, accountID, filesRemove, (String) table_Folder_ComboBox.getSelectedItem());
+            aw.setVisible(true);
+
+            if (aw.isDidAdd()) {
+                for (int i = 0; i < table_View.getRowCount(); i++) {
+                    table_View.setValueAt(false, i, 0);
+
+                }
+                folderIDList.clear();
+                folderNameList.clear();
+                clearTableFiles();
+                getAccountFolders();
+                table_Folder_ComboBox.setSelectedIndex(tempFolder);
+            }
+
+        } else if (filesRemove.isEmpty()) {
+  
+
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "No Files Selected. Please Try Again.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+        }
+
 
     }//GEN-LAST:event_table_Remove_ButtonActionPerformed
 
@@ -1102,16 +1097,15 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_folder_DeleteActionPerformed
 
-    private void extras_Shred_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_extras_Shred_ButtonActionPerformed
-        // TODO add your handling code here:
-        ShredWindow fcw = new ShredWindow(this, true);
-        fcw.setVisible(true);
-    }//GEN-LAST:event_extras_Shred_ButtonActionPerformed
+    ArrayList<File> filesShred = new ArrayList();
+
 
     private void home_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LoginActionPerformed
         // TODO add your handling code here:
         Login_Account mWSameple = new Login_Account();
         mWSameple.setVisible(true);
+
+        //LOGOUT SCRIPT
         this.dispose();
 
     }//GEN-LAST:event_home_LoginActionPerformed
@@ -1121,27 +1115,65 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void table_Encrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Encrypt_ButtonActionPerformed
         // TODO add your handling code here:
-
+        table_Search_Field.setText("");
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesEncrypt.clear();
+        filesAlreadyEncrypt.clear();
 
-        for (int i = 0; i < table_View.getRowCount(); i++) {
+        String fname;
+        int pos;
+        //date
 
-            if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
-                filesEncrypt.add(filelists.get(i));
+        for (int i = 0; i < filelists.size(); i++) {
 
-            } else if (table_View.getValueAt(i, 5).equals("Encrypted")) {
-                filesAlreadyEncrypt.add(filelists.get(i));
+            fname = filelists.get(i).getName();
+            pos = fname.lastIndexOf('.');
+
+            if (pos > 0) {
+                fname = fname.substring(0, pos);
+
+                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
+
+                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+
+                        filesEncrypt.add(filelists.get(i));
+                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+                        filesAlreadyEncrypt.add(filelists.get(i));
+                    }
+                }
+
+            } else {
+
+                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
+                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+
+                        filesEncrypt.add(filelists.get(i));
+                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+                        filesAlreadyEncrypt.add(filelists.get(i));
+                    }
+                }
             }
+
         }
 
         if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
 
             Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
             ew.setVisible(true);
+            if (ew.isDidAdd()) {
+                for (int i = 0; i < table_View.getRowCount(); i++) {
+                    table_View.setValueAt(false, i, 0);
+
+                }
+                folderIDList.clear();
+                folderNameList.clear();
+                clearTableFiles();
+                getAccountFolders();
+                table_Folder_ComboBox.setSelectedIndex(tempFolder);
+            }
 
         } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
-            Object[] options = {"Encrypt All",
-                "Encrypt UnEncrypted Files", "Canel"};
+            Object[] options = {"Encrypted Files (Deselect Encrypted Files)", "Canel"};
             int n = JOptionPane.showOptionDialog(this,
                     "One or More Files were Already Encrypted. Would you like To Conitue Without Encryption Them.",
                     "Decrypt Files",
@@ -1153,17 +1185,19 @@ public class Suite_Window extends javax.swing.JFrame {
 
             if (n == 0) {
 
-                //check this works
-                filesEncrypt.addAll(filesAlreadyEncrypt);
-
                 Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
                 ew.setVisible(true);
+                if (ew.isDidAdd()) {
+                    for (int i = 0; i < table_View.getRowCount(); i++) {
+                        table_View.setValueAt(false, i, 0);
 
-            } else if (n == 1) {
-
-                Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
-                ew.setVisible(true);
-
+                    }
+                    folderIDList.clear();
+                    folderNameList.clear();
+                    clearTableFiles();
+                    getAccountFolders();
+                    table_Folder_ComboBox.setSelectedIndex(tempFolder);
+                }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
@@ -1172,64 +1206,171 @@ public class Suite_Window extends javax.swing.JFrame {
                     "Account Creation Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
+        } else if (!filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "Only Selected Encrypted Files. Please Try Again.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+
         }
 
 
     }//GEN-LAST:event_table_Encrypt_ButtonActionPerformed
 
+    //
+    ArrayList<File> filesdecrypt = new ArrayList();
+    ArrayList<File> filesAlreadydecrypt = new ArrayList();
+
     private void table_Decrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Decrypt_ButtonActionPerformed
         // TODO add your handling code here:
-        // TODO add your handling code here
+        table_Search_Field.setText("");
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
+        filesEncrypt.clear();
+        filesAlreadyEncrypt.clear();
 
-        DecryptWindow ew = new DecryptWindow(this, true);
-        ew.setVisible(true);
+        String fname;
+        int pos;
+        //date
 
-//        Object[] options = {"Yes",
-//            "Cancel"};
-//        int n = JOptionPane.showOptionDialog(this,
-//            "Are You Sure You Want To Decrypt Selected Files",
-//            "Decrypt Files",
-//            JOptionPane.YES_NO_CANCEL_OPTION,
-//            JOptionPane.PLAIN_MESSAGE,
-//            null,
-//            options,
-//            options[1]);
-//
-//        if (n == 0) {
-//
-//            // shred folder
-//        }
+        for (int i = 0; i < filelists.size(); i++) {
+
+            fname = filelists.get(i).getName();
+            pos = fname.lastIndexOf('.');
+
+            if (pos > 0) {
+                fname = fname.substring(0, pos);
+
+                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
+
+                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+
+                        filesEncrypt.add(filelists.get(i));
+                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+                        filesAlreadyEncrypt.add(filelists.get(i));
+                    }
+                }
+
+            } else {
+
+                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
+                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+
+                        filesEncrypt.add(filelists.get(i));
+                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+                        filesAlreadyEncrypt.add(filelists.get(i));
+                    }
+                }
+            }
+
+        }
+
+        if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
+
+            Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt);
+            ew.setVisible(true);
+            if (ew.isDidAdd()) {
+                for (int i = 0; i < table_View.getRowCount(); i++) {
+                    table_View.setValueAt(false, i, 0);
+
+                }
+                folderIDList.clear();
+                folderNameList.clear();
+                clearTableFiles();
+                getAccountFolders();
+                table_Folder_ComboBox.setSelectedIndex(tempFolder);
+            }
+
+        } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
+            Object[] options = {"Encrypted Files (Deselect Encrypted Files)", "Canel"};
+            int n = JOptionPane.showOptionDialog(this,
+                    "One or More Files are not Encrypted. Would you like To Conitue Without decryption Them.",
+                    "Decrypt Files",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (n == 0) {
+
+                Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt);
+                ew.setVisible(true);
+                if (ew.isDidAdd()) {
+                    for (int i = 0; i < table_View.getRowCount(); i++) {
+                        table_View.setValueAt(false, i, 0);
+
+                    }
+                    folderIDList.clear();
+                    folderNameList.clear();
+                    clearTableFiles();
+                    getAccountFolders();
+                    table_Folder_ComboBox.setSelectedIndex(tempFolder);
+                }
+            }
+        } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "No Files Selected. Please Try Again.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+        } else if (!filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "Only Selected Encrypted Files. Please Try Again.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+
+        }
+
+
     }//GEN-LAST:event_table_Decrypt_ButtonActionPerformed
 
     private void table_Folder_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Folder_ComboBoxActionPerformed
         // TODO add your handling code here:
+        table_Search_Field.setText("");
+        for (int i = 0; i < table_View.getRowCount(); i++) {
+            table_View.setValueAt(false, i, 0);
 
+        }
         filelists.clear();
-
         clearTableFiles();
 
         getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
-        jLabel1.setText("" + table_View.getRowCount());
+
+        jLabel1.setText("Total Files: " + table_View.getRowCount());
 
 
     }//GEN-LAST:event_table_Folder_ComboBoxActionPerformed
 
     private void table_Search_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_table_Search_FieldCaretUpdate
         // TODO add your handling code here:
-        searchAll();
+
+        if (table_Search_Field.getText().length() != 0) {
+
+            searchAll();
+        }
+
     }//GEN-LAST:event_table_Search_FieldCaretUpdate
 
     private void account_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_ModifyActionPerformed
         // TODO add your handling code here:
+
+        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
+
         Acccount_Management md = new Acccount_Management(this, true, accountID);
         md.setVisible(true);
 
-        if (md.isModifyAccount() == true) {
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountDetails();
+        table_Folder_ComboBox.setSelectedIndex(tempFolder);
 
-            getAccountDetails();
 
-        } else {
-        }
     }//GEN-LAST:event_account_ModifyActionPerformed
 
     private void account_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CreateActionPerformed
@@ -1254,9 +1395,18 @@ public class Suite_Window extends javax.swing.JFrame {
         Account_Current md = new Account_Current(this, true, accountID);
         md.setVisible(true);
 
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
         getAccountDetails();
+        table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
 
     }//GEN-LAST:event_account_CurrentActionPerformed
+
+    private void table_ViewFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_table_ViewFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_table_ViewFocusLost
 
     private void searchAll() {
 
@@ -1408,7 +1558,6 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JMenuItem device_Manage;
     private javax.swing.JPopupMenu.Separator device_Separator1;
     private javax.swing.JPopupMenu.Separator device_Separator2;
-    private javax.swing.JButton extras_Shred_Button;
     private javax.swing.JMenuItem folder_Create;
     private javax.swing.JMenuItem folder_Current;
     private javax.swing.JMenuItem folder_Delete;
@@ -1426,7 +1575,6 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JMenu menu_Home;
     private javax.swing.JMenu menu_Social_Media;
     private javax.swing.JMenu menu_Support;
-    private javax.swing.JPanel proximity_Extras_Panel;
     private javax.swing.JMenuBar proximity_Menu;
     private javax.swing.JSeparator proximity_Separator1;
     private javax.swing.JPanel proximity_Statusbar_Panel;
@@ -1961,46 +2109,15 @@ public class Suite_Window extends javax.swing.JFrame {
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                // 
-                // 
-                if (button.getText().equalsIgnoreCase("Delete")) {
 
-                    int test = table_View.getSelectedRow();
-
-                    if (filelists.get(table_View.getSelectedRow()).delete()) {
-                        ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Message/page_go.png"));
-                        String filePath = filelists.get(table_View.getSelectedRow()).getAbsolutePath();
-                        JOptionPane.showMessageDialog(button.getRootPane().getRootPane(),
-                                "File Located: " + filePath + " Has Been Deleted",
-                                "File Delete Successful",
-                                JOptionPane.INFORMATION_MESSAGE,
-                                icon);
-
-                        RemoveRowThread myRunnable = new RemoveRowThread(test, filePath, table_View);
-                        Thread t = new Thread(myRunnable);
-                        t.start();
-
-                        // remove from list/table/delete
-                    } else {
-                        ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Error/page_error.png"));
-
-                        String filePath = filelists.get(table_View.getSelectedRow()).getAbsolutePath();
-
-                        JOptionPane.showMessageDialog(button.getRootPane().getRootPane(),
-                                "File Located: " + filePath + " Cannot Be Deleted",
-                                "File Canot Be Deleted",
-                                JOptionPane.INFORMATION_MESSAGE,
-                                icon);
-                    }
-
-                } else if (button.getText().equalsIgnoreCase("Open")) {
+                if (button.getText().equalsIgnoreCase("Open")) {
 
                     String fname;
                     int pos;
                     //date
 
                     for (int i = 0; i < filelists.size(); i++) {
-                     
+
                         fname = filelists.get(i).getName();
                         pos = fname.lastIndexOf('.');
 
@@ -2028,14 +2145,107 @@ public class Suite_Window extends javax.swing.JFrame {
             return label;
         }
 
+        @Override
         public boolean stopCellEditing() {
             isPushed = false;
             return super.stopCellEditing();
         }
 
+        @Override
         protected void fireEditingStopped() {
             super.fireEditingStopped();
         }
+    }
+
+    public void removeFile(File File) {
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ?;";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+            pStmt.executeUpdate();
+            System.out.println(pStmt);
+            sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, getFileID(File.getAbsolutePath()));
+            pStmt.executeUpdate();
+            System.out.println(pStmt);
+            pStmt.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+
+        }
+
+    }
+
+    public int getFileID(String file_Path) {
+
+        int fileID = 0;
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "SELECT file_Details_ID FROM File_Details WHERE file_Directory = ?;";
+
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, file_Path);
+            ResultSet rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                fileID = rs.getInt("file_Details_ID");
+            }
+
+            pStmt.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        return fileID;
     }
 
     private int accountID;
@@ -2059,10 +2269,10 @@ public class Suite_Window extends javax.swing.JFrame {
 
     public void getAccountDetails() {
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -2109,10 +2319,10 @@ public class Suite_Window extends javax.swing.JFrame {
         String folderName;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
 
         d.startDatabase();
 
@@ -2177,10 +2387,10 @@ public class Suite_Window extends javax.swing.JFrame {
 
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -2236,10 +2446,10 @@ public class Suite_Window extends javax.swing.JFrame {
         Boolean fileStatus;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -2343,7 +2553,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     status = "Encrypted";
                 }
 
-                dw.addRow(new Object[]{false, " " + name, date, type, fileSize, status, "Open", "Delete"});
+                dw.addRow(new Object[]{false, " " + name, date, type, fileSize, status, "Open"});
             }
         }
 

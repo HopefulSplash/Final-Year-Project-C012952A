@@ -34,7 +34,6 @@ public class Delete_Account extends java.awt.Dialog {
      */
     public Delete_Account(java.awt.Frame parent, boolean modal, int accountID) {
         super(parent, modal);
-
         this.setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
@@ -66,11 +65,12 @@ public class Delete_Account extends java.awt.Dialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+        
         this.accountID = accountID;
         getAccountFolders();
     }
@@ -92,7 +92,6 @@ public class Delete_Account extends java.awt.Dialog {
         jLabel2 = new javax.swing.JLabel();
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
         jTextField1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -103,7 +102,6 @@ public class Delete_Account extends java.awt.Dialog {
         buttonGroup1.add(jRadioButton3);
         buttonGroup1.add(jRadioButton4);
         buttonGroup1.add(jRadioButton5);
-        buttonGroup1.add(jRadioButton6);
 
         setTitle("Proximity Suite | Delete Folder");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -134,9 +132,6 @@ public class Delete_Account extends java.awt.Dialog {
         jRadioButton5.setBackground(new java.awt.Color(255, 255, 255));
         jRadioButton5.setText("Delete Account (Encrypt Files)");
 
-        jRadioButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jRadioButton6.setText("Delete Account (Shred Files)");
-
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -159,7 +154,6 @@ public class Delete_Account extends java.awt.Dialog {
                     .addComponent(jRadioButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jRadioButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jRadioButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextField1))
                 .addGap(6, 6, 6))
         );
@@ -182,9 +176,7 @@ public class Delete_Account extends java.awt.Dialog {
                 .addComponent(jRadioButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton6)
-                .addGap(0, 0, 0))
+                .addGap(11, 11, 11))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -287,10 +279,10 @@ public class Delete_Account extends java.awt.Dialog {
         String folderName;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
 
         d.startDatabase();
 
@@ -340,43 +332,7 @@ public class Delete_Account extends java.awt.Dialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Folder_Create.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Delete_Account dialog = new Delete_Account(new javax.swing.JFrame(), true, 1);
-                dialog.setVisible(true);
-            }
-        });
-    }
-
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -391,7 +347,6 @@ public class Delete_Account extends java.awt.Dialog {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
   ArrayList<Integer> folderIDList = new ArrayList<>();

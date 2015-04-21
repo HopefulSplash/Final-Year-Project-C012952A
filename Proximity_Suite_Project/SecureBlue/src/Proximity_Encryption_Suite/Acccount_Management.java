@@ -78,7 +78,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
@@ -439,23 +439,8 @@ public class Acccount_Management extends javax.swing.JDialog {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Acccount_Management dialog = new Acccount_Management(new java.awt.Frame(), true, 1);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
 
     private void username_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_username_FieldCaretUpdate
@@ -837,10 +822,10 @@ public class Acccount_Management extends javax.swing.JDialog {
     private void getAccountDetails(int accountID) {
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -915,10 +900,10 @@ public class Acccount_Management extends javax.swing.JDialog {
             passwordSha1 = tempPass;
         }
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -975,7 +960,7 @@ public class Acccount_Management extends javax.swing.JDialog {
                 //a popup windows telling the user thier account have been created
                 Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
                 JOptionPane.showMessageDialog(this,
-                        "Your Folder Has Been Modified Successfully.",
+                        "Your Account Has Been Modified Successfully.",
                         "Folder Modified!",
                         JOptionPane.INFORMATION_MESSAGE,
                         tickIcon);
@@ -1004,7 +989,7 @@ public class Acccount_Management extends javax.swing.JDialog {
                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                 JOptionPane.showMessageDialog(this,
                         "One Or More Fields Are Incorrect. Please Try Again.",
-                        "Folder Modification Error!",
+                        "Account Modification Error!",
                         JOptionPane.INFORMATION_MESSAGE,
                         crossIcon);
             }
@@ -1015,10 +1000,10 @@ public class Acccount_Management extends javax.swing.JDialog {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1084,10 +1069,10 @@ public class Acccount_Management extends javax.swing.JDialog {
         boolean isTaken = false;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*

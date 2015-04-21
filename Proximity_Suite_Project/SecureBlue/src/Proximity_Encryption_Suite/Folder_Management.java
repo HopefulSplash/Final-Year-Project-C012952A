@@ -65,7 +65,7 @@ public class Folder_Management extends javax.swing.JDialog {
      */
     public Folder_Management(java.awt.Frame parent, boolean modal, int AccountID, String FolderName) {
 
-        this.getContentPane().setBackground(Color.WHITE);
+         this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -96,11 +96,12 @@ public class Folder_Management extends javax.swing.JDialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+
         accept_Button.requestFocus();
         this.currentFolder = FolderName;
         this.accountID = AccountID;
@@ -518,10 +519,10 @@ public class Folder_Management extends javax.swing.JDialog {
 
         int folderID = 0;
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -632,10 +633,10 @@ public class Folder_Management extends javax.swing.JDialog {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
         /*
          * declares the variables for use in connecting and checking the database.
@@ -697,10 +698,10 @@ public class Folder_Management extends javax.swing.JDialog {
         String folderName;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
 
         d.startDatabase();
 
@@ -766,10 +767,10 @@ public class Folder_Management extends javax.swing.JDialog {
 
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -833,10 +834,10 @@ public class Folder_Management extends javax.swing.JDialog {
         Boolean fileStatus;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*

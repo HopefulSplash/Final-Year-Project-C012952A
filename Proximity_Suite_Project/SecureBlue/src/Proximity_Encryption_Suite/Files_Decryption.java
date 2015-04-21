@@ -38,7 +38,7 @@ import javax.swing.SwingWorker;
  *
  * @author TheThoetha
  */
-public class Files_Encryption extends javax.swing.JDialog implements ActionListener,
+public class Files_Decryption extends javax.swing.JDialog implements ActionListener,
         PropertyChangeListener {
 
     private DefaultListModel listModel;
@@ -90,7 +90,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
-            jComboBox2.setEnabled(false);
 
             //Initialize progress property.
             setProgress(0);
@@ -123,7 +122,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
             accept_Button.setEnabled(true);
             cancel_Button.setEnabled(true);
-            jComboBox2.setEnabled(true);
 
             if ("accept".equals(task.getStatus())) {
 
@@ -148,27 +146,27 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         }
 
         private void encryptFiles(File file) {
-            boolean didEncrypt = false;
+            boolean didDecrypt = false;
             int fileID = 0;
 
-            if (jComboBox2.getSelectedIndex() == 1) {
-                didEncrypt = encryptAES(file);
+            if (getFileEncryptionStatus(file.getAbsolutePath()).equals("AES Encryption")) {
+                didDecrypt = decryptAES(file);
+              
+            } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("DES Encryption")) {
+                didDecrypt = decryptDES(file);
 
-            } else if (jComboBox2.getSelectedIndex() == 2) {
-                didEncrypt = encryptDES(file);
-
-            } else if (jComboBox2.getSelectedIndex() == 3) {
-                didEncrypt = encryptTripleDES(file);
+            } else if (getFileEncryptionStatus(file.getAbsolutePath()).equals("Triple DES Encryption")) {
+                didDecrypt = decryptTripleDES(file);
             } else {
-                didEncrypt = false;
+                didDecrypt = false;
             }
 
-            if (didEncrypt == false) {
+            if (didDecrypt == false) {
                 notSupportedList.add(file.getAbsolutePath());
             } else {
                 fileID = getFileID(file.getAbsolutePath());
                 if (fileID != 0) {
-                    updateFile(fileID, true, (String) jComboBox2.getSelectedItem());
+                    updateFile(fileID, false, null);
                 } else {
                     //file does not exsist
                 }
@@ -176,11 +174,14 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
         }
 
-        private boolean encryptAES(File file) {
-            boolean encrypted = false;
+        private boolean decryptAES(File file) {
+            boolean decrypted = false;
 
             if (file.canRead() && file.canWrite() && file.canExecute()) {
 
+                  System.out.println(file);
+
+                
                 try {
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -200,7 +201,9 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_AES aes = new Encryption_AES();
-                    aes.encrypt(key, originalInput, encryptedOutput);
+                    aes.decrypt(key, originalInput, encryptedOutput);
+                    
+                    System.out.println(aes.isEncrypted());
 
                     if (aes.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -208,22 +211,22 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                             FileOutputStream originalOutput = new FileOutputStream(file);
                             aes.doCopy(encryptedInput, originalOutput);
                             temp.delete();
-                            encrypted = true;
+                            decrypted = true;
                         } catch (Exception e) {
-                            encrypted = false;
+                            decrypted = false;
                         }
                     } else {
-                        encrypted = false;
+                        decrypted = false;
                     }
 
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
             }
-            return encrypted;
+            return decrypted;
         }
 
-        private boolean encryptDES(File file) {
+        private boolean decryptDES(File file) {
 
             boolean encrypted = false;
             if (file.canRead() && file.canWrite() && file.canExecute()) {
@@ -237,7 +240,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_DES des = new Encryption_DES();
-                    des.encrypt(key, originalInput, encryptedOutput);
+                    des.decrypt(key, originalInput, encryptedOutput);
 
                     if (des.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -262,7 +265,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
         }
 
-        private boolean encryptTripleDES(File file) {
+        private boolean decryptTripleDES(File file) {
             boolean encrypted = false;
             if (file.canRead() && file.canWrite() && file.canExecute()) {
                 try {
@@ -284,7 +287,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_Triple_DES tdes = new Encryption_Triple_DES();
-                    tdes.encrypt(key, originalInput, encryptedOutput);
+                    tdes.decrypt(key, originalInput, encryptedOutput);
 
                     if (tdes.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -401,6 +404,52 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
     }
 
+    public String getFileEncryptionStatus(String file_Path) {
+
+        String fileID = null;
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "SELECT file_EType FROM File_Details WHERE file_Directory = ?;";
+
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, file_Path);
+            ResultSet rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                fileID = rs.getString("file_EType");
+            }
+
+            pStmt.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        return fileID;
+    }
+
     /**
      *
      *
@@ -411,7 +460,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
      * @param Account_ID
      * @param modal
      */
-    public Files_Encryption(java.awt.Frame parent, boolean modal, int Account_ID, ArrayList<File> Files_Encryption) {
+    public Files_Decryption(java.awt.Frame parent, boolean modal, int Account_ID, ArrayList<File> Files_Encryption) {
         super(parent, modal);
 
         this.getContentPane().setBackground(Color.WHITE);
@@ -451,6 +500,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
          */
         this.setIconImages(icons);
 
+
         this.Account_ID = Account_ID;
         accept_Button.requestFocus();
 
@@ -485,7 +535,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         taskOutput = new javax.swing.JList();
@@ -493,9 +542,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         jPanel1 = new javax.swing.JPanel();
         accept_Button = new javax.swing.JButton();
         cancel_Button = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Files");
@@ -525,7 +571,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                 .addGap(6, 6, 6)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         jPanel2Layout.setVerticalGroup(
@@ -541,7 +587,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         accept_Button.setText("Accept");
-        accept_Button.setEnabled(false);
         accept_Button.setFocusPainted(false);
         accept_Button.setMaximumSize(new java.awt.Dimension(90, 23));
         accept_Button.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -581,37 +626,6 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please Select An Encryption Method", "AES Encryption", "DES Encryption", "Triple DES Encryption" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Select Encryption Method:");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jLabel3)
-                .addGap(6, 6, 6)
-                .addComponent(jComboBox2, 0, 651, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -620,16 +634,13 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -642,34 +653,25 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
 
-        if (jComboBox2.getSelectedIndex() != 0) {
+        Object[] options = {"Confirm", "Cancel"};
+        int n = JOptionPane.showOptionDialog(this,
+                "Are You Sure You Want to Encrypt The Files?",
+                "Confirm Folder Creation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, //do not use a custom Icon
+                options, //the titles of buttons
+                options[0]); //default button title
 
-            Object[] options = {"Confirm", "Cancel"};
-            int n = JOptionPane.showOptionDialog(this,
-                    "Are You Sure You Want to Encrypt The Files?",
-                    "Confirm Folder Creation",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null, //do not use a custom Icon
-                    options, //the titles of buttons
-                    options[0]); //default button title
+        // if the user has clicked confirm.
+        if (n == 0) {
+            task = new Task();
+            task.setStatus("accept");
+            task.addPropertyChangeListener(this);
+            task.execute();
 
-            // if the user has clicked confirm.
-            if (n == 0) {
-                task = new Task();
-                task.setStatus("accept");
-                task.addPropertyChangeListener(this);
-                task.execute();
-
-            }
-        } else {
-            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-            JOptionPane.showMessageDialog(this,
-                    "No Encryption Method Selected. Please Try Again.",
-                    "Folder Creation Error!",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    crossIcon);
         }
+
 
     }//GEN-LAST:event_accept_ButtonActionPerformed
     boolean didAdd = false;
@@ -684,28 +686,12 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
     }//GEN-LAST:event_formWindowClosing
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-
-        //checks if the user has selected a question.
-        if (jComboBox2.getSelectedIndex() != 0) {
-            accept_Button.setEnabled(true);
-        } //resets the fields if the user have change the combo box to index 0.
-        else {
-            accept_Button.setEnabled(false);
-        }
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accept_Button;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancel_Button;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JList taskOutput;

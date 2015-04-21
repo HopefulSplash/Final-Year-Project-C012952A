@@ -94,6 +94,8 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
+            
+             int counter = 0;
             progress = 0;
             progressBar.setValue(0);
 
@@ -114,7 +116,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                     progressBar.setMaximum(filelist.size());
                     progressBar.setIndeterminate(true);
 
-                    //Sleep for up to one second.
                     for (int i = 0; i < filelist.size(); i++) {
                         Search(filelist.get(i));
                         progress += 1;
@@ -123,14 +124,13 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
                 }
             } else if ("accept".equals(status)) {
-                while (progress < addFilesList.size()) {
+                while (counter != addFilesList.size()) {
 
                     progressBar.setMaximum(addFilesList.size());
                     progressBar.setIndeterminate(true);
                     for (int i = 0; i < addFilesList.size(); i++) {
                         sendFileDetials(i);
-                        progress += 1;
-                        setProgress(progress);
+                       counter++;
                     }
                 }
             }
@@ -156,15 +156,27 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
             if ("adding".equals(status)) {
                 if (addFilesList.isEmpty()) {
+
+                    if (!listModel.isEmpty()) {
+
+                        remove_Button.setEnabled(true);
+                        clear_Button.setEnabled(true);
+
+                    } else {
+                        progressBar.setValue(0);
+                        remove_Button.setEnabled(false);
+                        clear_Button.setEnabled(false);
+                    }
                     /*
                      * shows an error message due one or more fields being incorrect.
                      */
                     Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                     JOptionPane.showMessageDialog((Component) o1,
-                            "One Or More Fields Are Incorrect. Please Try Again.",
+                            "No Files Where Found. Please Try Again.",
                             "Account Creation Error!",
                             JOptionPane.INFORMATION_MESSAGE,
                             crossIcon);
+
                 }
 
             } else if ("accept".equals(task.getStatus())) {
@@ -176,10 +188,11 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 } else {
                     Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
                     JOptionPane.showMessageDialog((Component) o1,
-                            "One Or More Fields Are Incorrect. Please Try Again.",
-                            "Account Creation Error!",
+                            "All Files Have Been Added.",
+                            "File Addirion Successful!",
                             JOptionPane.INFORMATION_MESSAGE,
                             tickIcon);
+
                 }
 
                 clear_Button.doClick();
@@ -225,14 +238,14 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
         private void sendFileDetials(int i) {
 
-            int fileID;
+            int fileID = 0;
             int newFileID = 0;
 
             /*
-             * declares and new instance of the Database class and then checks if the
+             * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
              */
-            Database d = new Database();
+            Suite_Database d = new Suite_Database();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -270,15 +283,19 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                     newFileID = getFileID(addFilesList.get(i).getAbsolutePath());
 
                     if (getdupFile(newFileID, Current_Folder_ID) == true) {
+
                         dupList.add(addFilesList.get(i).getAbsolutePath());
                     } else {
+
                         addFileFolder(newFileID);
                     }
                 } else {
 
                     if (getdupFile(fileID, Current_Folder_ID) == true) {
                         dupList.add(addFilesList.get(i).getAbsolutePath());
+
                     } else {
+
                         addFileFolder(fileID);
                     }
 
@@ -299,13 +316,15 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         }
 
         private boolean getdupFile(int FileID, int FolderID) {
-            boolean dup = false;
+
+            boolean dup = true;
+            int temp = 0;
 
             /*
-             * declares and new instance of the Database class and then checks if the
+             * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
              */
-            Database d = new Database();
+            Suite_Database d = new Suite_Database();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -325,15 +344,23 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 pStmt.setInt(2, FileID);
 
                 ResultSet rs = pStmt.executeQuery();
-
                 while (rs.next()) {
-                    dup = true;
+
+                    temp = rs.getInt("folder_Details_ID");
+
                     pStmt.close();
                     conn.close();
                 }
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
+
+                if (temp > 0) {
+                    dup = true;
+                } else {
+                    dup = false;
+                }
+
                 if (conn != null) {
                     try {
                         conn.close();
@@ -348,10 +375,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         public void addFile(String filePath) {
 
             /*
-             * declares and new instance of the Database class and then checks if the
+             * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
              */
-            Database d = new Database();
+            Suite_Database d = new Suite_Database();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -371,7 +398,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 pStmt.setInt(2, 0);
 
                 pStmt.executeUpdate();
-
+                System.out.println(pStmt);
                 pStmt.close();
                 conn.close();
 
@@ -393,10 +420,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         public void addFileFolder(int FileID) {
 
             /*
-             * declares and new instance of the Database class and then checks if the
+             * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
              */
-            Database d = new Database();
+            Suite_Database d = new Suite_Database();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -416,6 +443,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 pStmt.setInt(2, FileID);
 
                 pStmt.executeUpdate();
+                System.out.println(pStmt);
 
                 pStmt.close();
                 conn.close();
@@ -438,10 +466,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
             int fileID = 0;
 
             /*
-             * declares and new instance of the Database class and then checks if the
+             * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
              */
-            Database d = new Database();
+            Suite_Database d = new Suite_Database();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -454,7 +482,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-                String sql = "SELECT file_Details_ID FROM File_Details WHERE folder_Name = ?;";
+                String sql = "SELECT file_Details_ID FROM File_Details WHERE file_Directory = ?;";
 
                 PreparedStatement pStmt = conn.prepareStatement(sql);
                 pStmt.setString(1, file_Path);
@@ -513,6 +541,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
     public Files_Add(java.awt.Frame parent, boolean modal, int Account_ID, String Current_Folder) {
         super(parent, modal);
 
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -537,21 +566,18 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         } catch (IOException ex) {
             Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         listModel = new DefaultListModel();
-
         initComponents();
 
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
 
-        this.getContentPane().setBackground(Color.WHITE);
         this.Current_Folder = Current_Folder;
         this.Account_ID = Account_ID;
         accept_Button.requestFocus();
@@ -616,6 +642,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         });
 
         clear_Button.setText("Clear");
+        clear_Button.setEnabled(false);
         clear_Button.setFocusPainted(false);
         clear_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -624,6 +651,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         });
 
         remove_Button.setText("Remove");
+        remove_Button.setEnabled(false);
         remove_Button.setFocusPainted(false);
         remove_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -690,6 +718,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         accept_Button.setText("Accept");
+        accept_Button.setEnabled(false);
         accept_Button.setFocusPainted(false);
         accept_Button.setMaximumSize(new java.awt.Dimension(90, 23));
         accept_Button.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -803,8 +832,8 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
     }// </editor-fold>//GEN-END:initComponents
 
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
-               // TODO add your handling code here:
- if (!listModel.isEmpty()) {
+        // TODO add your handling code here:
+        if (!listModel.isEmpty()) {
             Object[] options = {"Confirm", "Cancel"};
             int n = JOptionPane.showOptionDialog(this,
                     "Are You Sure You Want to Add The Files?",
@@ -817,12 +846,12 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
             // if the user has clicked confirm.
             if (n == 0) {
+
                 task = new Task();
                 task.setStatus("accept");
                 task.addPropertyChangeListener(this);
                 task.execute();
 
-                didAdd = true;
             }
         } else {
             this.dispose();
@@ -830,14 +859,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
 
     }//GEN-LAST:event_accept_ButtonActionPerformed
-
-    public boolean isDidAdd() {
-        return didAdd;
-    }
-
-    public void setDidAdd(boolean didAdd) {
-        this.didAdd = didAdd;
-    }
 
     static ArrayList<File> addFilesList = new ArrayList<>();
 
@@ -978,6 +999,18 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         listModel.clear();
         progressBar.setValue(0);
 
+        if (!listModel.isEmpty()) {
+
+            remove_Button.setEnabled(true);
+            clear_Button.setEnabled(true);
+
+        } else {
+
+            remove_Button.setEnabled(false);
+            clear_Button.setEnabled(false);
+        }
+
+
     }//GEN-LAST:event_clear_ButtonActionPerformed
 
     private void remove_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_ButtonActionPerformed
@@ -985,7 +1018,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
         DefaultListModel dlm = (DefaultListModel) taskOutput.getModel();
 
-        if (this.taskOutput.getSelectedIndices().length > 0) {
+        if (taskOutput.getSelectedIndices().length > 0) {
 
             int[] selectedIndices = taskOutput.getSelectedIndices();
 
@@ -996,6 +1029,17 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
         }
 
+        if (!listModel.isEmpty()) {
+
+            remove_Button.setEnabled(true);
+            clear_Button.setEnabled(true);
+
+        } else {
+            progressBar.setValue(0);
+            remove_Button.setEnabled(false);
+            clear_Button.setEnabled(false);
+        }
+
 
     }//GEN-LAST:event_remove_ButtonActionPerformed
     public int getSelectedFolder(String folder_Name) {
@@ -1003,10 +1047,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         int folderID = 0;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1058,7 +1102,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         af.setVisible(true);
 
         if (af.isCreatedFolder() == true) {
-            folderIDList.clear();
             folderNameList.clear();
             getAccountFolders();
             jComboBox2.setSelectedIndex(jComboBox2.getItemCount() - 1);
@@ -1069,15 +1112,14 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
     public String getCurrent_Folder() {
         return Current_Folder;
     }
-    boolean didAdd = false;
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        if (didAdd == true) {
-            Current_Folder = (String) jComboBox2.getSelectedItem();
-        }
+
+        Current_Folder = (String) jComboBox2.getSelectedItem();
+
     }//GEN-LAST:event_formWindowClosing
 
-    ArrayList<Integer> folderIDList = new ArrayList<>();
     ArrayList<String> folderNameList = new ArrayList<>();
 
     private void getAccountFolders() {
@@ -1086,10 +1128,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         String folderName;
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1112,7 +1154,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
             while (rs.next()) {
                 folderID = rs.getInt("folder_Details_ID");
                 folderName = rs.getString("folder_Name");
-                folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
             stmt.close();
@@ -1136,8 +1177,8 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         String tempFolder = Current_Folder;
         jComboBox2.removeAllItems();
 
-        for (int i = 0; i < folderIDList.size(); i++) {
-            if (!folderIDList.isEmpty()) {
+        for (int i = 0; i < folderNameList.size(); i++) {
+            if (!folderNameList.isEmpty()) {
 
                 jComboBox2.addItem(folderNameList.get(i));
 

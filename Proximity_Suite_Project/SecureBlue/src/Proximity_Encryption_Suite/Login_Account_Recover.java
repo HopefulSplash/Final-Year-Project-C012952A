@@ -43,6 +43,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
      */
     public Login_Account_Recover() {
 
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -73,12 +74,12 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
-
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+
 
         //sets the default values for the buttons and fields
         recover_Username_Button.setEnabled(false);
@@ -357,10 +358,10 @@ public class Login_Account_Recover extends javax.swing.JFrame {
     private void reset_Password_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_Password_ButtonActionPerformed
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*
@@ -492,10 +493,10 @@ public class Login_Account_Recover extends javax.swing.JFrame {
     private void recover_Username_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recover_Username_ButtonActionPerformed
 
         /*
-         * declares and new instance of the Database class and then checks if the
+         * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
-        Database d = new Database();
+        Suite_Database d = new Suite_Database();
         d.startDatabase();
 
         /*

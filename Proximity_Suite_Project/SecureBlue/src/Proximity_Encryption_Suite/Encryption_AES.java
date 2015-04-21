@@ -53,6 +53,7 @@ public class Encryption_AES {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
             CipherOutputStream cos = new CipherOutputStream(os, cipher);
             doCopy(is, cos);
+            encrypted = true;
         }
     }
 

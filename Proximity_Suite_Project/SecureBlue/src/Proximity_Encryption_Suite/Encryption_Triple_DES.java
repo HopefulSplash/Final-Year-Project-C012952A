@@ -21,7 +21,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Encryption_Triple_DES {
 
-   
     boolean encrypted = false;
 
     public boolean isEncrypted() {
@@ -65,6 +64,8 @@ public class Encryption_Triple_DES {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, paramSpec);
             CipherOutputStream cos = new CipherOutputStream(os, cipher);
             doCopy(is, cos);
+            encrypted = true;
+
         }
     }
 

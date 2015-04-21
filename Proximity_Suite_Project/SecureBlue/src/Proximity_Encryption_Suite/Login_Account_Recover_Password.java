@@ -41,6 +41,7 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
     public Login_Account_Recover_Password(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
        
+        this.setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -71,15 +72,12 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
-
+        this.setLocationRelativeTo(this.getParent());
         /**
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-        
-        // changing the color of the background and setting up the buttons.
-        this.setBackground(Color.WHITE);
+
         create_Button.setEnabled(false);
         confirm_Password_Field.setEditable(false);
 

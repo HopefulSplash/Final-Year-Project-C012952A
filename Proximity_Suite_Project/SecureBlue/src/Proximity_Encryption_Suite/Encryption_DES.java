@@ -18,7 +18,6 @@ import javax.crypto.spec.IvParameterSpec;
 
 public class Encryption_DES {
 
-  
     boolean encrypted = false;
 
     public boolean isEncrypted() {
@@ -59,6 +58,8 @@ public class Encryption_DES {
             cipher.init(Cipher.DECRYPT_MODE, desKey, paramSpec);
             CipherOutputStream cos = new CipherOutputStream(os, cipher);
             doCopy(is, cos);
+            encrypted = true;
+
         }
     }
 

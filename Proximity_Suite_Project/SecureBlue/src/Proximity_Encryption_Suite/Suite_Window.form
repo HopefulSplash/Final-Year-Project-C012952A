@@ -367,7 +367,6 @@
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="proximity_Table_Button_Panel" max="32767" attributes="0"/>
-                  <Component id="proximity_Extras_Panel" max="32767" attributes="0"/>
                   <Component id="proximity_System_Panel" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -388,14 +387,13 @@
                   <Group type="102" attributes="0">
                       <Component id="proximity_Table_Button_Panel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="proximity_Extras_Panel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="proximity_System_Panel" max="32767" attributes="0"/>
+                      <Component id="proximity_System_Panel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="proximity_Table_Feature_Panel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="proximity_Table_Scroll_Pane" pref="547" max="32767" attributes="0"/>
+                      <Component id="proximity_Table_Scroll_Pane" pref="548" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
@@ -582,7 +580,7 @@
         <Component class="javax.swing.JTable" name="table_View">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="8" rowCount="0">
+              <Table columnCount="7" rowCount="0">
                 <Column editable="true" title="Select" type="java.lang.Boolean"/>
                 <Column editable="false" title="Name" type="java.lang.String"/>
                 <Column editable="false" title="Date modified" type="java.lang.String"/>
@@ -590,11 +588,10 @@
                 <Column editable="false" title="Size" type="java.lang.String"/>
                 <Column editable="false" title="Status" type="java.lang.Object"/>
                 <Column editable="true" title=" " type="java.lang.Object"/>
-                <Column editable="true" title="  " type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="autoResizeMode" postCode="table_View.getTableHeader().setReorderingAllowed(false);"/>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="model = table_View.getModel();&#xa;sorter = new TableRowSorter&lt;&gt;(model);&#xa;table_View.setRowSorter(sorter);" postCode="sorter.setSortable(6, false);&#xa;sorter.setSortable(7, false);">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="model = table_View.getModel();&#xa;sorter = new TableRowSorter&lt;&gt;(model);&#xa;table_View.setRowSorter(sorter);" postCode="sorter.setSortable(6, false);">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
@@ -649,54 +646,8 @@
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="table_ViewFocusLost"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="table_View.getColumn(&quot; &quot;).setCellRenderer(new ButtonRenderer());&#xa;    table_View.getColumn(&quot; &quot;).setCellEditor(&#xa;        new ButtonEditor(new JCheckBox()));&#xa;    &#xa;table_View.getColumn(&quot;  &quot;).setCellRenderer(new ButtonRenderer());&#xa;    table_View.getColumn(&quot;  &quot;).setCellEditor(&#xa;        new ButtonEditor(new JCheckBox()));&#xa;   &#xa;table_View.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());&#xa;table_View.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());&#xa;&#xa;    table_View.getColumnModel().getColumn(0).setMinWidth(40);&#xa;    table_View.getColumnModel().getColumn(0).setMaxWidth(40);&#xa;    &#xa;    table_View.getColumnModel().getColumn(2).setMinWidth(120);&#xa;    table_View.getColumnModel().getColumn(2).setMaxWidth(120);&#xa;    &#xa;    table_View.getColumnModel().getColumn(3).setMinWidth(55);&#xa;    table_View.getColumnModel().getColumn(3).setMaxWidth(55);&#xa;    &#xa;    table_View.getColumnModel().getColumn(4).setMinWidth(60);&#xa;    table_View.getColumnModel().getColumn(4).setMaxWidth(60);&#xa;&#xa;    table_View.getColumnModel().getColumn(5).setMaxWidth(60);&#xa;    table_View.getColumnModel().getColumn(5).setMinWidth(60);&#xa;    &#xa;    table_View.getColumnModel().getColumn(6).setMaxWidth(85);&#xa;    table_View.getColumnModel().getColumn(6).setMinWidth(85);&#xa;    &#xa;    table_View.getColumnModel().getColumn(7).setMaxWidth(85);&#xa;    table_View.getColumnModel().getColumn(7).setMinWidth(85);&#xa;    &#xa;    table_View.addMouseListener(new MouseAdapter() {&#xa;    public void mousePressed(MouseEvent me) {&#xa;        JTable table =(JTable) me.getSource();&#xa;        Point p = me.getPoint();&#xa;        int row = table.rowAtPoint(p);&#xa;        if (me.getClickCount() == 2) {&#xa;                  String fname;&#xa;                    int pos;&#xa;                    //date&#xa;&#xa;                    for (int i = 0; i &lt; filelists.size(); i++) {&#xa;                     &#xa;                        fname = filelists.get(i).getName();&#xa;                        pos = fname.lastIndexOf(&apos;.&apos;);&#xa;&#xa;                        if (pos &gt; 0) {&#xa;                            fname = fname.substring(0, pos);&#xa;&#xa;                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {&#xa;                                openFile(filelists.get(i));&#xa;&#xa;                            }&#xa;&#xa;                        } else {&#xa;&#xa;                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {&#xa;                                openFile(filelists.get(i));&#xa;&#xa;                            }&#xa;                        }&#xa;&#xa;                    }&#xa;        }&#xa;    }&#xa;});&#xa;    &#xa;TableCellRenderer rendererFromHeader = table_View.getTableHeader().getDefaultRenderer();&#xa;JLabel headerLabel = (JLabel) rendererFromHeader;&#xa;headerLabel.setHorizontalAlignment(JLabel.CENTER);&#xa;&#xa;DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;table_View.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;table_View.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );&#xa;&#xa;    &#xa;         for (int a = 0; a &lt; table_View.getColumnCount(); a++){&#xa;                     &#xa;                table_View.getColumnModel().getColumn(a).setResizable(false);&#xa;           &#xa;        }"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="table_View.getColumn(&quot; &quot;).setCellRenderer(new ButtonRenderer());&#xa;    table_View.getColumn(&quot; &quot;).setCellEditor(&#xa;        new ButtonEditor(new JCheckBox()));&#xa;       &#xa;table_View.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());&#xa;table_View.getColumnModel().getColumn(5).setCellRenderer(new ImageRenderer());&#xa;&#xa;    table_View.getColumnModel().getColumn(0).setMinWidth(40);&#xa;    table_View.getColumnModel().getColumn(0).setMaxWidth(40);&#xa;    &#xa;    table_View.getColumnModel().getColumn(2).setMinWidth(120);&#xa;    table_View.getColumnModel().getColumn(2).setMaxWidth(120);&#xa;    &#xa;    table_View.getColumnModel().getColumn(3).setMinWidth(55);&#xa;    table_View.getColumnModel().getColumn(3).setMaxWidth(55);&#xa;    &#xa;    table_View.getColumnModel().getColumn(4).setMinWidth(60);&#xa;    table_View.getColumnModel().getColumn(4).setMaxWidth(60);&#xa;&#xa;    table_View.getColumnModel().getColumn(5).setMaxWidth(60);&#xa;    table_View.getColumnModel().getColumn(5).setMinWidth(60);&#xa;    &#xa;    table_View.getColumnModel().getColumn(6).setMaxWidth(85);&#xa;    table_View.getColumnModel().getColumn(6).setMinWidth(85);&#xa;    &#xa;     &#xa;    table_View.addMouseListener(new MouseAdapter() {&#xa;    public void mousePressed(MouseEvent me) {&#xa;        JTable table =(JTable) me.getSource();&#xa;        Point p = me.getPoint();&#xa;        int row = table.rowAtPoint(p);&#xa;        if (me.getClickCount() == 2) {&#xa;                  String fname;&#xa;                    int pos;&#xa;                    //date&#xa;&#xa;                    for (int i = 0; i &lt; filelists.size(); i++) {&#xa;                     &#xa;                        fname = filelists.get(i).getName();&#xa;                        pos = fname.lastIndexOf(&apos;.&apos;);&#xa;&#xa;                        if (pos &gt; 0) {&#xa;                            fname = fname.substring(0, pos);&#xa;&#xa;                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {&#xa;                                openFile(filelists.get(i));&#xa;&#xa;                            }&#xa;&#xa;                        } else {&#xa;&#xa;                            if (fname.equals(table_View.getValueAt(table_View.getSelectedRow(), 1).toString().trim())) {&#xa;                                openFile(filelists.get(i));&#xa;&#xa;                            }&#xa;                        }&#xa;&#xa;                    }&#xa;        }&#xa;    }&#xa;});&#xa;    &#xa;TableCellRenderer rendererFromHeader = table_View.getTableHeader().getDefaultRenderer();&#xa;JLabel headerLabel = (JLabel) rendererFromHeader;&#xa;headerLabel.setHorizontalAlignment(JLabel.CENTER);&#xa;&#xa;DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;table_View.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;table_View.getColumnModel().getColumn(4).setCellRenderer( centerRenderer );&#xa;&#xa;    &#xa;         for (int a = 0; a &lt; table_View.getColumnCount(); a++){&#xa;                     &#xa;                table_View.getColumnModel().getColumn(a).setResizable(false);&#xa;           &#xa;        }"/>
           </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPanel" name="proximity_Extras_Panel">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-        </Property>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-            <EtchetBorder/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="extras_Shred_Button" pref="194" max="32767" attributes="0"/>
-                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="extras_Shred_Button" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JButton" name="extras_Shred_Button">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Proximity/graphic_Buttons/extras_Shred_Button.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Shred Files     "/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="extras_Shred_ButtonActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -753,6 +704,7 @@
         <Component class="javax.swing.JButton" name="table_Search_Clear_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="table_Search_Clear_ButtonActionPerformed"/>
@@ -766,9 +718,7 @@
         <Component class="javax.swing.JComboBox" name="table_Folder_ComboBox">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="No Folder Setup"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <Events>
@@ -858,8 +808,12 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-            <EtchetBorder/>
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Folder Details">
+              <Border PropertyName="innerBorder" info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                <EtchetBorder/>
+              </Border>
+            </TitledBorder>
           </Border>
         </Property>
       </Properties>
@@ -867,17 +821,17 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <Component id="jLabel1" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -887,7 +841,8 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel1"/>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value=" "/>
           </Properties>
         </Component>
       </SubComponents>
