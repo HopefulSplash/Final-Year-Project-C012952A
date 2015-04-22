@@ -424,6 +424,7 @@ public class Login_Account extends javax.swing.JFrame {
                         Suite_Window mWSameple = new Suite_Window(account_ID);
                         mWSameple.setVisible(true);
 
+                        this.dispose();
                     }
                     
                 }

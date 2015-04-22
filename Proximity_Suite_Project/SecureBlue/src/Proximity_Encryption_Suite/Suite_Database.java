@@ -120,7 +120,6 @@ public class Suite_Database {
                     + "(\n"
                     + "device_Details_ID int  NOT NULL AUTO_INCREMENT,\n"
                     + "device_Name varchar (80) NOT NULL,\n"
-                    + "device_Password binary (20) NOT NULL,\n"
                     + "device_Address varchar (12) NOT NULL,\n"
                     + "device_Type varchar (40) NOT NULL,\n"
                     + "device_Description varchar (255) NOT NULL,\n"

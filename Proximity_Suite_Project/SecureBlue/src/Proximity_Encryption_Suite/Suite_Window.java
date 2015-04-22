@@ -145,6 +145,8 @@ public class Suite_Window extends javax.swing.JFrame {
         status_Device_Label = new javax.swing.JLabel();
         proximity_System_Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         proximity_Menu = new javax.swing.JMenuBar();
         menu_Home = new javax.swing.JMenu();
         home_Login = new javax.swing.JMenuItem();
@@ -554,8 +556,11 @@ public class Suite_Window extends javax.swing.JFrame {
         proximity_System_Panel.setBackground(new java.awt.Color(255, 255, 255));
         proximity_System_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Folder Details"));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText(" ");
+
+        jLabel2.setText(" ");
+
+        jLabel3.setText(" ");
 
         javax.swing.GroupLayout proximity_System_PanelLayout = new javax.swing.GroupLayout(proximity_System_Panel);
         proximity_System_Panel.setLayout(proximity_System_PanelLayout);
@@ -563,15 +568,21 @@ public class Suite_Window extends javax.swing.JFrame {
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         proximity_System_PanelLayout.setVerticalGroup(
             proximity_System_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(proximity_System_PanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addGap(6, 6, 6))
         );
 
         proximity_Menu.setBorder(null);
@@ -901,7 +912,6 @@ public class Suite_Window extends javax.swing.JFrame {
             }
 
         } else if (filesRemove.isEmpty()) {
-  
 
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
@@ -919,6 +929,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         for (int i = 0; i < table_View.getRowCount(); i++) {
             table_View.setValueAt(true, i, 0);
+
 
         }
 
@@ -1331,6 +1342,10 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void table_Folder_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Folder_ComboBoxActionPerformed
         // TODO add your handling code here:
+
+        int encryptCounter = 0;
+        int decryptCounter = 0;
+
         table_Search_Field.setText("");
         for (int i = 0; i < table_View.getRowCount(); i++) {
             table_View.setValueAt(false, i, 0);
@@ -1341,6 +1356,19 @@ public class Suite_Window extends javax.swing.JFrame {
 
         getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
 
+        for (int i = 0; i < table_View.getRowCount(); i++) {
+
+            if (table_View.getValueAt(i, 5).equals("Encrypted")) {
+                encryptCounter++;
+            } else if (table_View.getValueAt(i, 5).equals("Decrypted")) {
+                {
+                    decryptCounter++;
+                }
+            }
+        }
+
+        jLabel2.setText("Encrypted Files: " + encryptCounter);
+        jLabel3.setText("Decrypted Files: " + decryptCounter);
         jLabel1.setText("Total Files: " + table_View.getRowCount());
 
 
@@ -1569,6 +1597,8 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JMenuItem home_Logout;
     private javax.swing.JPopupMenu.Separator home_Separator;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu menu_Account;
     private javax.swing.JMenu menu_Device;
     private javax.swing.JMenu menu_Folder;

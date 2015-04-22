@@ -56,7 +56,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
     class Task extends SwingWorker<Void, Void> {
 
-        int progress = 0;
+      int counter =0;
         Object o1;
         String status;
 
@@ -85,7 +85,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
          */
         @Override
         public Void doInBackground() {
-            progress = 0;
+               counter  = 0;
             progressBar.setValue(0);
 
             accept_Button.setEnabled(false);
@@ -96,15 +96,14 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
             setProgress(0);
 
             if ("accept".equals(status)) {
-                while (progress < filelist.size()) {
+                while (   counter != filelist.size()) {
                     progressBar.setMaximum(filelist.size());
                     progressBar.setIndeterminate(true);
 
                     //Sleep for up to one second.
                     for (int i = 0; i < filelist.size(); i++) {
                         encryptFiles(filelist.get(i));
-                        progress += 1;
-                        setProgress(progress);
+                        counter++;
                     }
 
                 }
