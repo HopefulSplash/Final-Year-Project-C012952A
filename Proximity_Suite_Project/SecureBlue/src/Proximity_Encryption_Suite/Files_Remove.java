@@ -2,6 +2,7 @@ package Proximity_Encryption_Suite;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -77,7 +78,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
-            int counter =0;
+            int counter = 0;
             progress = 0;
             progressBar.setValue(0);
             progressBar.setMaximum(filelist.size());
@@ -85,7 +86,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             cancel_Button.setEnabled(false);
             method.setEnabled(false);
             jComboBox3.setEnabled(false);
-           
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             if ("accept".equals(status)) {
                 while (counter != filelist.size()) {
 
@@ -95,8 +96,6 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
                     for (int i = 0; i < filelist.size(); i++) {
                         removeFiles(filelist.get(i));
                         counter++;
-                        System.out.println(filelist.size());
-                        System.out.println(i);
                     }
 
                 }

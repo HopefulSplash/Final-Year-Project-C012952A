@@ -126,6 +126,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         confirm_Answer_Field = new javax.swing.JTextField();
         confirm_Answer_Label = new javax.swing.JLabel();
         answer_Status_Label = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -184,12 +185,10 @@ public class Acccount_Management extends javax.swing.JDialog {
         );
         button_PanelLayout.setVerticalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(button_PanelLayout.createSequentialGroup()
-                .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancel_Button)
-                    .addComponent(apply_Button)
-                    .addComponent(accept_Button))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(cancel_Button)
+                .addComponent(apply_Button)
+                .addComponent(accept_Button))
         );
 
         account_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
@@ -394,6 +393,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(account_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(account_Recovery_Panel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -406,7 +406,9 @@ public class Acccount_Management extends javax.swing.JDialog {
                 .addComponent(account_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(account_Recovery_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -881,6 +883,8 @@ public class Acccount_Management extends javax.swing.JDialog {
 
         String username = username_Field.getText().trim();
         String passwordSha1 = null;
+                String tempPasswordSha1 = null;
+
         String email = email_Field.getText().trim();
         String question = question_ComboBox.getSelectedItem().toString();
         String answer = answer_Field.getText().trim();
@@ -926,7 +930,6 @@ public class Acccount_Management extends javax.swing.JDialog {
         // if the user has clicked confirm.
         if (n == 0) {
 
-            System.out.println(validPass + "" + validEmail + validUser + validAnswer);
             //checks if the data the user has entered is correct before storing it in the database.
             if (validPass == true && validEmail == true && validUser == true && validAnswer && true) {
                 try {
@@ -945,6 +948,14 @@ public class Acccount_Management extends javax.swing.JDialog {
                     updateFolder.setString(5, answer);
                     updateFolder.setInt(6, accountID);
                     updateFolder.executeUpdate();
+
+                   
+
+                    if (!passwordSha1.equals(tempPass)) {
+                       Encryption_Script des = new Encryption_Script( tempPass,  "Decrypt", accountID);
+                         Encryption_Script ees = new Encryption_Script( passwordSha1,  "Encrypt", accountID);
+                    }
+                        
 
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
@@ -1235,6 +1246,7 @@ public class Acccount_Management extends javax.swing.JDialog {
     private javax.swing.JLabel email_Label;
     private javax.swing.JLabel email_Status_Label;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JPasswordField new_Password_Field;
     private javax.swing.JLabel password_Status_Label;
     private javax.swing.JLabel password_Strength_Label;

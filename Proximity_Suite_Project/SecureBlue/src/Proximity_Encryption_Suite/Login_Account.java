@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  * The Login_Account.Java Class implements an application that allows a users
@@ -43,7 +44,7 @@ public class Login_Account extends javax.swing.JFrame {
      */
     public Login_Account() {
 
-         this.getContentPane().setBackground(Color.WHITE);
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -79,6 +80,50 @@ public class Login_Account extends javax.swing.JFrame {
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+
+        Task task = new Task();
+        task.setStatus("Setup");
+        task.execute();
+    }
+
+    class Task extends SwingWorker<Void, Void> {
+
+        int counter = 0;
+        String status;
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        @Override
+        public Void doInBackground() {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            counter = 0;
+
+            //Initialize progress property.
+            setProgress(0);
+
+            while (counter != 1) {
+
+                if ("Setup".equals(status)) {
+                    Suite_Database d = new Suite_Database();
+                    d.startDatabase();
+                    counter++;
+
+                }
+            }
+
+            return null;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            setCursor(null); //turn off the wait cursor
+
+        }
 
     }
 
@@ -355,7 +400,6 @@ public class Login_Account extends javax.swing.JFrame {
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -426,7 +470,7 @@ public class Login_Account extends javax.swing.JFrame {
 
                         this.dispose();
                     }
-                    
+
                 }
             }
         } catch (SQLException se) {

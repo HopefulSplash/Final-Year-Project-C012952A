@@ -80,7 +80,6 @@ public class Login_Account_Recover extends javax.swing.JFrame {
          */
         this.setIconImages(icons);
 
-
         //sets the default values for the buttons and fields
         recover_Username_Button.setEnabled(false);
         reset_Password_Button.setEnabled(false);
@@ -356,40 +355,36 @@ public class Login_Account_Recover extends javax.swing.JFrame {
      * @param evt
      */
     private void reset_Password_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_Password_ButtonActionPerformed
-
+        int accountID = 0;
+        String tempPass = null;
         /*
          * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
         d.startDatabase();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
         Statement stmt = null;
-
         try {
             //Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
             /*
              * creates and executes an SQL statement to be run against the database.
              */
             stmt = conn.createStatement();
-            String sql = "SELECT account_Details_ID FROM Account_Details "
+            String sql = "SELECT account_Details_ID, account_Password FROM Account_Details "
                     + "WHERE account_Username = '" + username_Field.getText().trim()
                     + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
                     + "' AND account_Answer = '" + answer_Field.getText().trim() + "';";
-
             /*
              * extracts the data from the results of the SQL statment.
              */
             try (ResultSet rs = stmt.executeQuery(sql)) {
                 if (!rs.isBeforeFirst()) {
-
                     // a popup that will appear when the information a user has entered is incorrect.
                     Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                     JOptionPane.showMessageDialog(this,
@@ -397,19 +392,19 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                             "Password Reset Error",
                             JOptionPane.INFORMATION_MESSAGE,
                             crossIcon);
-
                 } else {
-
+                    while (rs.next()) {
+                        accountID = rs.getInt("account_Details_ID");
+                        tempPass = rs.getString("account_Password");
+                    }
                     // transfers the data to new window so the user can enter the desired password.
                     Login_Account_Recover_Password resetPassword = new Login_Account_Recover_Password((Frame) this.getParent(), true);
                     resetPassword.setAnswer(answer_Field.getText().trim());
                     resetPassword.setQuestion(question_ComboBox.getSelectedItem().toString());
                     resetPassword.setUsername(username_Field.getText().trim());
-
                     resetPassword.setVisible(true);
-
+                    
                     if (resetPassword.isShouldAdd() == true) {
-
                         /*
                          * creates and executes an SQL statement to insert into the database.
                          */
@@ -418,7 +413,12 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                                 + "SET account_Password = '" + resetPassword.getPasswordSha1() + "' WHERE account_Username = '" + username_Field.getText().trim()
                                 + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
                                 + "' AND account_Answer = '" + answer_Field.getText().trim() + "';";
-                        stmt.executeUpdate(sql);
+                        stmt.executeUpdate(sql); 
+                        
+                        if (!resetPassword.getPasswordSha1().equals(tempPass)) {
+                            Encryption_Script des = new Encryption_Script(tempPass, "Decrypt", accountID);
+                            Encryption_Script ees = new Encryption_Script(resetPassword.getPasswordSha1(), "Encrypt", accountID);
+                        }
 
                         // a popup that will appear when the information a user has entered is correct showing that the data has changed.
                         Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
@@ -716,7 +716,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
      * @param evt
      */
     private void answer_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_answer_FieldCaretUpdate
-       
+
 //checks if the answers the user has given match eachother.
         if (answer_Field.getText().length() != 0) {
             reset_Password_Button.setEnabled(true);
@@ -726,8 +726,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
          */
         else if (answer_Field.getText().length() == 0) {
             reset_Password_Button.setEnabled(false);
-        }
-        else{
+        } else {
             reset_Password_Button.setEnabled(false);
         }
 

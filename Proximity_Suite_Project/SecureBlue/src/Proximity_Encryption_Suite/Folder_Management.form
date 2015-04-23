@@ -101,14 +101,12 @@
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="description_Label" alignment="1" pref="99" max="32767" attributes="0"/>
                                   <Component id="type_Label" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="content_Label" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="description_Scroll_Pane" alignment="0" max="32767" attributes="0"/>
+                              <Component id="description_Scroll_Pane" alignment="0" pref="465" max="32767" attributes="0"/>
                               <Component id="type_ComboBox" alignment="1" max="32767" attributes="0"/>
-                              <Component id="content_Table_Scroll_Pane" pref="465" max="32767" attributes="0"/>
                               <Component id="created_Field" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -143,12 +141,7 @@
                       <Component id="description_Label" min="-2" max="-2" attributes="0"/>
                       <Component id="description_Scroll_Pane" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="content_Label" min="-2" max="-2" attributes="0"/>
-                      <Component id="content_Table_Scroll_Pane" min="-2" pref="279" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="created_Label" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="created_Field" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -220,11 +213,6 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="content_Label">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Folder Contents: "/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="name_Field">
           <Events>
             <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="name_FieldCaretUpdate"/>
@@ -263,42 +251,6 @@
                 </Property>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JScrollPane" name="content_Table_Scroll_Pane">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="verticalScrollBarPolicy" type="int" value="22"/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTable" name="content_Table">
-              <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="0">
-                    <Column editable="false" title="Name" type="java.lang.String"/>
-                    <Column editable="false" title="Type" type="java.lang.String"/>
-                    <Column editable="false" title="Size" type="java.lang.String"/>
-                    <Column editable="false" title="Status" type="java.lang.String"/>
-                  </Table>
-                </Property>
-                <Property name="fillsViewportHeight" type="boolean" value="true"/>
-                <Property name="focusable" type="boolean" value="false"/>
-                <Property name="rowHeight" type="int" value="23"/>
-                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                </Property>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="content_Table.getTableHeader().setReorderingAllowed(false);&#xa;&#xa;&#xa;content_Table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());&#xa;content_Table.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());&#xa;    &#xa;       content_Table.getColumnModel().getColumn(1).setMinWidth(60);&#xa;    content_Table.getColumnModel().getColumn(1).setMaxWidth(60);&#xa;    &#xa;    content_Table.getColumnModel().getColumn(2).setMinWidth(60);&#xa;    content_Table.getColumnModel().getColumn(2).setMaxWidth(60);&#xa;    &#xa;    content_Table.getColumnModel().getColumn(3).setMinWidth(60);&#xa;    content_Table.getColumnModel().getColumn(3).setMaxWidth(60);&#xa;    &#xa;TableCellRenderer rendererFromHeader = content_Table.getTableHeader().getDefaultRenderer();&#xa;        JLabel headerLabel = (JLabel) rendererFromHeader;&#xa;        headerLabel.setHorizontalAlignment(JLabel.CENTER);&#xa;&#xa;        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();&#xa;centerRenderer.setHorizontalAlignment( JLabel.CENTER );&#xa;content_Table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );&#xa;        &#xa;        &#xa;                 for (int a = 0; a &lt; content_Table.getColumnCount(); a++){&#xa;                     &#xa;                content_Table.getColumnModel().getColumn(a).setResizable(false);&#xa;           &#xa;        }&#xa;model = content_Table.getModel();&#xa;sorter = new TableRowSorter&lt;&gt;(model);&#xa;content_Table.setRowSorter(sorter);"/>
-              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

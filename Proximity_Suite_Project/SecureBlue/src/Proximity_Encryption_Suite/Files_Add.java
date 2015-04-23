@@ -94,7 +94,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
-            
+            setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
              int counter = 0;
             progress = 0;
             progressBar.setValue(0);
@@ -398,7 +398,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 pStmt.setInt(2, 0);
 
                 pStmt.executeUpdate();
-                System.out.println(pStmt);
                 pStmt.close();
                 conn.close();
 
@@ -443,7 +442,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 pStmt.setInt(2, FileID);
 
                 pStmt.executeUpdate();
-                System.out.println(pStmt);
 
                 pStmt.close();
                 conn.close();
@@ -830,7 +828,15 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+boolean didAdd = false;
 
+    public boolean isDidAdd() {
+        return didAdd;
+    }
+
+    public void setDidAdd(boolean didAdd) {
+        this.didAdd = didAdd;
+    }
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
         if (!listModel.isEmpty()) {
@@ -846,7 +852,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
             // if the user has clicked confirm.
             if (n == 0) {
-
+                didAdd = true;
                 task = new Task();
                 task.setStatus("accept");
                 task.addPropertyChangeListener(this);

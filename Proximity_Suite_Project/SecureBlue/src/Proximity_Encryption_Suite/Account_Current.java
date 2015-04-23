@@ -39,7 +39,7 @@ public class Account_Current extends javax.swing.JDialog {
      */
     public Account_Current(java.awt.Frame parent, boolean modal, int account_ID) {
 
-     this.getContentPane().setBackground(Color.WHITE);
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -306,6 +306,7 @@ public class Account_Current extends javax.swing.JDialog {
 
     private void ok_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ok_ButtonActionPerformed
         // TODO add your handling code here:
+
         this.dispose();
     }//GEN-LAST:event_ok_ButtonActionPerformed
 

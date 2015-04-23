@@ -2,7 +2,9 @@ package Proximity_Encryption_Suite;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -48,6 +50,7 @@ import javax.swing.table.TableRowSorter;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.SwingWorker;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -59,6 +62,74 @@ import javax.swing.Icon;
  * @author TheThoetha
  */
 public class Suite_Window extends javax.swing.JFrame {
+
+    class Task extends SwingWorker<Void, Void> {
+
+        int counter = 0;
+        Object o1;
+        String status;
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public void setO1(Object o1) {
+            this.o1 = o1;
+        }
+
+        @Override
+        public Void doInBackground() {
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            counter = 0;
+            progressBar.setValue(0);
+
+            //Initialize progress property.
+            setProgress(0);
+
+            while (counter != 1) {
+                progressBar.setIndeterminate(true);
+
+                if ("Login".equals(status)) {
+
+                    //add login script
+                    //if (loginType == "Account"){
+                    //}
+                    //else if (loginType == "Device"){}
+                    getAccountDetails();
+                    counter++;
+
+                } else if ("Logout".equals(status)) {
+                    //add logout script
+                    counter++;
+                } else if ("Load".equals(status)) {
+
+                }
+            }
+
+            return null;
+        }
+
+        public int getCounter() {
+            return counter;
+        }
+
+        public void setCounter(int counter) {
+            this.counter = counter;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            setCursor(null); //turn off the wait cursor
+
+            progressBar.setIndeterminate(false);
+            progressBar.setValue(0);
+
+        }
+
+    }
 
     /**
      * Creates new form MainWindowSample
@@ -109,10 +180,384 @@ public class Suite_Window extends javax.swing.JFrame {
         status_Session_Label.setText("Session Time: 00:00:00 ");
 
         accountID = 1;
-        filelists.clear();
-        getAccountDetails();
+        Task task = new Task();
+        task.setStatus("Login");
+        task.execute();
 
     }
+
+    public void getAccountDetails() {
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            stmt = conn.createStatement();
+            String sql = "SELECT account_Username, account_Password, account_Email, account_Question, account_Answer FROM Account_Details "
+                    + "WHERE account_Details_ID = '" + accountID + "';";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                accountName = rs.getString("account_Username");
+                accountPass = rs.getString("account_Password");
+            }
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        account_Current.setText(accountName);
+
+        getAccountFolders();
+    }
+
+    ArrayList<Integer> folderIDList = new ArrayList<>();
+    ArrayList<String> folderNameList = new ArrayList<>();
+
+    private void getAccountFolders() {
+
+        int folderID;
+        String folderName;
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            stmt = conn.createStatement();
+            String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
+                    + "WHERE account_Details_ID = " + accountID + ";";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                folderID = rs.getInt("folder_Details_ID");
+                folderName = rs.getString("folder_Name");
+                folderIDList.add(folderID);
+                folderNameList.add(folderName);
+            }
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+
+        updateFolderListGUI();
+    }
+
+    private void updateFolderListGUI() {
+
+        table_Folder_ComboBox.removeAllItems();
+
+        for (int i = 0; i < folderIDList.size(); i++) {
+            if (!folderIDList.isEmpty()) {
+
+                table_Folder_ComboBox.addItem(folderNameList.get(i));
+                folder_Current.setText(table_Folder_ComboBox.getSelectedItem().toString());
+            }
+        }
+
+    }
+
+    private void getFolderFiles(String folderName) {
+
+        ArrayList<Integer> fileIDList = new ArrayList<>();
+
+        int folderID = 0;
+        int fileID = 0;
+
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "SELECT folder_Details_ID FROM Folder_Details WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
+
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, folderName);
+
+            ResultSet rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                folderID = rs.getInt("folder_Details_ID");
+            }
+
+            stmt = conn.createStatement();
+            sql = "SELECT file_Details_ID FROM Folder_File_List "
+                    + "WHERE folder_Details_ID = " + folderID + ";";
+
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                fileID = rs.getInt("file_Details_ID");
+                fileIDList.add(fileID);
+            }
+
+            getFolderFiles1(fileIDList);
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+    }
+
+    public void getFolderFiles1(ArrayList<Integer> fileIDList) {
+        ArrayList<String> fileDirList = new ArrayList<>();
+        ArrayList<Boolean> fileStatusList = new ArrayList<>();
+
+        String fileDir;
+        Boolean fileStatus;
+
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+        d.startDatabase();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            for (int i = 0; i < fileIDList.size(); i++) {
+
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Directory,  file_EStatus FROM File_Details "
+                        + "WHERE file_Details_ID = " + fileIDList.get(i) + ";";
+
+                ResultSet rs = stmt.executeQuery(sql);
+                rs = stmt.executeQuery(sql);
+
+                while (rs.next()) {
+                    fileDir = rs.getString("file_Directory");
+                    fileStatus = rs.getBoolean("file_EStatus");
+
+                    if (new File(fileDir).exists()) {
+                        fileDirList.add(fileDir);
+                        fileStatusList.add(fileStatus);
+                    } else {
+                        removeFile(fileIDList.get(i));
+                    }
+                }
+            }
+
+            updateTableContents(fileDirList, fileStatusList);
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+
+        }
+    }
+
+    public void removeFile(int fileID) {
+
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+
+            // Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ?;";
+            PreparedStatement pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, fileID);
+            pStmt.executeUpdate();
+            sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, fileID);
+            pStmt.executeUpdate();
+            pStmt.close();
+            conn.close();
+
+            pStmt.close();
+            conn.close();
+
+        } catch (SQLException | ClassNotFoundException se) {
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                }
+            }
+
+        }
+
+    }
+
+    public void updateTableContents(ArrayList<String> fileDirList, ArrayList<Boolean> fileStatusList) {
+
+        File_Loading_Thread myRunnable = null;
+
+        File file;
+        Boolean select;
+        String name;
+        String fname;
+        String date;
+        int pos;
+        String type;
+        String fileSize;
+        String status;
+
+        if (!fileDirList.isEmpty()) {
+            Task task = new Task();
+            task.setO1(this);
+            task.execute();
+
+            for (String fileDirList1 : fileDirList) {
+
+                myRunnable = new File_Loading_Thread((Suite_Window) this, new File(fileDirList1));
+                myRunnable.setResultFiles(filelists);
+                Thread t = new Thread(myRunnable);
+                t.start();
+                while (t.isAlive()) {
+                    task.setCounter(0);
+                }
+
+            }
+            task.setCounter(1);
+
+            DefaultTableModel dw = (DefaultTableModel) table_View.getModel();
+
+            for (int i = 0; i < filelists.size(); i++) {
+
+                file = filelists.get(i);
+
+                //file name
+                fname = file.getName();
+                //date
+                date = DateFormat.getDateTimeInstance().format(file.lastModified());
+
+                //file extension
+                pos = fname.lastIndexOf('.');
+                if (pos > 0) {
+                    type = fname.substring(pos);
+                    name = fname.substring(0, pos);
+
+                } else {
+                    type = fname;
+                    name = file.getName();
+                }
+
+                // size
+                fileSize = getFileSize(file.length());
+
+                if (fileStatusList.get(i).equals(false)) {
+                    status = "Decrypted";
+                } else {
+                    status = "Encrypted";
+                }
+
+                dw.addRow(new Object[]{false, " " + name, date, type, fileSize, status, "Open"});
+            }
+        }
+
+    }
+
+    public String getFileSize(double fileLength) {
+        int unitSize = 1024;
+        if (fileLength < unitSize) {
+            return fileLength + " B";
+        }
+        int exp = (int) (Math.log(fileLength) / Math.log(unitSize));
+        char pre = "KMGTPE".charAt(exp - 1);
+
+        String s = String.format(" %sB", pre);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        double we = fileLength / Math.pow(unitSize, exp);
+
+        String ss = df.format(we) + s;
+
+        return ss;
+    }
+
+    ArrayList<File> filelists = new ArrayList();
+
+    private int accountID;
+    private String accountName;
+    private String accountPass;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,6 +592,8 @@ public class Suite_Window extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        progressBar = new javax.swing.JProgressBar();
         proximity_Menu = new javax.swing.JMenuBar();
         menu_Home = new javax.swing.JMenu();
         home_Login = new javax.swing.JMenuItem();
@@ -219,6 +666,7 @@ public class Suite_Window extends javax.swing.JFrame {
         table_Select_Button.setBackground(new java.awt.Color(255, 255, 255));
         table_Select_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Buttons/table_Select_Button.png"))); // NOI18N
         table_Select_Button.setText("Select All      ");
+        table_Select_Button.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         table_Select_Button.setFocusPainted(false);
         table_Select_Button.setIconTextGap(6);
         table_Select_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -558,8 +1006,10 @@ public class Suite_Window extends javax.swing.JFrame {
 
         jLabel1.setText(" ");
 
+        jLabel2.setForeground(new java.awt.Color(51, 153, 0));
         jLabel2.setText(" ");
 
+        jLabel3.setForeground(new java.awt.Color(153, 51, 0));
         jLabel3.setText(" ");
 
         javax.swing.GroupLayout proximity_System_PanelLayout = new javax.swing.GroupLayout(proximity_System_Panel);
@@ -583,6 +1033,22 @@ public class Suite_Window extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(6, 6, 6))
+        );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Status"));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(progressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         proximity_Menu.setBorder(null);
@@ -826,7 +1292,8 @@ public class Suite_Window extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(proximity_Table_Button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(proximity_System_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(proximity_System_Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(proximity_Table_Scroll_Pane)
@@ -843,7 +1310,8 @@ public class Suite_Window extends javax.swing.JFrame {
                         .addComponent(proximity_Table_Button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(proximity_System_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(proximity_Table_Feature_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -863,16 +1331,16 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void table_Add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Add_ButtonActionPerformed
         // TODO add your handling code here:
-
         Files_Add aw = new Files_Add(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         aw.setVisible(true);
+
+        String fodler = aw.getCurrent_Folder();
 
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
         getAccountFolders();
         table_Folder_ComboBox.setSelectedItem(aw.getCurrent_Folder());
-
 
     }//GEN-LAST:event_table_Add_ButtonActionPerformed
 
@@ -881,13 +1349,14 @@ public class Suite_Window extends javax.swing.JFrame {
     private void table_Remove_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Remove_ButtonActionPerformed
         // TODO add your handling code here:
 
-        table_Search_Field.setText("");
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesRemove.clear();
 
-        for (int i = 0; i < table_View.getRowCount(); i++) {
+        DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
 
-            if (table_View.getValueAt(i, 0).equals(true)) {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+
+            if (tableModel.getValueAt(i, 0).equals(true)) {
 
                 filesRemove.add(filelists.get(i));
             }
@@ -900,8 +1369,8 @@ public class Suite_Window extends javax.swing.JFrame {
             aw.setVisible(true);
 
             if (aw.isDidAdd()) {
-                for (int i = 0; i < table_View.getRowCount(); i++) {
-                    table_View.setValueAt(false, i, 0);
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    tableModel.setValueAt(false, i, 0);
 
                 }
                 folderIDList.clear();
@@ -909,6 +1378,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 clearTableFiles();
                 getAccountFolders();
                 table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
             }
 
         } else if (filesRemove.isEmpty()) {
@@ -927,9 +1397,11 @@ public class Suite_Window extends javax.swing.JFrame {
     private void table_Select_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Select_ButtonActionPerformed
         // TODO add your handling code here:
 
-        for (int i = 0; i < table_View.getRowCount(); i++) {
-            table_View.setValueAt(true, i, 0);
+        DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
 
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+
+            tableModel.setValueAt(true, i, 0);
 
         }
 
@@ -954,12 +1426,17 @@ public class Suite_Window extends javax.swing.JFrame {
         this.dispose();
         Login_Account als = new Login_Account();
         als.setVisible(true);
+
+        Task task = new Task();
+        task.setStatus("Logout");
+
     }//GEN-LAST:event_home_LogoutActionPerformed
 
     private void home_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_ExitActionPerformed
         // TODO add your handling code here:
 
-        //close script
+        Task task = new Task();
+        task.setStatus("Logout");
         System.exit(0);
     }//GEN-LAST:event_home_ExitActionPerformed
 
@@ -993,10 +1470,13 @@ public class Suite_Window extends javax.swing.JFrame {
     private void table_Deselect_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Deselect_ButtonActionPerformed
         // TODO add your handling code here:
 
-        for (int i = 0; i < table_View.getRowCount(); i++) {
-            table_View.setValueAt(false, i, 0);
+        DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
+
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            tableModel.setValueAt(false, i, 0);
 
         }
+
     }//GEN-LAST:event_table_Deselect_ButtonActionPerformed
 
     private void table_Search_Clear_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Search_Clear_ButtonActionPerformed
@@ -1025,6 +1505,7 @@ public class Suite_Window extends javax.swing.JFrame {
         getAccountFolders();
         table_Folder_ComboBox.setSelectedIndex(tempFolder);
 
+
     }//GEN-LAST:event_folder_CurrentActionPerformed
 
     private void folder_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CreateActionPerformed
@@ -1038,6 +1519,7 @@ public class Suite_Window extends javax.swing.JFrame {
             clearTableFiles();
             getAccountFolders();
             table_Folder_ComboBox.setSelectedIndex(table_Folder_ComboBox.getItemCount() - 1);
+
         } else {
         }
     }//GEN-LAST:event_folder_CreateActionPerformed
@@ -1063,6 +1545,7 @@ public class Suite_Window extends javax.swing.JFrame {
             clearTableFiles();
             getAccountFolders();
             table_Folder_ComboBox.setSelectedItem(mf.getCurrentFolder());
+
         } else {
         }
     }//GEN-LAST:event_folder_ManageActionPerformed
@@ -1097,18 +1580,17 @@ public class Suite_Window extends javax.swing.JFrame {
         Delete_Folder md = new Delete_Folder(this, true, accountID);
         md.setVisible(true);
 
-        //if (md.didDelete()== true) {
-        folderIDList.clear();
-        folderNameList.clear();
-        clearTableFiles();
-        getAccountFolders();
-        table_Folder_ComboBox.setSelectedIndex(0);
-        //} else {
-        //}
+        if (md.isDidDelete() == true) {
+
+            folderIDList.clear();
+            folderNameList.clear();
+            clearTableFiles();
+            getAccountFolders();
+            table_Folder_ComboBox.setSelectedIndex(0);
+
+        }
 
     }//GEN-LAST:event_folder_DeleteActionPerformed
-
-    ArrayList<File> filesShred = new ArrayList();
 
 
     private void home_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LoginActionPerformed
@@ -1116,7 +1598,10 @@ public class Suite_Window extends javax.swing.JFrame {
         Login_Account mWSameple = new Login_Account();
         mWSameple.setVisible(true);
 
-        //LOGOUT SCRIPT
+        Task task = new Task();
+        task.setStatus("Logout");
+
+        //pop dialog lock screen
         this.dispose();
 
     }//GEN-LAST:event_home_LoginActionPerformed
@@ -1126,14 +1611,15 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void table_Encrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Encrypt_ButtonActionPerformed
         // TODO add your handling code here:
-        table_Search_Field.setText("");
+
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesEncrypt.clear();
         filesAlreadyEncrypt.clear();
 
+        DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
+
         String fname;
         int pos;
-        //date
 
         for (int i = 0; i < filelists.size(); i++) {
 
@@ -1143,23 +1629,23 @@ public class Suite_Window extends javax.swing.JFrame {
             if (pos > 0) {
                 fname = fname.substring(0, pos);
 
-                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
+                if (fname.equals(tableModel.getValueAt(i, 1).toString().trim())) {
 
-                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+                    if (tableModel.getValueAt(i, 0).equals(true) && tableModel.getValueAt(i, 5).equals("Decrypted")) {
 
                         filesEncrypt.add(filelists.get(i));
-                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+                    } else if (tableModel.getValueAt(i, 0).equals(true) && tableModel.getValueAt(i, 5).equals("Encrypted")) {
                         filesAlreadyEncrypt.add(filelists.get(i));
                     }
                 }
 
             } else {
 
-                if (fname.equals(table_View.getValueAt(i, 1).toString().trim())) {
-                    if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Decrypted")) {
+                if (fname.equals(tableModel.getValueAt(i, 1).toString().trim())) {
+                    if (tableModel.getValueAt(i, 0).equals(true) && tableModel.getValueAt(i, 5).equals("Decrypted")) {
 
                         filesEncrypt.add(filelists.get(i));
-                    } else if (table_View.getValueAt(i, 0).equals(true) && table_View.getValueAt(i, 5).equals("Encrypted")) {
+                    } else if (tableModel.getValueAt(i, 0).equals(true) && tableModel.getValueAt(i, 5).equals("Encrypted")) {
                         filesAlreadyEncrypt.add(filelists.get(i));
                     }
                 }
@@ -1169,11 +1655,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
         if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
 
-            Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
+            Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt, accountPass);
             ew.setVisible(true);
             if (ew.isDidAdd()) {
-                for (int i = 0; i < table_View.getRowCount(); i++) {
-                    table_View.setValueAt(false, i, 0);
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    tableModel.setValueAt(false, i, 0);
 
                 }
                 folderIDList.clear();
@@ -1181,6 +1667,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 clearTableFiles();
                 getAccountFolders();
                 table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
             }
 
         } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
@@ -1196,11 +1683,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
             if (n == 0) {
 
-                Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt);
+                Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt, accountPass);
                 ew.setVisible(true);
                 if (ew.isDidAdd()) {
-                    for (int i = 0; i < table_View.getRowCount(); i++) {
-                        table_View.setValueAt(false, i, 0);
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        tableModel.setValueAt(false, i, 0);
 
                     }
                     folderIDList.clear();
@@ -1208,6 +1695,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     clearTableFiles();
                     getAccountFolders();
                     table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
                 }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
@@ -1279,7 +1767,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
 
-            Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt);
+            Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt, accountPass);
             ew.setVisible(true);
             if (ew.isDidAdd()) {
                 for (int i = 0; i < table_View.getRowCount(); i++) {
@@ -1291,6 +1779,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 clearTableFiles();
                 getAccountFolders();
                 table_Folder_ComboBox.setSelectedIndex(tempFolder);
+
             }
 
         } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
@@ -1306,18 +1795,20 @@ public class Suite_Window extends javax.swing.JFrame {
 
             if (n == 0) {
 
-                Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt);
+                Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt, accountPass);
                 ew.setVisible(true);
                 if (ew.isDidAdd()) {
                     for (int i = 0; i < table_View.getRowCount(); i++) {
                         table_View.setValueAt(false, i, 0);
 
                     }
+
                     folderIDList.clear();
                     folderNameList.clear();
                     clearTableFiles();
                     getAccountFolders();
                     table_Folder_ComboBox.setSelectedIndex(tempFolder);
+                    ;
                 }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
@@ -1340,38 +1831,46 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_table_Decrypt_ButtonActionPerformed
 
+    int selectedIndex = -1;
     private void table_Folder_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Folder_ComboBoxActionPerformed
         // TODO add your handling code here:
 
         int encryptCounter = 0;
         int decryptCounter = 0;
 
-        table_Search_Field.setText("");
-        for (int i = 0; i < table_View.getRowCount(); i++) {
-            table_View.setValueAt(false, i, 0);
+        if (table_Folder_ComboBox.getSelectedIndex() != selectedIndex) {
+            table_Search_Field.setText("");
 
-        }
-        filelists.clear();
-        clearTableFiles();
+            DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
+            sorter = new TableRowSorter<>(model);
+            table_View.setRowSorter(sorter);
+            sorter.setSortable(6, false);
 
-        getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                tableModel.setValueAt(false, i, 0);
 
-        for (int i = 0; i < table_View.getRowCount(); i++) {
+            }
+            filelists.clear();
+            clearTableFiles();
 
-            if (table_View.getValueAt(i, 5).equals("Encrypted")) {
-                encryptCounter++;
-            } else if (table_View.getValueAt(i, 5).equals("Decrypted")) {
-                {
-                    decryptCounter++;
+            getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
+
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+
+                if (tableModel.getValueAt(i, 5).equals("Encrypted")) {
+                    encryptCounter++;
+                } else if (tableModel.getValueAt(i, 5).equals("Decrypted")) {
+                    {
+                        decryptCounter++;
+                    }
                 }
             }
+
+            jLabel2.setText("Encrypted Files: " + encryptCounter);
+            jLabel3.setText("Decrypted Files: " + decryptCounter);
+            jLabel1.setText("Total Files: " + tableModel.getRowCount());
         }
-
-        jLabel2.setText("Encrypted Files: " + encryptCounter);
-        jLabel3.setText("Decrypted Files: " + decryptCounter);
-        jLabel1.setText("Total Files: " + table_View.getRowCount());
-
-
+        selectedIndex = table_Folder_ComboBox.getSelectedIndex();
     }//GEN-LAST:event_table_Folder_ComboBoxActionPerformed
 
     private void table_Search_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_table_Search_FieldCaretUpdate
@@ -1410,8 +1909,9 @@ public class Suite_Window extends javax.swing.JFrame {
         // TODO add your handling code here:
         Delete_Account md = new Delete_Account(this, true, accountID);
         md.setVisible(true);
-
-        //logout account
+        Task task = new Task();
+        task.setStatus("Logout");
+        // logout account
 
     }//GEN-LAST:event_account_DeleteActionPerformed
 
@@ -1599,12 +2099,14 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenu menu_Account;
     private javax.swing.JMenu menu_Device;
     private javax.swing.JMenu menu_Folder;
     private javax.swing.JMenu menu_Home;
     private javax.swing.JMenu menu_Social_Media;
     private javax.swing.JMenu menu_Support;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JMenuBar proximity_Menu;
     private javax.swing.JSeparator proximity_Separator1;
     private javax.swing.JPanel proximity_Statusbar_Panel;
@@ -2187,423 +2689,4 @@ public class Suite_Window extends javax.swing.JFrame {
         }
     }
 
-    public void removeFile(File File) {
-
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ?;";
-            PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setInt(1, getFileID(File.getAbsolutePath()));
-            pStmt.executeUpdate();
-            System.out.println(pStmt);
-            sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
-            pStmt = conn.prepareStatement(sql);
-            pStmt.setInt(1, getFileID(File.getAbsolutePath()));
-            pStmt.executeUpdate();
-            System.out.println(pStmt);
-            pStmt.close();
-            conn.close();
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-
-        }
-
-    }
-
-    public int getFileID(String file_Path) {
-
-        int fileID = 0;
-
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            String sql = "SELECT file_Details_ID FROM File_Details WHERE file_Directory = ?;";
-
-            PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, file_Path);
-            ResultSet rs = pStmt.executeQuery();
-
-            while (rs.next()) {
-                fileID = rs.getInt("file_Details_ID");
-            }
-
-            pStmt.close();
-            conn.close();
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-        }
-        return fileID;
-    }
-
-    private int accountID;
-    private String accountName;
-
-    public int getAccountID() {
-        return accountID;
-    }
-
-    private void setAccountID(int accountID) {
-        this.accountID = accountID;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public void getAccountDetails() {
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-        d.startDatabase();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            stmt = conn.createStatement();
-            String sql = "SELECT account_Username, account_Password, account_Email, account_Question, account_Answer FROM Account_Details "
-                    + "WHERE account_Details_ID = '" + accountID + "';";
-
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                accountName = rs.getString("account_Username");
-            }
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-        }
-        account_Current.setText(accountName);
-
-        getAccountFolders();
-    }
-
-    ArrayList<Integer> folderIDList = new ArrayList<>();
-    ArrayList<String> folderNameList = new ArrayList<>();
-
-    private void getAccountFolders() {
-
-        int folderID;
-        String folderName;
-
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-
-        d.startDatabase();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            stmt = conn.createStatement();
-            String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
-                    + "WHERE account_Details_ID = " + accountID + ";";
-
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                folderID = rs.getInt("folder_Details_ID");
-                folderName = rs.getString("folder_Name");
-                folderIDList.add(folderID);
-                folderNameList.add(folderName);
-            }
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-        }
-
-        updateFolderListGUI();
-    }
-
-    private void updateFolderListGUI() {
-
-        table_Folder_ComboBox.removeAllItems();
-
-        for (int i = 0; i < folderIDList.size(); i++) {
-            if (!folderIDList.isEmpty()) {
-
-                table_Folder_ComboBox.addItem(folderNameList.get(i));
-                folder_Current.setText(table_Folder_ComboBox.getSelectedItem().toString());
-            }
-        }
-
-    }
-
-    private void getFolderFiles(String folderName) {
-
-        ArrayList<Integer> fileIDList = new ArrayList<>();
-
-        int folderID = 0;
-        int fileID = 0;
-
-
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-        d.startDatabase();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            String sql = "SELECT folder_Details_ID FROM Folder_Details WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
-
-            PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, folderName);
-
-            ResultSet rs = pStmt.executeQuery();
-
-            while (rs.next()) {
-                folderID = rs.getInt("folder_Details_ID");
-            }
-
-            stmt = conn.createStatement();
-            sql = "SELECT file_Details_ID FROM Folder_File_List "
-                    + "WHERE folder_Details_ID = " + folderID + ";";
-
-            rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                fileID = rs.getInt("file_Details_ID");
-                fileIDList.add(fileID);
-            }
-
-            getFolderFiles(fileIDList);
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-        }
-    }
-
-    public void getFolderFiles(ArrayList<Integer> fileIDList) {
-        ArrayList<String> fileDirList = new ArrayList<>();
-        ArrayList<Boolean> fileStatusList = new ArrayList<>();
-
-        String fileDir;
-        Boolean fileStatus;
-
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
-        d.startDatabase();
-
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-
-            // Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
-            for (int i = 0; i < fileIDList.size(); i++) {
-
-                stmt = conn.createStatement();
-                String sql = "SELECT file_Directory,  file_EStatus FROM File_Details "
-                        + "WHERE file_Details_ID = " + fileIDList.get(i) + ";";
-
-                ResultSet rs = stmt.executeQuery(sql);
-                rs = stmt.executeQuery(sql);
-
-                while (rs.next()) {
-                    fileDir = rs.getString("file_Directory");
-                    fileStatus = rs.getBoolean("file_EStatus");
-                    fileDirList.add(fileDir);
-                    fileStatusList.add(fileStatus);
-                }
-            }
-
-            updateTableContents(fileDirList, fileStatusList);
-
-        } catch (SQLException | ClassNotFoundException se) {
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                }
-            }
-
-        }
-    }
-
-    ArrayList<File> filelists = new ArrayList();
-
-    public void updateTableContents(ArrayList<String> fileDirList, ArrayList<Boolean> fileStatusList) {
-
-        ProcessFilesThread myRunnable = null;
-
-        File file;
-        Boolean select;
-        String name;
-        String fname;
-        String date;
-        int pos;
-        String type;
-        String fileSize;
-        String status;
-
-        if (!fileDirList.isEmpty()) {
-
-            for (String fileDirList1 : fileDirList) {
-
-                myRunnable = new ProcessFilesThread(this, new File(fileDirList1));
-                myRunnable.setResultFiles(filelists);
-                Thread t = new Thread(myRunnable);
-                t.start();
-                while (t.isAlive()) {
-                }
-            }
-
-            DefaultTableModel dw = (DefaultTableModel) table_View.getModel();
-
-            for (int i = 0; i < filelists.size(); i++) {
-
-                file = filelists.get(i);
-
-                //file name
-                fname = file.getName();
-                //date
-                date = DateFormat.getDateTimeInstance().format(file.lastModified());
-
-                //file extension
-                pos = fname.lastIndexOf('.');
-                if (pos > 0) {
-                    type = fname.substring(pos);
-                    name = fname.substring(0, pos);
-
-                } else {
-                    type = fname;
-                    name = file.getName();
-                }
-
-                // size
-                fileSize = getFileSize(file.length());
-
-                if (fileStatusList.get(i).equals(false)) {
-                    status = "Decrypted";
-                } else {
-                    status = "Encrypted";
-                }
-
-                dw.addRow(new Object[]{false, " " + name, date, type, fileSize, status, "Open"});
-            }
-        }
-
-    }
-
-    public String getFileSize(double fileLength) {
-        int unitSize = 1024;
-        if (fileLength < unitSize) {
-            return fileLength + " B";
-        }
-        int exp = (int) (Math.log(fileLength) / Math.log(unitSize));
-        char pre = "KMGTPE".charAt(exp - 1);
-
-        String s = String.format(" %sB", pre);
-
-        DecimalFormat df = new DecimalFormat("#.##");
-        double we = fileLength / Math.pow(unitSize, exp);
-
-        String ss = df.format(we) + s;
-
-        return ss;
-    }
 }

@@ -2,6 +2,7 @@ package Proximity_Encryption_Suite;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,7 +58,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
     class Task extends SwingWorker<Void, Void> {
 
-      int counter =0;
+        int counter = 0;
         Object o1;
         String status;
 
@@ -85,9 +87,9 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
          */
         @Override
         public Void doInBackground() {
-               counter  = 0;
+            counter = 0;
             progressBar.setValue(0);
-
+setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
             jComboBox2.setEnabled(false);
@@ -96,7 +98,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
             setProgress(0);
 
             if ("accept".equals(status)) {
-                while (   counter != filelist.size()) {
+                while (counter != filelist.size()) {
                     progressBar.setMaximum(filelist.size());
                     progressBar.setIndeterminate(true);
 
@@ -146,6 +148,13 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
             }
         }
 
+        private String generateKey(String key) {
+
+            String toString = new StringBuilder(key).reverse().toString();
+
+            return toString;
+        }
+
         private void encryptFiles(File file) {
             boolean didEncrypt = false;
             int fileID = 0;
@@ -184,14 +193,15 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 
-                    String key = "squirrel123"; // needs to be at least 8 characters for DES
                     int length = key.length();
+                    String eKey = generateKey(key);
+
                     if (length > 16 && length != 16) {
-                        key = key.substring(0, 15);
+                        eKey = eKey.substring(0, 16);
                     }
                     if (length < 16 && length != 16) {
                         for (int i = 0; i < 16 - length; i++) {
-                            key = key + "0";
+                            eKey = eKey + "0";
                         }
                     }
 
@@ -199,7 +209,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_AES aes = new Encryption_AES();
-                    aes.encrypt(key, originalInput, encryptedOutput);
+                    aes.encrypt(eKey, originalInput, encryptedOutput);
 
                     if (aes.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -230,13 +240,13 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 
-                    String key = "squirrel123"; // needs to be at least 8 characters for DES
+                    String eKey = generateKey(key);
 
                     FileInputStream originalInput = new FileInputStream(file);
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_DES des = new Encryption_DES();
-                    des.encrypt(key, originalInput, encryptedOutput);
+                    des.encrypt(eKey, originalInput, encryptedOutput);
 
                     if (des.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -268,14 +278,15 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
 
-                    String key = "squirrel123"; // needs to be at least 8 characters for DES
-                    int length = key.length();
+                    String eKey = generateKey(key);
+
+                    int length = eKey.length();
                     if (length > 16 && length != 16) {
-                        key = key.substring(0, 15);
+                        eKey = eKey.substring(0, 15);
                     }
                     if (length < 16 && length != 16) {
                         for (int i = 0; i < 16 - length; i++) {
-                            key = key + "0";
+                            eKey = eKey + "0";
                         }
                     }
 
@@ -283,7 +294,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
 
                     Encryption_Triple_DES tdes = new Encryption_Triple_DES();
-                    tdes.encrypt(key, originalInput, encryptedOutput);
+                    tdes.encrypt(eKey, originalInput, encryptedOutput);
 
                     if (tdes.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -399,6 +410,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         }
 
     }
+    private String key;
 
     /**
      *
@@ -410,7 +422,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
      * @param Account_ID
      * @param modal
      */
-    public Files_Encryption(java.awt.Frame parent, boolean modal, int Account_ID, ArrayList<File> Files_Encryption) {
+    public Files_Encryption(java.awt.Frame parent, boolean modal, int Account_ID, ArrayList<File> Files_Encryption, String key) {
         super(parent, modal);
 
         this.getContentPane().setBackground(Color.WHITE);
@@ -451,6 +463,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         this.setIconImages(icons);
 
         this.Account_ID = Account_ID;
+        this.key = key;
         accept_Button.requestFocus();
 
         addFilesList(Files_Encryption);

@@ -118,9 +118,6 @@ public class Folder_Current extends javax.swing.JDialog {
         type_Field = new javax.swing.JTextField();
         description_Scroll_Pane = new javax.swing.JScrollPane();
         description_Area = new javax.swing.JTextArea();
-        content_Table_Scroll_Pane = new javax.swing.JScrollPane();
-        content_Table = new javax.swing.JTable();
-        contents_Label = new javax.swing.JLabel();
         button_Panel = new javax.swing.JPanel();
         cancel_Button = new javax.swing.JButton();
         modify_Button = new javax.swing.JButton();
@@ -164,69 +161,6 @@ public class Folder_Current extends javax.swing.JDialog {
         description_Area.setFocusable(false);
         description_Scroll_Pane.setViewportView(description_Area);
 
-        content_Table_Scroll_Pane.setBackground(new java.awt.Color(255, 255, 255));
-        content_Table_Scroll_Pane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        content_Table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Name", "Type", "Size", "Status"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        content_Table.setFillsViewportHeight(true);
-        content_Table.setFocusable(false);
-        content_Table.setRowHeight(23);
-        content_Table_Scroll_Pane.setViewportView(content_Table);
-        content_Table.getTableHeader().setReorderingAllowed(false);
-
-        content_Table.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
-        content_Table.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
-
-        content_Table.getColumnModel().getColumn(1).setMinWidth(60);
-        content_Table.getColumnModel().getColumn(1).setMaxWidth(60);
-
-        content_Table.getColumnModel().getColumn(2).setMinWidth(60);
-        content_Table.getColumnModel().getColumn(2).setMaxWidth(60);
-
-        content_Table.getColumnModel().getColumn(3).setMinWidth(60);
-        content_Table.getColumnModel().getColumn(3).setMaxWidth(60);
-
-        TableCellRenderer rendererFromHeader = content_Table.getTableHeader().getDefaultRenderer();
-        JLabel headerLabel = (JLabel) rendererFromHeader;
-        headerLabel.setHorizontalAlignment(JLabel.CENTER);
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-        content_Table.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
-
-        for (int a = 0; a < content_Table.getColumnCount(); a++){
-
-            content_Table.getColumnModel().getColumn(a).setResizable(false);
-
-        }
-        model = content_Table.getModel();
-        sorter = new TableRowSorter<>(model);
-        content_Table.setRowSorter(sorter);
-
-        contents_Label.setText("Folder Contents: ");
-
         javax.swing.GroupLayout folder_Details_PanelLayout = new javax.swing.GroupLayout(folder_Details_Panel);
         folder_Details_Panel.setLayout(folder_Details_PanelLayout);
         folder_Details_PanelLayout.setHorizontalGroup(
@@ -242,14 +176,12 @@ public class Folder_Current extends javax.swing.JDialog {
                         .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(created_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(description_Label, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
-                            .addComponent(contents_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(type_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(type_Field)
-                            .addComponent(description_Scroll_Pane, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(created_Field, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(content_Table_Scroll_Pane))))
+                            .addComponent(description_Scroll_Pane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                            .addComponent(created_Field, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(6, 6, 6))
         );
         folder_Details_PanelLayout.setVerticalGroup(
@@ -268,10 +200,6 @@ public class Folder_Current extends javax.swing.JDialog {
                     .addComponent(description_Label)
                     .addComponent(description_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contents_Label)
-                    .addComponent(content_Table_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(folder_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(created_Label)
                     .addComponent(created_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,9 +299,6 @@ public class Folder_Current extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel button_Panel;
     private javax.swing.JButton cancel_Button;
-    private javax.swing.JTable content_Table;
-    private javax.swing.JScrollPane content_Table_Scroll_Pane;
-    private javax.swing.JLabel contents_Label;
     private javax.swing.JTextField created_Field;
     private javax.swing.JLabel created_Label;
     private javax.swing.JTextArea description_Area;
@@ -393,7 +318,6 @@ public class Folder_Current extends javax.swing.JDialog {
 
     private void getFolderFiles() {
 
-        content_Table.setCellSelectionEnabled(false);
 
         ArrayList<Integer> fileIDList = new ArrayList<>();
 
@@ -499,7 +423,6 @@ public class Folder_Current extends javax.swing.JDialog {
                 }
             }
 
-            updateTableContents(fileDirList, fileStatusList);
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
@@ -513,85 +436,7 @@ public class Folder_Current extends javax.swing.JDialog {
         }
     }
 
-    ArrayList<File> filelists = new ArrayList();
-
-    public void updateTableContents(ArrayList<String> fileDirList, ArrayList<Boolean> fileStatusList) {
-
-        ProcessFilesThread myRunnable = null;
-
-        File file;
-        String name;
-        String fname;
-        int pos;
-        String type;
-        String fileSize;
-        String status;
-
-        if (!fileDirList.isEmpty()) {
-
-            for (String fileDirList1 : fileDirList) {
-
-                myRunnable = new ProcessFilesThread(this, new File(fileDirList1));
-                myRunnable.setResultFiles(filelists);
-                Thread t = new Thread(myRunnable);
-                t.start();
-                while (t.isAlive()) {
-                }
-            }
-
-            DefaultTableModel dw = (DefaultTableModel) content_Table.getModel();
-
-            for (int i = 0; i < filelists.size(); i++) {
-
-                file = filelists.get(i);
-
-                //file name
-                fname = file.getName();
-
-                //file extension
-                pos = fname.lastIndexOf('.');
-                if (pos > 0) {
-                    type = fname.substring(pos);
-                    name = fname.substring(0, pos);
-
-                } else {
-                    type = fname;
-                    name = file.getName();
-                }
-
-                // size
-                fileSize = getFileSize(file.length());
-
-                if (fileStatusList.get(i).equals(false)) {
-                    status = "Decrypted";
-                } else {
-                    status = "Encrypted";
-                }
-
-                dw.addRow(new Object[]{" " + name, type, " " + fileSize, status});
-            }
-        }
-
-    }
-
-    public String getFileSize(double fileLength) {
-        int unitSize = 1024;
-        if (fileLength < unitSize) {
-            return fileLength + " B";
-        }
-        int exp = (int) (Math.log(fileLength) / Math.log(unitSize));
-        char pre = "KMGTPE".charAt(exp - 1);
-
-        String s = String.format(" %sB", pre);
-
-        DecimalFormat df = new DecimalFormat("#.##");
-        double we = fileLength / Math.pow(unitSize, exp);
-
-        String ss = df.format(we) + s;
-
-        return ss;
-    }
-
+   
     class ImageRenderer extends DefaultTableCellRenderer {
 
         ImageIcon icon;

@@ -7,6 +7,7 @@ package Proximity_Encryption_Suite;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +78,7 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
         public Void doInBackground() {
             progress = 0;
             progressBar.setValue(0);
-
+setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
             method.setEnabled(false);
@@ -230,8 +231,8 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
                 PreparedStatement pStmt = conn.prepareStatement(sql);
                 pStmt.setInt(1, folderid);
                 pStmt.executeUpdate();
-                System.out.println(pStmt);
 
+                pStmt.close();
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
@@ -341,8 +342,6 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
             boolean decrypted = false;
 
             if (file.canRead() && file.canWrite() && file.canExecute()) {
-
-                System.out.println(file);
 
                 try {
 
@@ -495,14 +494,15 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
                 pStmt.setInt(2, folderid);
                 pStmt.setInt(1, fileid);
                 pStmt.executeUpdate();
-                System.out.println(pStmt);
 
                 if (checkFileInOtherFolders(fileid) == false) {
                     sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
                     pStmt = conn.prepareStatement(sql);
                     pStmt.setInt(1, fileid);
                     pStmt.executeUpdate();
-                    System.out.println(pStmt);
+                    pStmt.close();
+                    conn.close();
+                } else {
                     pStmt.close();
                     conn.close();
                 }
@@ -630,7 +630,7 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
     public Delete_Folder(java.awt.Frame parent, boolean modal, int accountID) {
         super(parent, modal);
 
-     this.setBackground(Color.WHITE);
+        this.setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -666,7 +666,7 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-        
+
         this.accountID = accountID;
         getAccountFolders();
     }
@@ -799,6 +799,15 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
     }//GEN-LAST:event_closeDialog
 
     Task task;
+
+    public boolean isDidDelete() {
+        return didDelete;
+    }
+
+    public void setDidDelete(boolean didDelete) {
+        this.didDelete = didDelete;
+    }
+    boolean didDelete = false;
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
 
@@ -816,10 +825,12 @@ public class Delete_Folder extends java.awt.Dialog implements ActionListener,
         if (n == 0) {
 
             if (method.getSelectedIndex() != 0) {
+                didDelete = true;
                 task = new Task();
                 task.setStatus("accept");
                 task.addPropertyChangeListener(this);
                 task.execute();
+
             } else {
                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                 JOptionPane.showMessageDialog(this,
