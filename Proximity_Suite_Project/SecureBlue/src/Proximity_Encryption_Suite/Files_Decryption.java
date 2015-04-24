@@ -167,7 +167,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             } else {
                 fileID = getFileID(file.getAbsolutePath());
                 if (fileID != 0) {
-                    updateFile(fileID, false, null);
+                    updateFile(fileID, false, "0");
                 } else {
                     //file does not exsist
                 }

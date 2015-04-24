@@ -79,17 +79,17 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_CurrentActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="device_Separator1">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="device_Separator3">
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="device_Connect">
+            <MenuItem class="javax.swing.JMenuItem" name="device_Add">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Proximity/graphic_Device/device_Connect.png"/>
+                  <Image iconType="3" name="/Proximity/graphic_Device/device_Add.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Connect Device"/>
+                <Property name="text" type="java.lang.String" value="Add Device"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_ConnectActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_AddActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="device_Disconnect">
@@ -97,7 +97,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Proximity/graphic_Device/device_Disconnect.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Disconnect Device"/>
+                <Property name="text" type="java.lang.String" value="Delete Device"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_DisconnectActionPerformed"/>

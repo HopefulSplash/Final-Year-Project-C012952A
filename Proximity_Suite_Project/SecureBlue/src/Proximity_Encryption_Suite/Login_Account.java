@@ -465,7 +465,7 @@ public class Login_Account extends javax.swing.JFrame {
                     while (rs.next()) {
                         //retrieves the information and puts it into a variable
                         int account_ID = rs.getInt("account_Details_ID");
-                        Suite_Window mWSameple = new Suite_Window(account_ID);
+                        Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null);
                         mWSameple.setVisible(true);
 
                         this.dispose();

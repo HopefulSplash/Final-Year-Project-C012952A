@@ -66,15 +66,15 @@ public class Suite_Window extends javax.swing.JFrame {
     class Task extends SwingWorker<Void, Void> {
 
         int counter = 0;
-        Object o1;
+
+        public void setKey(String key) {
+            this.key = key;
+        }
         String status;
+        String key;
 
         public void setStatus(String status) {
             this.status = status;
-        }
-
-        public void setO1(Object o1) {
-            this.o1 = o1;
         }
 
         @Override
@@ -91,18 +91,32 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 if ("Login".equals(status)) {
 
-                    //add login script
-                    //if (loginType == "Account"){
-                    //}
-                    //else if (loginType == "Device"){}
-                    getAccountDetails();
-                    counter++;
+                    switch (loginType) {
+                        case "Account":
+                            getAccountDetails();
+                            counter++;
+                            break;
+                        case "Device":
+                            table_Add_Button.setEnabled(false);
+                            table_Remove_Button.setEnabled(false);
+                            table_Select_Button.setEnabled(false);
+                            table_Deselect_Button.setEnabled(false);
+                            table_Encrypt_Button.setEnabled(false);
+                            table_Decrypt_Button.setEnabled(false);
+
+                            //getID and password where device is... 
+                           // Encryption_Script es = new Encryption_Script(key, "Decrypt", accountID);
+
+                            
+                            //start connection thread
+                            getAccountDetails();
+                            counter++;
+                            break;
+                    }
 
                 } else if ("Logout".equals(status)) {
                     //add logout script
                     counter++;
-                } else if ("Load".equals(status)) {
-
                 }
             }
 
@@ -129,6 +143,9 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        public void getkey(int accountID) {
+ // get password for encryption
+        }
     }
 
     /**
@@ -136,7 +153,7 @@ public class Suite_Window extends javax.swing.JFrame {
      *
      * @param account_ID
      */
-    public Suite_Window(int account_ID) {
+    public Suite_Window(int account_ID, String loginType, String DeviceName) {
         this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
@@ -179,12 +196,23 @@ public class Suite_Window extends javax.swing.JFrame {
         statusbar_Date_Label.setText("System Date & Time: " + ss);
         status_Session_Label.setText("Session Time: 00:00:00 ");
 
+//        if (loginType.equals("Account")) {
+//            accountID = 1; //accountID
+//            this.loginType = "Account"; //loginType
+//        }
+//        else if (loginType.equals("Device")){
+//            // accountID = getAccountID(DeviceName); //accountID
+//            this.loginType = "Account"; //loginType
+//        }
         accountID = 1;
+
         Task task = new Task();
         task.setStatus("Login");
+        this.loginType = "Account";
         task.execute();
 
     }
+    String loginType;
 
     public void getAccountDetails() {
         /*
@@ -360,10 +388,10 @@ public class Suite_Window extends javax.swing.JFrame {
 
     public void getFolderFiles1(ArrayList<Integer> fileIDList) {
         ArrayList<String> fileDirList = new ArrayList<>();
-        ArrayList<Boolean> fileStatusList = new ArrayList<>();
+        ArrayList<String> fileStatusList = new ArrayList<>();
 
         String fileDir;
-        Boolean fileStatus;
+        String fileType;
 
 
         /*
@@ -387,7 +415,7 @@ public class Suite_Window extends javax.swing.JFrame {
             for (int i = 0; i < fileIDList.size(); i++) {
 
                 stmt = conn.createStatement();
-                String sql = "SELECT file_Directory,  file_EStatus FROM File_Details "
+                String sql = "SELECT file_Directory,  file_EType FROM File_Details "
                         + "WHERE file_Details_ID = " + fileIDList.get(i) + ";";
 
                 ResultSet rs = stmt.executeQuery(sql);
@@ -395,11 +423,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 while (rs.next()) {
                     fileDir = rs.getString("file_Directory");
-                    fileStatus = rs.getBoolean("file_EStatus");
+                    fileType = rs.getString("file_EType");
 
                     if (new File(fileDir).exists()) {
                         fileDirList.add(fileDir);
-                        fileStatusList.add(fileStatus);
+                        fileStatusList.add(fileType);
                     } else {
                         removeFile(fileIDList.get(i));
                     }
@@ -466,7 +494,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
-    public void updateTableContents(ArrayList<String> fileDirList, ArrayList<Boolean> fileStatusList) {
+    public void updateTableContents(ArrayList<String> fileDirList, ArrayList<String> fileStatusList) {
 
         File_Loading_Thread myRunnable = null;
 
@@ -482,7 +510,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
         if (!fileDirList.isEmpty()) {
             Task task = new Task();
-            task.setO1(this);
             task.execute();
 
             for (String fileDirList1 : fileDirList) {
@@ -523,7 +550,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 // size
                 fileSize = getFileSize(file.length());
 
-                if (fileStatusList.get(i).equals(false)) {
+                if (!fileStatusList.get(i).equals("AES Encryption") && !fileStatusList.get(i).equals("DES Encryption") && !fileStatusList.get(i).equals("Triple DES Encryption")) {
                     status = "Decrypted";
                 } else {
                     status = "Encrypted";
@@ -602,8 +629,8 @@ public class Suite_Window extends javax.swing.JFrame {
         home_Exit = new javax.swing.JMenuItem();
         menu_Device = new javax.swing.JMenu();
         device_Current = new javax.swing.JMenuItem();
-        device_Separator1 = new javax.swing.JPopupMenu.Separator();
-        device_Connect = new javax.swing.JMenuItem();
+        device_Separator3 = new javax.swing.JPopupMenu.Separator();
+        device_Add = new javax.swing.JMenuItem();
         device_Disconnect = new javax.swing.JMenuItem();
         device_Separator2 = new javax.swing.JPopupMenu.Separator();
         device_Manage = new javax.swing.JMenuItem();
@@ -1099,19 +1126,19 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         });
         menu_Device.add(device_Current);
-        menu_Device.add(device_Separator1);
+        menu_Device.add(device_Separator3);
 
-        device_Connect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Connect.png"))); // NOI18N
-        device_Connect.setText("Connect Device");
-        device_Connect.addActionListener(new java.awt.event.ActionListener() {
+        device_Add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Add.png"))); // NOI18N
+        device_Add.setText("Add Device");
+        device_Add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                device_ConnectActionPerformed(evt);
+                device_AddActionPerformed(evt);
             }
         });
-        menu_Device.add(device_Connect);
+        menu_Device.add(device_Add);
 
         device_Disconnect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Disconnect.png"))); // NOI18N
-        device_Disconnect.setText("Disconnect Device");
+        device_Disconnect.setText("Delete Device");
         device_Disconnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 device_DisconnectActionPerformed(evt);
@@ -1445,12 +1472,6 @@ public class Suite_Window extends javax.swing.JFrame {
         currentDEV vcd = new currentDEV(this, true);
         vcd.setVisible(true);
     }//GEN-LAST:event_device_CurrentActionPerformed
-
-    private void device_ConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_ConnectActionPerformed
-        // TODO add your handling code here:
-        BluetoothDeviceSample ad = new BluetoothDeviceSample(this, true);
-        ad.setVisible(true);
-    }//GEN-LAST:event_device_ConnectActionPerformed
 
     private void social_TwitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_social_TwitterActionPerformed
         // TODO add your handling code here:
@@ -1936,6 +1957,10 @@ public class Suite_Window extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_table_ViewFocusLost
 
+    private void device_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_AddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_device_AddActionPerformed
+
     private void searchAll() {
 
         String expr = table_Search_Field.getText();
@@ -2064,7 +2089,7 @@ public class Suite_Window extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        Suite_Window p = new Suite_Window(30);
+        Suite_Window p = new Suite_Window(30, "asdas", null);
         p.setVisible(true);
     }
 
@@ -2080,12 +2105,12 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JMenuItem account_Modify;
     private javax.swing.JPopupMenu.Separator account_Separator1;
     private javax.swing.JPopupMenu.Separator account_Separator2;
-    private javax.swing.JMenuItem device_Connect;
+    private javax.swing.JMenuItem device_Add;
     private javax.swing.JMenuItem device_Current;
     private javax.swing.JMenuItem device_Disconnect;
     private javax.swing.JMenuItem device_Manage;
-    private javax.swing.JPopupMenu.Separator device_Separator1;
     private javax.swing.JPopupMenu.Separator device_Separator2;
+    private javax.swing.JPopupMenu.Separator device_Separator3;
     private javax.swing.JMenuItem folder_Create;
     private javax.swing.JMenuItem folder_Current;
     private javax.swing.JMenuItem folder_Delete;
