@@ -61,14 +61,16 @@ public class DeviceLoginSample extends javax.swing.JFrame {
         accountCreationRecoveryPanel = new javax.swing.JPanel();
         createAccountButton = new javax.swing.JButton();
         recoverAccountButton = new javax.swing.JButton();
+        login_Logo_Panel3 = new javax.swing.JPanel();
+        login_Logo_Image3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SecureBlue | Device Login");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(346, 337));
-        setMinimumSize(new java.awt.Dimension(346, 337));
+        setMaximumSize(null);
+        setMinimumSize(null);
         setName("accountLoginFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(346, 337));
+        setPreferredSize(null);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -140,10 +142,10 @@ public class DeviceLoginSample extends javax.swing.JFrame {
                         .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passwordLabel)
                             .addComponent(usernameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(loginDetailsPanelLayout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -198,7 +200,7 @@ public class DeviceLoginSample extends javax.swing.JFrame {
                 .addComponent(createAccountButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(recoverAccountButton, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         accountCreationRecoveryPanelLayout.setVerticalGroup(
             accountCreationRecoveryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,6 +210,27 @@ public class DeviceLoginSample extends javax.swing.JFrame {
                     .addComponent(createAccountButton)
                     .addComponent(recoverAccountButton))
                 .addGap(6, 6, 6))
+        );
+
+        login_Logo_Panel3.setBackground(new java.awt.Color(255, 255, 255));
+        login_Logo_Panel3.setMaximumSize(null);
+
+        login_Logo_Image3.setBackground(new java.awt.Color(255, 255, 255));
+        login_Logo_Image3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        login_Logo_Image3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Login_Logo.png"))); // NOI18N
+        login_Logo_Image3.setName("login_Logo_Image"); // NOI18N
+
+        javax.swing.GroupLayout login_Logo_Panel3Layout = new javax.swing.GroupLayout(login_Logo_Panel3);
+        login_Logo_Panel3.setLayout(login_Logo_Panel3Layout);
+        login_Logo_Panel3Layout.setHorizontalGroup(
+            login_Logo_Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(login_Logo_Image3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+        );
+        login_Logo_Panel3Layout.setVerticalGroup(
+            login_Logo_Panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_Logo_Panel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(login_Logo_Image3))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -220,15 +243,21 @@ public class DeviceLoginSample extends javax.swing.JFrame {
                     .addComponent(loginDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(accountCreationRecoveryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(login_Logo_Panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(6, 6, 6)
+                .addComponent(login_Logo_Panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(loginDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(accountCreationRecoveryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().setBackground(Color.WHITE);
@@ -371,6 +400,14 @@ public class DeviceLoginSample extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginDetailsPanel;
+    private javax.swing.JLabel login_Logo_Image;
+    private javax.swing.JLabel login_Logo_Image1;
+    private javax.swing.JLabel login_Logo_Image2;
+    private javax.swing.JLabel login_Logo_Image3;
+    private javax.swing.JPanel login_Logo_Panel;
+    private javax.swing.JPanel login_Logo_Panel1;
+    private javax.swing.JPanel login_Logo_Panel2;
+    private javax.swing.JPanel login_Logo_Panel3;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JButton recoverAccountButton;
@@ -379,17 +416,10 @@ public class DeviceLoginSample extends javax.swing.JFrame {
     int usernameFocusCount = 0;
     int passwordFocusCount = 0;
 
-    BluetoothThread bluetooth = new BluetoothThread();
-    Thread BluetoothThread1;
-
+    
     private void scanDevies() {
 
-        jComboBox1.setEnabled(false);
-
-        bluetooth.setJ1(jComboBox1);
-
-        BluetoothThread1 = new Thread(bluetooth);
-        BluetoothThread1.start();
+     
 
     }
 

@@ -1959,6 +1959,8 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void device_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_AddActionPerformed
         // TODO add your handling code here:
+        Device_Add da = new Device_Add (accountID);
+        da.setVisible(true);
     }//GEN-LAST:event_device_AddActionPerformed
 
     private void searchAll() {

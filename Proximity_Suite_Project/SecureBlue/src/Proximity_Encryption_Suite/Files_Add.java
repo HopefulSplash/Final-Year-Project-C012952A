@@ -348,9 +348,10 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
                     temp = rs.getInt("folder_Details_ID");
 
-                    pStmt.close();
-                    conn.close();
+                   
                 }
+                 pStmt.close();
+                    conn.close();
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
