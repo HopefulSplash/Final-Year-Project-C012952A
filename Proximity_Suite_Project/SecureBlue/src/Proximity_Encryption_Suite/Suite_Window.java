@@ -79,11 +79,7 @@ public class Suite_Window extends javax.swing.JFrame {
             this.o1 = o1;
         }
 
-        public void setKey(String key) {
-            this.key = key;
-        }
         String status;
-        String key;
 
         public void setStatus(String status) {
             this.status = status;
@@ -115,19 +111,51 @@ public class Suite_Window extends javax.swing.JFrame {
                             table_Deselect_Button.setEnabled(false);
                             table_Encrypt_Button.setEnabled(false);
                             table_Decrypt_Button.setEnabled(false);
+                            menu_Device.setEnabled(false);
 
                             //  set deviceID
                             //getID and password where device is... 
-                            // Encryption_Script es = new Encryption_Script(key, "Decrypt", accountID);
                             //start connection thread
                             getAccountDetails();
+
+                            for (int i = 0; i < folderIDList.size(); i++) {
+                                decryptAllFiles(folderIDList.get(i));
+                            }
                             counter++;
                             break;
                     }
 
+                } else if ("Exit".equals(status)) {
+                    switch (loginType) {
+                        case "Account":
+                            counter++;
+                            break;
+                        case "Device":
+
+                            for (int i = 0; i < folderIDList.size(); i++) {
+                                encryptAllFiles(folderIDList.get(i));
+                            }
+
+                            counter++;
+                            break;
+                    }
                 } else if ("Logout".equals(status)) {
-                    //add logout script
-                    counter++;
+
+                    switch (loginType) {
+                        case "Account":
+
+                            counter++;
+                            break;
+                        case "Device":
+
+                            for (int i = 0; i < folderIDList.size(); i++) {
+                                encryptAllFiles(folderIDList.get(i));
+                            }
+
+                            counter++;
+                            break;
+                    }
+
                 } else if ("Delete".equals(status)) {
                     getAccountDevices();
                     for (int i = 0; i < deviceIDList.size(); i++) {
@@ -192,6 +220,269 @@ public class Suite_Window extends javax.swing.JFrame {
         }
 
         private ArrayList<Integer> deviceIDList = new ArrayList<>();
+
+        private void decryptAllFiles(int FolderID) {
+
+            ArrayList<Integer> fileIDList = new ArrayList<>();
+
+            int fileID = 0;
+
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+            d.startDatabase();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Details_ID FROM Folder_File_List "
+                        + "WHERE folder_Details_ID = " + FolderID + ";";
+
+                ResultSet rs = stmt.executeQuery(sql);
+
+                while (rs.next()) {
+                    fileID = rs.getInt("file_Details_ID");
+                    fileIDList.add(fileID);
+
+                }
+
+                stmt.close();
+                conn.close();
+
+                for (int i = 0; i < fileIDList.size(); i++) {
+
+                    if (getFileEncryptionStatus(fileIDList.get(i)).equals("AES Encryption")) {
+                        decryptAES(new File(getFileID(fileIDList.get(i))));
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("DES Encryption")) {
+                        decryptDES(new File(getFileID(fileIDList.get(i))));
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("Triple DES Encryption")) {
+                        decryptTripleDES(new File(getFileID(fileIDList.get(i))));
+                    }
+
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+        }
+
+        private void encryptAllFiles(int FolderID) {
+
+            ArrayList<Integer> fileIDList = new ArrayList<>();
+
+            int fileID = 0;
+
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+            d.startDatabase();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Details_ID FROM Folder_File_List "
+                        + "WHERE folder_Details_ID = " + FolderID + ";";
+
+                ResultSet rs = stmt.executeQuery(sql);
+
+                while (rs.next()) {
+                    fileID = rs.getInt("file_Details_ID");
+                    fileIDList.add(fileID);
+
+                }
+
+                stmt.close();
+                conn.close();
+
+                for (int i = 0; i < fileIDList.size(); i++) {
+
+                    if (getFileEncryptionStatus(fileIDList.get(i)).equals("AES Encryption")) {
+                        encryptAES(new File(getFileID(fileIDList.get(i))));
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("DES Encryption")) {
+                        encryptDES(new File(getFileID(fileIDList.get(i))));
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("Triple DES Encryption")) {
+                        encryptTripleDES(new File(getFileID(fileIDList.get(i))));
+                    }
+
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+        }
+
+        private boolean encryptAES(File file) {
+            boolean encrypted = false;
+
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    String eKey = generateKey(accountPass);
+                    int length = eKey.length();
+                    if (length > 16 && length != 16) {
+                        eKey = eKey.substring(0, 16);
+                    }
+                    if (length < 16 && length != 16) {
+                        for (int i = 0; i < 16 - length; i++) {
+                            eKey = eKey + "0";
+                        }
+                    }
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    Encryption_AES aes = new Encryption_AES();
+                    aes.encrypt(eKey, originalInput, encryptedOutput);
+
+                    if (aes.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            aes.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            encrypted = true;
+                        } catch (Exception e) {
+                            encrypted = false;
+                        }
+                    } else {
+                        encrypted = false;
+                    }
+
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return encrypted;
+        }
+
+        private boolean encryptDES(File file) {
+
+            boolean encrypted = false;
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    String eKey = generateKey(accountPass);
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    Encryption_DES des = new Encryption_DES();
+                    des.encrypt(eKey, originalInput, encryptedOutput);
+
+                    if (des.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            des.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            encrypted = true;
+                        } catch (Exception e) {
+                            encrypted = false;
+                        }
+
+                    } else {
+                        encrypted = false;
+                    }
+
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return encrypted;
+
+        }
+
+        private boolean encryptTripleDES(File file) {
+            boolean encrypted = false;
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    String eKey = generateKey(accountPass);
+
+                    int length = eKey.length();
+                    if (length > 16 && length != 16) {
+                        eKey = eKey.substring(0, 15);
+                    }
+                    if (length < 16 && length != 16) {
+                        for (int i = 0; i < 16 - length; i++) {
+                            eKey = eKey + "0";
+                        }
+                    }
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    Encryption_Triple_DES tdes = new Encryption_Triple_DES();
+                    tdes.encrypt(eKey, originalInput, encryptedOutput);
+
+                    if (tdes.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            tdes.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            encrypted = true;
+                        } catch (Exception e) {
+                            encrypted = false;
+                        }
+
+                    } else {
+                        encrypted = false;
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return encrypted;
+
+        }
 
         private void RemoveALLFOLDERS(int FolderID) {
 
@@ -750,9 +1041,15 @@ public class Suite_Window extends javax.swing.JFrame {
             progressBar.setValue(0);
 
             if ("Delete".equals(status)) {
-                o1.dispose();
                 Login_Account als = new Login_Account();
                 als.setVisible(true);
+
+            } else if ("Logout".equals(status)) {
+                Login_Account als = new Login_Account();
+                als.setVisible(true);
+
+            } else if ("Exit".equals(status)) {
+                System.exit(0);
             }
 
         }
@@ -827,7 +1124,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         Task task = new Task();
         task.setStatus("Login");
-        this.loginType = "Account";
+        this.loginType = "Device";
         task.execute();
 
     }
@@ -1277,11 +1574,16 @@ public class Suite_Window extends javax.swing.JFrame {
         social_Facebook = new javax.swing.JMenuItem();
         social_Twitter = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Proximity Encryption Suite");
         setMinimumSize(new java.awt.Dimension(1300, 550));
         setName("MainWindowFrame"); // NOI18N
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         proximity_Table_Button_Panel.setBackground(new java.awt.Color(255, 255, 255));
         proximity_Table_Button_Panel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -2068,22 +2370,21 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void home_LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LogoutActionPerformed
         // TODO add your handling code here:
-        //close script
-        this.dispose();
-        Login_Account als = new Login_Account();
-        als.setVisible(true);
 
         Task task = new Task();
         task.setStatus("Logout");
-
+        task.execute();
+        this.dispose();
     }//GEN-LAST:event_home_LogoutActionPerformed
 
     private void home_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_ExitActionPerformed
         // TODO add your handling code here:
 
         Task task = new Task();
-        task.setStatus("Logout");
-        System.exit(0);
+        task.setStatus("Exit");
+        task.execute();
+        this.dispose();
+
     }//GEN-LAST:event_home_ExitActionPerformed
     private int deviceID;
 
@@ -2225,15 +2526,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void home_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LoginActionPerformed
         // TODO add your handling code here:
-        Login_Account mWSameple = new Login_Account();
-        mWSameple.setVisible(true);
 
         Task task = new Task();
         task.setStatus("Logout");
+        task.execute();
 
-        //pop dialog lock screen
         this.dispose();
-
     }//GEN-LAST:event_home_LoginActionPerformed
 
     ArrayList<File> filesEncrypt = new ArrayList();
@@ -2554,6 +2852,7 @@ public class Suite_Window extends javax.swing.JFrame {
             task.setStatus("Delete");
             task.setO1(this);
             task.execute();
+            this.dispose();
 
         }
     }//GEN-LAST:event_account_DeleteActionPerformed
@@ -2584,6 +2883,14 @@ public class Suite_Window extends javax.swing.JFrame {
         Device_Add da = new Device_Add(this, true, accountID);
         da.setVisible(true);
     }//GEN-LAST:event_device_AddActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Task task = new Task();
+        task.setStatus("Exit");
+        task.execute();
+         this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     private void searchAll() {
 
