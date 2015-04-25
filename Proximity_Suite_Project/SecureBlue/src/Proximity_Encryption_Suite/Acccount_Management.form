@@ -86,11 +86,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="145" max="32767" attributes="0"/>
+                  <EmptySpace pref="241" max="32767" attributes="0"/>
                   <Component id="accept_Button" min="-2" pref="90" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="apply_Button" min="-2" pref="90" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="cancel_Button" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               </Group>
@@ -100,7 +98,6 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancel_Button" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="apply_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="accept_Button" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -114,15 +111,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancel_ButtonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="apply_Button">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Apply"/>
-            <Property name="focusPainted" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="apply_ButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="accept_Button">

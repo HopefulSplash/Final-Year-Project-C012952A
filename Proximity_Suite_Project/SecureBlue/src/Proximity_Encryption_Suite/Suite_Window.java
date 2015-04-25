@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,19 +27,24 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -47,10 +54,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import java.util.List;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.SwingWorker;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -66,6 +69,15 @@ public class Suite_Window extends javax.swing.JFrame {
     class Task extends SwingWorker<Void, Void> {
 
         int counter = 0;
+        JFrame o1;
+
+        public Object getO1() {
+            return o1;
+        }
+
+        public void setO1(JFrame o1) {
+            this.o1 = o1;
+        }
 
         public void setKey(String key) {
             this.key = key;
@@ -104,10 +116,9 @@ public class Suite_Window extends javax.swing.JFrame {
                             table_Encrypt_Button.setEnabled(false);
                             table_Decrypt_Button.setEnabled(false);
 
+                            //  set deviceID
                             //getID and password where device is... 
-                           // Encryption_Script es = new Encryption_Script(key, "Decrypt", accountID);
-
-                            
+                            // Encryption_Script es = new Encryption_Script(key, "Decrypt", accountID);
                             //start connection thread
                             getAccountDetails();
                             counter++;
@@ -116,6 +127,17 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 } else if ("Logout".equals(status)) {
                     //add logout script
+                    counter++;
+                } else if ("Delete".equals(status)) {
+                    getAccountDevices();
+                    for (int i = 0; i < deviceIDList.size(); i++) {
+                        removeDevice(deviceIDList.get(i));
+                    }
+                    for (int i = 0; i < folderIDList.size(); i++) {
+                        RemoveALLFOLDERS(folderIDList.get(i));
+                    }
+
+                    deleteAcccount();
                     counter++;
                 }
             }
@@ -131,6 +153,592 @@ public class Suite_Window extends javax.swing.JFrame {
             this.counter = counter;
         }
 
+        private void deleteAcccount() {
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "DELETE FROM account_Details WHERE account_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, accountID);
+                pStmt.executeUpdate();
+
+                pStmt.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+        }
+
+        private ArrayList<Integer> deviceIDList = new ArrayList<>();
+
+        private void RemoveALLFOLDERS(int FolderID) {
+
+            ArrayList<Integer> fileIDList = new ArrayList<>();
+
+            int fileID = 0;
+
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+            d.startDatabase();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                stmt = conn.createStatement();
+                String sql = "SELECT file_Details_ID FROM Folder_File_List "
+                        + "WHERE folder_Details_ID = " + FolderID + ";";
+
+                ResultSet rs = stmt.executeQuery(sql);
+
+                while (rs.next()) {
+                    fileID = rs.getInt("file_Details_ID");
+                    fileIDList.add(fileID);
+
+                }
+
+                stmt.close();
+                conn.close();
+
+                for (int i = 0; i < fileIDList.size(); i++) {
+
+                    if (getFileEncryptionStatus(fileIDList.get(i)).equals("AES Encryption")) {
+                        decryptAES(new File(getFileID(fileIDList.get(i))));
+                        removeFile(fileIDList.get(i), FolderID);
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("DES Encryption")) {
+                        decryptDES(new File(getFileID(fileIDList.get(i))));
+                        removeFile(fileIDList.get(i), FolderID);
+
+                    } else if (getFileEncryptionStatus(fileIDList.get(i)).equals("Triple DES Encryption")) {
+                        decryptTripleDES(new File(getFileID(fileIDList.get(i))));
+                        removeFile(fileIDList.get(i), FolderID);
+                    } else {
+                        removeFile(fileIDList.get(i), FolderID);
+                    }
+
+                }
+
+                removeFolder(FolderID);
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+        }
+
+        private String generateKey(String key) {
+
+            String toString = new StringBuilder(key).reverse().toString();
+
+            return toString;
+        }
+
+        private boolean decryptAES(File file) {
+            boolean decrypted = false;
+
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    String eKey = generateKey(accountPass);
+                    int length = eKey.length();
+
+                    if (length > 16 && length != 16) {
+                        eKey = eKey.substring(0, 16);
+                    }
+                    if (length < 16 && length != 16) {
+                        for (int i = 0; i < 16 - length; i++) {
+                            eKey = eKey + "0";
+                        }
+                    }
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    Encryption_AES aes = new Encryption_AES();
+                    aes.decrypt(eKey, originalInput, encryptedOutput);
+
+                    if (aes.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            aes.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            decrypted = true;
+                        } catch (Exception e) {
+                            decrypted = false;
+                        }
+                    } else {
+                        decrypted = false;
+                    }
+
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return decrypted;
+        }
+
+        private boolean decryptDES(File file) {
+
+            boolean encrypted = false;
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    String eKey = generateKey(accountPass);
+
+                    Encryption_DES des = new Encryption_DES();
+                    des.decrypt(eKey, originalInput, encryptedOutput);
+
+                    if (des.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            des.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            encrypted = true;
+                        } catch (Exception e) {
+                            encrypted = false;
+                        }
+
+                    } else {
+                        encrypted = false;
+                    }
+
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return encrypted;
+
+        }
+
+        private boolean decryptTripleDES(File file) {
+            boolean encrypted = false;
+            if (file.canRead() && file.canWrite() && file.canExecute()) {
+                try {
+
+                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+
+                    String eKey = generateKey(accountPass);
+                    int length = eKey.length();
+                    if (length > 16 && length != 16) {
+                        eKey = eKey.substring(0, 15);
+                    }
+                    if (length < 16 && length != 16) {
+                        for (int i = 0; i < 16 - length; i++) {
+                            eKey = eKey + "0";
+                        }
+                    }
+
+                    FileInputStream originalInput = new FileInputStream(file);
+                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
+
+                    Encryption_Triple_DES tdes = new Encryption_Triple_DES();
+                    tdes.decrypt(eKey, originalInput, encryptedOutput);
+
+                    if (tdes.isEncrypted()) {
+                        FileInputStream encryptedInput = new FileInputStream(temp);
+                        try {
+                            FileOutputStream originalOutput = new FileOutputStream(file);
+                            tdes.doCopy(encryptedInput, originalOutput);
+                            temp.delete();
+                            encrypted = true;
+                        } catch (Exception e) {
+                            encrypted = false;
+                        }
+
+                    } else {
+                        encrypted = false;
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+            return encrypted;
+
+        }
+
+        public void removeFile(int fileid, int folderid) {
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ? AND folder_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(2, folderid);
+                pStmt.setInt(1, fileid);
+                pStmt.executeUpdate();
+
+                if (checkFileInOtherFolders(fileid) == false) {
+                    sql = "DELETE FROM file_details WHERE file_Details_ID = ?;";
+                    pStmt = conn.prepareStatement(sql);
+                    pStmt.setInt(1, fileid);
+                    pStmt.executeUpdate();
+                    pStmt.close();
+                    conn.close();
+                } else {
+                    pStmt.close();
+                    conn.close();
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+        }
+
+        private boolean checkFileInOtherFolders(int fileID) {
+            boolean is = false;
+            int file = 0;
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT file_Details_ID FROM folder_file_list WHERE file_Details_ID = ?;";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, fileID);
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    file = rs.getInt("folder_Details_ID");
+
+                }
+
+                pStmt.close();
+                conn.close();
+
+                if (file != 0) {
+                    is = true;
+                } else {
+                    is = false;
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+            return is;
+        }
+
+        public String getFileID(int file_Path) {
+
+            String fileID = null;
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT file_Directory FROM File_Details WHERE file_Details_ID = ?;";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, file_Path);
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    fileID = rs.getString("file_Directory");
+                }
+
+                pStmt.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+            return fileID;
+        }
+
+        public String getFileEncryptionStatus(int file_Path) {
+
+            String fileID = null;
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT file_EType FROM File_Details WHERE file_Details_ID = ?;";
+
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, file_Path);
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    fileID = rs.getString("file_EType");
+                }
+
+                pStmt.close();
+                conn.close();
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+            }
+            return fileID;
+        }
+
+        public void removeFolder(int folderid) {
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "DELETE FROM folder_Details WHERE folder_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, folderid);
+                pStmt.executeUpdate();
+
+                pStmt.close();
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+        }
+
+        private void getAccountDevices() {
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+
+            try {
+                /*
+                 * Register JDBC driver
+                 */
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+                /*
+                 * creates and executes an SQL statement to be run against the database.
+                 */
+                stmt = conn.createStatement();
+                String sql = "SELECT device_Details_ID FROM account_device_list WHERE account_Details_ID = ?";
+
+                PreparedStatement getFolderID = conn.prepareStatement(sql);
+                getFolderID.setInt(1, accountID);
+
+                try (ResultSet rs = getFolderID.executeQuery()) {
+                    while (rs.next()) {
+                        int device = rs.getInt("device_Details_ID");
+
+                        deviceIDList.add(device);
+
+                    }
+                }
+
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                //finally block used to close resources
+                try {
+                    if (stmt != null) {
+                        conn.close();
+                    }
+                } catch (SQLException se) {
+                }// do nothing
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException se) {
+                }
+
+            }
+
+        }
+
+        private void removeDevice(int deviceID) {
+
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "DELETE FROM account_device_list WHERE device_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, deviceID);
+                pStmt.executeUpdate();
+
+                pStmt.close();
+
+                sql = "DELETE FROM device_Details WHERE device_Details_ID = ?;";
+                pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, deviceID);
+                pStmt.executeUpdate();
+
+                pStmt.close();
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
+        }
+
+
         /*
          * Executed in event dispatching thread
          */
@@ -141,10 +749,16 @@ public class Suite_Window extends javax.swing.JFrame {
             progressBar.setIndeterminate(false);
             progressBar.setValue(0);
 
+            if ("Delete".equals(status)) {
+                o1.dispose();
+                Login_Account als = new Login_Account();
+                als.setVisible(true);
+            }
+
         }
 
         public void getkey(int accountID) {
- // get password for encryption
+            // get password for encryption
         }
     }
 
@@ -171,13 +785,17 @@ public class Suite_Window extends javax.swing.JFrame {
          */
         try {
             icons.add(ImageIO.read(icon16URL));
+
         } catch (IOException ex) {
-            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Suite_Window.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         try {
             icons.add(ImageIO.read(icon32URL));
+
         } catch (IOException ex) {
-            Logger.getLogger(Suite_Window.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Suite_Window.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         initComponents();
@@ -204,7 +822,8 @@ public class Suite_Window extends javax.swing.JFrame {
 //            // accountID = getAccountID(DeviceName); //accountID
 //            this.loginType = "Account"; //loginType
 //        }
-        accountID = 1;
+        accountID = 4;
+        deviceID = -1;
 
         Task task = new Task();
         task.setStatus("Login");
@@ -1466,11 +2085,23 @@ public class Suite_Window extends javax.swing.JFrame {
         task.setStatus("Logout");
         System.exit(0);
     }//GEN-LAST:event_home_ExitActionPerformed
+    private int deviceID;
 
     private void device_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_CurrentActionPerformed
         // TODO add your handling code here:
-        currentDEV vcd = new currentDEV(this, true);
-        vcd.setVisible(true);
+
+        if (deviceID != -1) {
+            Device_Current vcd = new Device_Current(this, true, deviceID, accountID);
+            vcd.setVisible(true);
+        } else {
+
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog((Component) this,
+                    "Not in device mode please login using your device.",
+                    "Account Creation Error!",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+        }
     }//GEN-LAST:event_device_CurrentActionPerformed
 
     private void social_TwitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_social_TwitterActionPerformed
@@ -1515,8 +2146,6 @@ public class Suite_Window extends javax.swing.JFrame {
     private void folder_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CurrentActionPerformed
         // TODO add your handling code here:
 
-        int tempFolder = table_Folder_ComboBox.getSelectedIndex();
-
         Folder_Current vcf = new Folder_Current(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         vcf.setVisible(true);
 
@@ -1524,7 +2153,7 @@ public class Suite_Window extends javax.swing.JFrame {
         folderNameList.clear();
         clearTableFiles();
         getAccountFolders();
-        table_Folder_ComboBox.setSelectedIndex(tempFolder);
+        table_Folder_ComboBox.setSelectedIndex(0);
 
 
     }//GEN-LAST:event_folder_CurrentActionPerformed
@@ -1560,56 +2189,36 @@ public class Suite_Window extends javax.swing.JFrame {
         Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
 
-        if (mf.isModifyFolder() == true) {
-            folderIDList.clear();
-            folderNameList.clear();
-            clearTableFiles();
-            getAccountFolders();
-            table_Folder_ComboBox.setSelectedItem(mf.getCurrentFolder());
-
-        } else {
-        }
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountFolders();
+        table_Folder_ComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_folder_ManageActionPerformed
 
     private void device_DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DisconnectActionPerformed
         // TODO add your handling code here:
-        Object[] options = {"Yes",
-            "Cancel"};
-        int n = JOptionPane.showOptionDialog(this,
-                "Are You Sure You Want To Disconnect This Device ",
-                "Disconnect Device",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                options,
-                options[1]);
-
-        if (n == 0) {
-
-            // delete folder
-        }
+        Device_Delete j1 = new Device_Delete(this, true, accountID, deviceID);
+        j1.setVisible(true);
     }//GEN-LAST:event_device_DisconnectActionPerformed
 
     private void device_ManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_ManageActionPerformed
         // TODO add your handling code here:
-        manageDEV md = new manageDEV(this, true);
+        Device_Management md = new Device_Management(this, true, accountID, deviceID);
         md.setVisible(true);
     }//GEN-LAST:event_device_ManageActionPerformed
 
     private void folder_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_DeleteActionPerformed
         // TODO add your handling code here
-        Delete_Folder md = new Delete_Folder(this, true, accountID);
+        Folder_Delete md = new Folder_Delete(this, true, accountID);
         md.setVisible(true);
 
-        if (md.isDidDelete() == true) {
+        folderIDList.clear();
+        folderNameList.clear();
+        clearTableFiles();
+        getAccountFolders();
+        table_Folder_ComboBox.setSelectedIndex(0);
 
-            folderIDList.clear();
-            folderNameList.clear();
-            clearTableFiles();
-            getAccountFolders();
-            table_Folder_ComboBox.setSelectedIndex(0);
-
-        }
 
     }//GEN-LAST:event_folder_DeleteActionPerformed
 
@@ -1928,12 +2537,25 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void account_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_DeleteActionPerformed
         // TODO add your handling code here:
-        Delete_Account md = new Delete_Account(this, true, accountID);
-        md.setVisible(true);
-        Task task = new Task();
-        task.setStatus("Logout");
-        // logout account
+        Object[] options = {"Confirm", "Cancel"};
+        int n = JOptionPane.showOptionDialog(this,
+                "Are You Sure You Want to Modify This Folder?",
+                "Confirm Folder Modification",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, //do not use a custom Icon
+                options, //the titles of buttons
+                options[0]); //default button title
 
+        // if the user has clicked confirm.
+        if (n == 0) {
+
+            Task task = new Task();
+            task.setStatus("Delete");
+            task.setO1(this);
+            task.execute();
+
+        }
     }//GEN-LAST:event_account_DeleteActionPerformed
 
     private void account_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CurrentActionPerformed
@@ -1959,7 +2581,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
     private void device_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_AddActionPerformed
         // TODO add your handling code here:
-        Device_Add da = new Device_Add (accountID);
+        Device_Add da = new Device_Add(this, true, accountID);
         da.setVisible(true);
     }//GEN-LAST:event_device_AddActionPerformed
 

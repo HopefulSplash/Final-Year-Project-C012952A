@@ -101,7 +101,6 @@ public class Acccount_Management extends javax.swing.JDialog {
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         button_Panel = new javax.swing.JPanel();
         cancel_Button = new javax.swing.JButton();
-        apply_Button = new javax.swing.JButton();
         accept_Button = new javax.swing.JButton();
         account_Details_Panel = new javax.swing.JPanel();
         username_Label = new javax.swing.JLabel();
@@ -154,14 +153,6 @@ public class Acccount_Management extends javax.swing.JDialog {
             }
         });
 
-        apply_Button.setText("Apply");
-        apply_Button.setFocusPainted(false);
-        apply_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                apply_ButtonActionPerformed(evt);
-            }
-        });
-
         accept_Button.setText("Accept");
         accept_Button.setFocusPainted(false);
         accept_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -175,11 +166,9 @@ public class Acccount_Management extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
-                .addContainerGap(145, Short.MAX_VALUE)
+                .addContainerGap(241, Short.MAX_VALUE)
                 .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(apply_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -187,7 +176,6 @@ public class Acccount_Management extends javax.swing.JDialog {
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(cancel_Button)
-                .addComponent(apply_Button)
                 .addComponent(accept_Button))
         );
 
@@ -425,11 +413,6 @@ public class Acccount_Management extends javax.swing.JDialog {
         // TODO add your handling code here:
         sendAccountDetails("Accept");
     }//GEN-LAST:event_accept_ButtonActionPerformed
-
-    private void apply_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apply_ButtonActionPerformed
-        sendAccountDetails("Apply");
-
-    }//GEN-LAST:event_apply_ButtonActionPerformed
 
     public boolean isModifyAccount() {
         return modifyAccount;
@@ -1232,7 +1215,6 @@ public class Acccount_Management extends javax.swing.JDialog {
     private javax.swing.JTextField answer_Field;
     private javax.swing.JLabel answer_Label;
     private javax.swing.JLabel answer_Status_Label;
-    private javax.swing.JButton apply_Button;
     private javax.swing.JPanel button_Panel;
     private javax.swing.JButton cancel_Button;
     private javax.swing.JTextField confirm_Answer_Field;

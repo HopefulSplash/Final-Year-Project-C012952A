@@ -134,7 +134,6 @@ public class Folder_Management extends javax.swing.JDialog {
         description_Area = new javax.swing.JTextArea();
         button_Panel = new javax.swing.JPanel();
         cancel_Button = new javax.swing.JButton();
-        apply_Button = new javax.swing.JButton();
         accept_Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -270,14 +269,6 @@ public class Folder_Management extends javax.swing.JDialog {
             }
         });
 
-        apply_Button.setText("Apply");
-        apply_Button.setFocusPainted(false);
-        apply_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                apply_ButtonActionPerformed(evt);
-            }
-        });
-
         accept_Button.setText("Accept");
         accept_Button.setFocusPainted(false);
         accept_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -291,11 +282,9 @@ public class Folder_Management extends javax.swing.JDialog {
         button_PanelLayout.setHorizontalGroup(
             button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
-                .addContainerGap(304, Short.MAX_VALUE)
+                .addContainerGap(400, Short.MAX_VALUE)
                 .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(apply_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
@@ -304,7 +293,6 @@ public class Folder_Management extends javax.swing.JDialog {
             .addGroup(button_PanelLayout.createSequentialGroup()
                 .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancel_Button)
-                    .addComponent(apply_Button)
                     .addComponent(accept_Button))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -336,7 +324,8 @@ public class Folder_Management extends javax.swing.JDialog {
     private void delete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_ButtonActionPerformed
         // TODO add your handling code here:
 
-        Delete_Folder sw = new Delete_Folder((Frame) this.getParent(), true, accountID);
+        Folder_Delete sw = new Folder_Delete((Frame) this.getParent(), true, accountID);
+        this.dispose();
         sw.setVisible(true);
 
         // if deleted a folder close window
@@ -349,29 +338,22 @@ public class Folder_Management extends javax.swing.JDialog {
 
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         // TODO add your handling code here:
-        if (tempName.equals(name_Field.getText()) && tempType.equals(type_ComboBox.getSelectedItem()) && tempDesc.equals(description_Area.getText())) {
+     
+        Object[] options = {"Confirm", "Cancel"};
+        int n = JOptionPane.showOptionDialog(this,
+                "Are You Sure You Want to Modify This Folder?",
+                "Confirm Folder Modification",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, //do not use a custom Icon
+                options, //the titles of buttons
+                options[0]); //default button title
 
-            this.dispose();
-        } else {
+        // if the user has clicked confirm.
+        if (n == 0) {
             sendFolderDetails("Accept");
         }
     }//GEN-LAST:event_accept_ButtonActionPerformed
-
-    private void apply_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apply_ButtonActionPerformed
-        // TODO add your handling code here:
-        if (tempName.equals(name_Field.getText()) && tempType.equals(type_ComboBox.getSelectedItem()) && tempDesc.equals(description_Area.getText())) {
-
-            //a popup windows telling the user thier account have been created
-            Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Login_Info.png"));
-            JOptionPane.showMessageDialog(this,
-                    "No Folder Details Have Been Modified. Please Try Again",
-                    "Folder Modifications Error!",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    tickIcon);
-        } else {
-            sendFolderDetails("Apply");
-        }
-    }//GEN-LAST:event_apply_ButtonActionPerformed
 
     private void name_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_name_FieldCaretUpdate
         // TODO add your handling code here:
@@ -1211,7 +1193,6 @@ public class Folder_Management extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Folder_Status_Label;
     private javax.swing.JButton accept_Button;
-    private javax.swing.JButton apply_Button;
     private javax.swing.JPanel button_Panel;
     private javax.swing.JButton cancel_Button;
     private javax.swing.JTextField created_Field;
