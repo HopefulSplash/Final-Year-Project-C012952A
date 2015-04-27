@@ -66,6 +66,8 @@ import javax.swing.table.TableRowSorter;
  */
 public class Suite_Window extends javax.swing.JFrame {
 
+    boolean didDecrypt = false;
+
     class Task extends SwingWorker<Void, Void> {
 
         int counter = 0;
@@ -105,24 +107,45 @@ public class Suite_Window extends javax.swing.JFrame {
                             counter++;
                             break;
                         case "Device":
-                            table_Add_Button.setEnabled(false);
-                            table_Remove_Button.setEnabled(false);
-                            table_Select_Button.setEnabled(false);
-                            table_Deselect_Button.setEnabled(false);
-                            table_Encrypt_Button.setEnabled(false);
-                            table_Decrypt_Button.setEnabled(false);
-                            menu_Device.setEnabled(false);
 
-                            //  set deviceID
-                            //getID and password where device is... 
-                            //start connection thread
-                            getAccountDetails();
+                            BT_Dummy bt = new BT_Dummy();
+                            bt.setDeviceAddress(deviceAddress);
+                            bt.start();
 
-                            for (int i = 0; i < folderIDList.size(); i++) {
-                                decryptAllFiles(folderIDList.get(i));
+                            //waiting for attempt to connect
+                            while (bt.getDidConnect() == -1) {
                             }
-                            counter++;
-                            break;
+
+                            //if it did connect
+                            if (bt.getDidConnect() == 0) {
+
+                                getAccountID();
+                                getAccountDetails();
+
+                                for (int i = 0; i < folderIDList.size(); i++) {
+                                    decryptAllFiles(folderIDList.get(i));
+                                }
+                                
+                                didDecrypt = true;
+                                bt.setConnected(true);
+
+                                //loops untill it di
+                                while (bt.isConnected()) {
+
+                                }
+                                counter++;
+
+                            } else {
+                                Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                                JOptionPane.showMessageDialog(o1,
+                                        "Could Not Connect To Device.",
+                                        "Folder Creation Error!",
+                                        JOptionPane.INFORMATION_MESSAGE,
+                                        crossIcon);
+
+                               
+                                counter++;
+                            }
                     }
 
                 } else if ("Exit".equals(status)) {
@@ -132,8 +155,10 @@ public class Suite_Window extends javax.swing.JFrame {
                             break;
                         case "Device":
 
-                            for (int i = 0; i < folderIDList.size(); i++) {
-                                encryptAllFiles(folderIDList.get(i));
+                            if (didDecrypt == true) {
+                                for (int i = 0; i < folderIDList.size(); i++) {
+                                    encryptAllFiles(folderIDList.get(i));
+                                }
                             }
 
                             counter++;
@@ -148,10 +173,11 @@ public class Suite_Window extends javax.swing.JFrame {
                             break;
                         case "Device":
 
-                            for (int i = 0; i < folderIDList.size(); i++) {
-                                encryptAllFiles(folderIDList.get(i));
+                            if (didDecrypt == true) {
+                                for (int i = 0; i < folderIDList.size(); i++) {
+                                    encryptAllFiles(folderIDList.get(i));
+                                }
                             }
-
                             counter++;
                             break;
                     }
@@ -179,6 +205,48 @@ public class Suite_Window extends javax.swing.JFrame {
 
         public void setCounter(int counter) {
             this.counter = counter;
+        }
+
+        private void getAccountID() {
+            /*
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
+             */
+            Suite_Database d = new Suite_Database();
+
+            /*
+             * declares the variables for use in connecting and checking the database.
+             */
+            Connection conn = null;
+            Statement stmt = null;
+            try {
+
+                // Register JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                String sql = "SELECT account_Details_ID FROM account_Device_List WHERE device_Details_ID = ?;";
+                PreparedStatement pStmt = conn.prepareStatement(sql);
+                pStmt.setInt(1, deviceID);
+
+                ResultSet rs = pStmt.executeQuery();
+
+                while (rs.next()) {
+                    accountID = rs.getInt("account_Details_ID");
+                }
+
+                pStmt.close();
+            } catch (SQLException | ClassNotFoundException se) {
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                    }
+                }
+
+            }
+
         }
 
         private void deleteAcccount() {
@@ -1029,7 +1097,6 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
-
         /*
          * Executed in event dispatching thread
          */
@@ -1050,8 +1117,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
             } else if ("Exit".equals(status)) {
                 System.exit(0);
-            }
+            } else if ("Login".equals(status)) {
+                if ("Device".equals(loginType)) {
+                    home_Logout.doClick();
+                }
 
+            }
         }
 
         public void getkey(int accountID) {
@@ -1064,7 +1135,7 @@ public class Suite_Window extends javax.swing.JFrame {
      *
      * @param account_ID
      */
-    public Suite_Window(int account_ID, String loginType, String DeviceName) {
+    public Suite_Window(int account_ID, String loginType, String DeviceAdddress, int deviceIsD, String dName) {
         this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
@@ -1111,23 +1182,42 @@ public class Suite_Window extends javax.swing.JFrame {
         statusbar_Date_Label.setText("System Date & Time: " + ss);
         status_Session_Label.setText("Session Time: 00:00:00 ");
 
-//        if (loginType.equals("Account")) {
-//            accountID = 1; //accountID
-//            this.loginType = "Account"; //loginType
-//        }
-//        else if (loginType.equals("Device")){
-//            // accountID = getAccountID(DeviceName); //accountID
-//            this.loginType = "Account"; //loginType
-//        }
-        accountID = 4;
-        deviceID = -1;
+        if (loginType.equals("Account")) {
+            this.accountID = account_ID; //accountID
+            accountID = 4;
+            this.deviceID = deviceIsD;
+            Task task = new Task();
+            task.setStatus("Login");
+            task.setO1(this);
+            this.loginType = "Account";
+            task.execute();
+        } else if (loginType.equals("Device")) {
 
-        Task task = new Task();
-        task.setStatus("Login");
-        this.loginType = "Device";
-        task.execute();
+            table_Add_Button.setEnabled(false);
+            table_Remove_Button.setEnabled(false);
+            table_Select_Button.setEnabled(false);
+            table_Deselect_Button.setEnabled(false);
+            table_Encrypt_Button.setEnabled(false);
+            table_Decrypt_Button.setEnabled(false);
+            menu_Device.setEnabled(false);
+
+            menu_Home.setEnabled(false);
+            menu_Folder.setEnabled(false);
+            menu_Account.setEnabled(false);
+
+            this.deviceAddress = DeviceAdddress;
+            this.deviceID = deviceIsD;
+            this.deviceName = dName;
+            Task task = new Task();
+            task.setStatus("Login");
+            task.setO1(this);
+            this.loginType = "Device";
+            task.execute();
+        }
 
     }
+    private String deviceAddress;
+    private String deviceName;
     String loginType;
 
     public void getAccountDetails() {
@@ -2128,7 +2218,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         account_Current.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
         account_Current.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Account/account_User.png"))); // NOI18N
-        account_Current.setText("Current Account");
+        account_Current.setText("No Account Selected");
         account_Current.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 account_CurrentActionPerformed(evt);
@@ -2889,7 +2979,7 @@ public class Suite_Window extends javax.swing.JFrame {
         Task task = new Task();
         task.setStatus("Exit");
         task.execute();
-         this.dispose();
+        this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void searchAll() {
@@ -3020,7 +3110,7 @@ public class Suite_Window extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        Suite_Window p = new Suite_Window(30, "asdas", null);
+        Suite_Window p = new Suite_Window(30, "Account", null, -1, null);
         p.setVisible(true);
     }
 

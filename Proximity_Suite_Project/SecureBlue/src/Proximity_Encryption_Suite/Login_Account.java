@@ -84,6 +84,8 @@ public class Login_Account extends javax.swing.JFrame {
         Task task = new Task();
         task.setStatus("Setup");
         task.execute();
+        
+        login_Button.requestFocus();
     }
 
     class Task extends SwingWorker<Void, Void> {
@@ -465,7 +467,7 @@ public class Login_Account extends javax.swing.JFrame {
                     while (rs.next()) {
                         //retrieves the information and puts it into a variable
                         int account_ID = rs.getInt("account_Details_ID");
-                        Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null);
+                        Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null, -1, null);
                         mWSameple.setVisible(true);
 
                         this.dispose();
@@ -521,7 +523,7 @@ public class Login_Account extends javax.swing.JFrame {
      * @param evt
      */
     private void device_Login_LabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_device_Login_LabelMouseClicked
-        DeviceLoginSample dLSameple = new DeviceLoginSample();
+        Login_Device dLSameple = new Login_Device();
         dLSameple.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_device_Login_LabelMouseClicked

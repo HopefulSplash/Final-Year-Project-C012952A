@@ -553,7 +553,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     new Login_Account().setVisible(true);
                 } else if (parent_Window.equals("Device")) {
                     this.dispose();
-                    new DeviceLoginSample().setVisible(true);
+                    new Login_Device().setVisible(true);
                 } else if (parent_Window.equals("Main")) {
                     this.dispose();
                 }
@@ -606,7 +606,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             new Login_Account().setVisible(true);
         } else if (parent_Window.equals("Device")) {
             this.dispose();
-            new DeviceLoginSample().setVisible(true);
+            new Login_Device().setVisible(true);
         } else if (parent_Window.equals("Main")) {
             this.dispose();
         }
@@ -649,7 +649,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             new Login_Account().setVisible(true);
         } else if (parent_Window.equals("Device")) {
             this.dispose();
-            new DeviceLoginSample().setVisible(true);
+            new Login_Device().setVisible(true);
         } else if (parent_Window.equals("Main")) {
             this.dispose();
         }
