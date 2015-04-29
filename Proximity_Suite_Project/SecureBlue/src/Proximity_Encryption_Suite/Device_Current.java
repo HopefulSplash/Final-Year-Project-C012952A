@@ -10,7 +10,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,7 +31,7 @@ public class Device_Current extends javax.swing.JDialog {
     /**
      * Creates new form currentDEV
      */
-    public Device_Current(java.awt.Frame parent, boolean modal, int deviceID , int accountID) {
+    public Device_Current(java.awt.Frame parent, boolean modal, int deviceID, int accountID) {
         this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
@@ -69,14 +68,15 @@ public class Device_Current extends javax.swing.JDialog {
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-        
+
         this.deviceID = deviceID;
         this.accountID = accountID;
 
         setupDeviceDetails();
     }
-private int deviceID;
-private int accountID;
+    private int deviceID;
+    private int accountID;
+
     public void setupDeviceDetails() {
 
         String name = null;
@@ -111,8 +111,7 @@ private int accountID;
                 name = rs.getString("device_Name");
                 address = rs.getString("device_Address");
                 created = rs.getString("device_Created");
-                
-                
+
             }
 
             pStmt.close();
@@ -120,14 +119,15 @@ private int accountID;
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
-            
+
             lblRuntimeDeviceName.setText(name);
             lblRuntimeDeviceAddress.setText(address);
-                    lblRuntimeDeviceAddress1.setText(created);
-            
+            lblRuntimeDeviceAddress1.setText(created);
+
             if (conn != null) {
                 try {
                     conn.close();
+                    stmt.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -261,13 +261,10 @@ private int accountID;
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDeviceAddress)
                     .addComponent(lblRuntimeDeviceAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblServiceDetails))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblRuntimeDeviceAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lblServiceDetails)
+                    .addComponent(lblRuntimeDeviceAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
 
@@ -305,8 +302,8 @@ private int accountID;
         Device_Management j1 = new Device_Management((Frame) this.getParent(), true, accountID, deviceID);
         this.dispose();
         j1.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

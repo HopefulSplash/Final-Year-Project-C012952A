@@ -89,7 +89,7 @@ public class Files_Decryption extends javax.swing.JDialog implements ActionListe
         public Void doInBackground() {
             counter = 0;
             progressBar.setValue(0);
-setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
 
@@ -187,7 +187,6 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
             if (file.canRead() && file.canWrite() && file.canExecute()) {
 
-
                 try {
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
@@ -209,7 +208,6 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
                     Encryption_AES aes = new Encryption_AES();
                     aes.decrypt(eKey, originalInput, encryptedOutput);
-
 
                     if (aes.isEncrypted()) {
                         FileInputStream encryptedInput = new FileInputStream(temp);
@@ -352,6 +350,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -400,6 +399,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -448,6 +448,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }

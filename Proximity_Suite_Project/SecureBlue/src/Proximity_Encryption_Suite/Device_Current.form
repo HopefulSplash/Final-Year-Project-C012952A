@@ -164,15 +164,10 @@
                       <Component id="lblDeviceAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblRuntimeDeviceAddress" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="lblServiceDetails" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="lblRuntimeDeviceAddress1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblServiceDetails" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblRuntimeDeviceAddress1" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>

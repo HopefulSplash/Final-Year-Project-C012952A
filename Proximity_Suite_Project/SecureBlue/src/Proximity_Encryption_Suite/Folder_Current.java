@@ -6,10 +6,8 @@
 package Proximity_Encryption_Suite;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -18,21 +16,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
-import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -318,7 +306,6 @@ public class Folder_Current extends javax.swing.JDialog {
 
     private void getFolderFiles() {
 
-
         ArrayList<Integer> fileIDList = new ArrayList<>();
 
         int folderID = 0;
@@ -368,12 +355,16 @@ public class Folder_Current extends javax.swing.JDialog {
                 fileID = rs.getInt("file_Details_ID");
                 fileIDList.add(fileID);
             }
+            pStmt.close();
+            stmt.close();
+            conn.close();
             getAccountFiles(fileIDList);
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }
@@ -422,12 +413,13 @@ public class Folder_Current extends javax.swing.JDialog {
                     fileStatusList.add(fileStatus);
                 }
             }
-
-
+            stmt.close();
+            conn.close();
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }
@@ -436,414 +428,4 @@ public class Folder_Current extends javax.swing.JDialog {
         }
     }
 
-   
-    class ImageRenderer extends DefaultTableCellRenderer {
-
-        ImageIcon icon;
-
-        public ImageRenderer() {
-            setVerticalAlignment(CENTER);
-            setHorizontalAlignment(CENTER);
-            setOpaque(true);
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
-
-            String fileType = value.toString();
-
-            icon = switchIcon(fileType);
-
-            if (isSelected) {
-                setForeground(table.getSelectionForeground());
-                setBackground(table.getSelectionBackground());
-            } else {
-                setForeground(table.getForeground());
-                setBackground(UIManager.getColor(Color.WHITE));
-            }
-
-            String s = switchToolTip(fileType);
-            setToolTipText(s);
-            setIcon(icon);
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setVerticalAlignment(SwingConstants.CENTER);
-
-            return this;
-        }
-
-        private String switchToolTip(String fileType) {
-            String toolTip = null;
-
-            switch (fileType.toLowerCase()) {
-
-                case "not supported":
-                    toolTip = "Encryption Not Supported";
-                    break;
-                case "decrypted":
-                    toolTip = "File Not Encrypted";
-                    break;
-                case "encrypted":
-                    toolTip = "File Encrypted";
-                    break;
-
-                default:
-                    toolTip = fileType;
-                    break;
-            }
-            return toolTip;
-        }
-
-        private ImageIcon switchIcon(String fileType) {
-            ImageIcon file_Type_Icon;
-
-            switch (fileType.toLowerCase()) {
-                case ".3pg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_3pg.png"));
-                    break;
-
-                case ".7z":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_7z.png"));
-                    break;
-                case ".ace":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ace.png"));
-                    break;
-                case ".ai":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ai.png"));
-                    break;
-                case ".aif":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_aif.png"));
-                    break;
-                case "aiff":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_aiff.png"));
-                    break;
-                case ".amr":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_amr.png"));
-                    break;
-                case ".asf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_asf.png"));
-                    break;
-                case ".asx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_asx.png"));
-                    break;
-                case ".bat":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_bat.png"));
-                    break;
-                case ".bin":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_bin.png"));
-                    break;
-                case ".bmp":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_bmp.png"));
-                    break;
-                case ".bup":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_bup.png"));
-                    break;
-                case ".cab":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_cab.png"));
-                    break;
-
-                case ".cbr":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_cbr.png"));
-                    break;
-
-                case ".cda":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_cda.png"));
-                    break;
-                case ".cdl":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_cdl.png"));
-                    break;
-                case ".cdr":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_cdr.png"));
-                    break;
-                case ".chm":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_chm.png"));
-                    break;
-                case "dat":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dat.png"));
-                    break;
-                case ".divx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_divx.png"));
-                    break;
-                case ".dll":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dll.png"));
-                    break;
-                case ".dmg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dmg.png"));
-                    break;
-                case ".docx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_doc.png"));
-                    break;
-                case ".dss":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dss.png"));
-                    break;
-                case ".dvf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dvf.png"));
-                    break;
-                case ".dwg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_dwg.png"));
-                    break;
-                case ".eml":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_eml.png"));
-                    break;
-                case ".eps":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_eps.png"));
-                    break;
-                case ".exe":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_exe.png"));
-                    break;
-                case ".fla":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_fla.png"));
-                    break;
-                case ".flv":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_flv.png"));
-                    break;
-                case ".gif":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_gif.png"));
-                    break;
-                case ".gz":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_gz.png"));
-                    break;
-                case ".hqx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_hqx.png"));
-                    break;
-                case ".htm":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_htm.png"));
-                    break;
-                case ".html":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_html.png"));
-                    break;
-                case ".xml":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_html.png"));
-                    break;
-                case ".ifo":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ifo.png"));
-                    break;
-
-                case ".indd":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_indd.png"));
-                    break;
-
-                case ".iso":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_iso.png"));
-                    break;
-
-                case ".jar":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_jar.png"));
-                    break;
-
-                case ".jpeg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_jpeg.png"));
-                    break;
-
-                case ".jpg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_jpg.png"));
-                    break;
-
-                case ".lnk":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_lnk.png"));
-                    break;
-                case ".log":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_log.png"));
-                    break;
-                case ".m4a":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_m4a.png"));
-                    break;
-                case ".m4b":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_m4b.png"));
-                    break;
-                case "m4p":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_m4p.png"));
-                    break;
-                case ".m4v":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_m4v.png"));
-                    break;
-                case ".mcd":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mcd.png"));
-                    break;
-                case ".mpp":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mpp.png"));
-                    break;
-                case ".accdb":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mdb.png"));
-                    break;
-                case ".mid":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mid.png"));
-                    break;
-                case ".mov":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mov.png"));
-                    break;
-                case ".mp3":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mp2.png"));
-                    break;
-                case ".mp2":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mp2.png"));
-                    break;
-                case ".mp4":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mp4.png"));
-                    break;
-                case ".mpeg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mpeg.png"));
-                    break;
-
-                case ".mpg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mpg.png"));
-                    break;
-
-                case ".msi":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_msi.png"));
-                    break;
-                case ".mswmm":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_mswmm.png"));
-                    break;
-                case ".ogg":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ogg.png"));
-                    break;
-                case ".pdf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_pdf.png"));
-                    break;
-                case ".png":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_png.png"));
-                    break;
-                case ".pptx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_pps.png"));
-                    break;
-                case ".ps":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ps.png"));
-                    break;
-                case ".psd":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_psd.png"));
-                    break;
-                case ".pst":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_pst.png"));
-                    break;
-                case ".ptb":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ptb.png"));
-                    break;
-                case ".pub":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_pub.png"));
-                    break;
-                case ".qbb":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_qbb.png"));
-                    break;
-                case ".qbw":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_qbw.png"));
-                    break;
-                case ".qxd":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_qxd.png"));
-                    break;
-                case ".ram":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ram.png"));
-                    break;
-                case ".rar":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_rar.png"));
-                    break;
-                case ".rm":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_rm.png"));
-                    break;
-                case ".rmvb":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_rmvb.png"));
-                    break;
-                case ".rtf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_rtf.png"));
-                    break;
-                case ".sea":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_sea.png"));
-                    break;
-                case ".ses":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ses.png"));
-                    break;
-                case ".sit":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_sit.png"));
-                    break;
-                case ".sitx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_sitx.png"));
-                    break;
-                case ".ss":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ss.png"));
-                    break;
-                case ".swf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_swf.png"));
-                    break;
-                case ".tgz":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_tgz.png"));
-                    break;
-                case ".thm":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_thm.png"));
-                    break;
-                case ".tif":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_tif.png"));
-                    break;
-
-                case ".tmp":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_tmp.png"));
-                    break;
-
-                case ".torrent":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_torrent.png"));
-                    break;
-                case ".ttf":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_ttf.png"));
-                    break;
-                case ".txt":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_txt.png"));
-                    break;
-                case ".ini":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_txt.png"));
-                    break;
-                case ".nfo":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_txt.png"));
-                    break;
-                case ".jnt":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_txt.png"));
-                    break;
-                case ".vcd":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_vcd.png"));
-                    break;
-                case "vob":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_vob.png"));
-                    break;
-                case ".wav":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_wav.png"));
-                    break;
-                case ".wma":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_wma.png"));
-                    break;
-                case ".wmv":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_wmv.png"));
-                    break;
-                case ".wps":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_wps.wps"));
-                    break;
-                case ".xlsx":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_xls.png"));
-                    break;
-                case ".xpi":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_xpi.png"));
-                    break;
-                case ".zip":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_zip.png"));
-                    break;
-                case ".m3u":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_wmv.png"));
-                    break;
-
-                case "not supported":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Status/lock_break.png"));
-                    break;
-                case "decrypted":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Status/lock_open.png"));
-                    break;
-                case "encrypted":
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Status/lock.png"));
-                    break;
-
-                default:
-                    file_Type_Icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_File/file_extension_blank.png"));
-                    break;
-            }
-
-            return file_Type_Icon;
-        }
-
-    }
 }

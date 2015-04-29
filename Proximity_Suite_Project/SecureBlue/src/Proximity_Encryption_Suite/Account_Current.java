@@ -113,12 +113,14 @@ public class Account_Current extends javax.swing.JDialog {
                 tempEmail = rs.getString("account_Email");
                 tempQuestion = rs.getString("account_Question");
             }
-
+            conn.close();
+            stmt.close();
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
+                    stmt.close();
                 } catch (SQLException ex) {
                 }
             }

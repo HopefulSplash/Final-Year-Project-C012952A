@@ -842,6 +842,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }
@@ -866,7 +867,7 @@ public class Acccount_Management extends javax.swing.JDialog {
 
         String username = username_Field.getText().trim();
         String passwordSha1 = null;
-                String tempPasswordSha1 = null;
+        String tempPasswordSha1 = null;
 
         String email = email_Field.getText().trim();
         String question = question_ComboBox.getSelectedItem().toString();
@@ -932,13 +933,12 @@ public class Acccount_Management extends javax.swing.JDialog {
                     updateFolder.setInt(6, accountID);
                     updateFolder.executeUpdate();
 
-                   
+                    conn.close();
 
                     if (!passwordSha1.equals(tempPass)) {
-                       Encryption_Script des = new Encryption_Script( tempPass,  "Decrypt", accountID);
-                         Encryption_Script ees = new Encryption_Script( passwordSha1,  "Encrypt", accountID);
+                        Encryption_Script des = new Encryption_Script(tempPass, "Decrypt", accountID);
+                        Encryption_Script ees = new Encryption_Script(passwordSha1, "Encrypt", accountID);
                     }
-                        
 
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
@@ -1029,18 +1029,22 @@ public class Acccount_Management extends javax.swing.JDialog {
                         isTaken = true;
                     }
                 }
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
@@ -1106,12 +1110,14 @@ public class Acccount_Management extends javax.swing.JDialog {
             try {
                 if (stmt != null) {
                     conn.close();
+                    stmt.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
                     conn.close();
+                    stmt.close();
                 }
             } catch (SQLException se) {
             }

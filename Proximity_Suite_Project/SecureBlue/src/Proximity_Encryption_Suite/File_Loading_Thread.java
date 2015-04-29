@@ -2,8 +2,6 @@ package Proximity_Encryption_Suite;
 
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JProgressBar;
 
 /*
  * To change this template, choose Tools | Templates

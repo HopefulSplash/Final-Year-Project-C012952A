@@ -19,8 +19,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -84,8 +87,11 @@ public class Login_Account extends javax.swing.JFrame {
         Task task = new Task();
         task.setStatus("Setup");
         task.execute();
-        
+
         login_Button.requestFocus();
+
+        Random rn = new Random();
+        randomCounter = rn.nextInt(5) + 1;
     }
 
     class Task extends SwingWorker<Void, Void> {
@@ -125,6 +131,143 @@ public class Login_Account extends javax.swing.JFrame {
         public void done() {
             setCursor(null); //turn off the wait cursor
 
+        }
+
+    }
+
+    private boolean checkTimeout() {
+        boolean timeout = false;
+
+        Date databaseDate = null;
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            /*
+             * Register JDBC driver.
+             */
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            /*
+             * creates and executes an SQL statement to be run against the database.
+             */
+            stmt = conn.createStatement();
+            String sql = "SELECT program_Timeout_Date FROM program_Timeout;";
+
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                databaseDate = new Date(rs.getTimestamp("program_Timeout_Date").getTime());
+            }
+
+            stmt.close();
+            conn.close();
+
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+            Date d1 = new java.util.Date();
+
+            try {
+
+                //in milliseconds
+                long diff = d1.getTime() - databaseDate.getTime();
+
+                long diffSeconds = diff / 1000 % 60;
+                long diffMinutes = diff / (60 * 1000) % 60;
+                long diffHours = diff / (60 * 60 * 1000) % 24;
+                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                if (diffMinutes >= 15 || diffHours != 0) {
+                    timeout = false;
+                } else {
+                    timeout = true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException se) {
+        } catch (ClassNotFoundException | HeadlessException e) {
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (conn != null) {
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException se) {
+
+            }
+
+        }
+
+        return timeout;
+    }
+
+    private void startTimeout() {
+        Date databaseDate = null;
+        /*
+         * declares and new instance of the Suite_Database class and then checks if the
+         * the database exists and if is does not then creates it for the system.
+         */
+        Suite_Database d = new Suite_Database();
+
+        /*
+         * declares the variables for use in connecting and checking the database.
+         */
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            /*
+             * Register JDBC driver.
+             */
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+            /*
+             * creates and executes an SQL statement to be run against the database.
+             */
+            stmt = conn.createStatement();
+            String createTimeout = "UPDATE program_Timeout SET program_Timeout_Date = NOW() ORDER BY program_Timeout_ID DESC LIMIT 1;";
+            stmt.executeUpdate(createTimeout);
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+        } catch (ClassNotFoundException | HeadlessException e) {
+        } finally {
+            //finally block used to close resources
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }// do nothing
+            try {
+                if (conn != null) {
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            }
         }
 
     }
@@ -397,102 +540,134 @@ public class Login_Account extends javax.swing.JFrame {
      * @param evt
      */
     private void login_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_ButtonActionPerformed
-        /*
-         * declares and new instance of the Suite_Database class and then checks if the
-         * the database exists and if is does not then creates it for the system.
-         */
-        Suite_Database d = new Suite_Database();
 
-        /*
-         * declares the variables for use in connecting and checking the database.
-         */
-        Connection conn = null;
-        Statement stmt = null;
-        String passwordSha1 = null;
-
-        /*
-         * creates the SHA1 hash of the password the user has entered.
-         */
-        try {
-            String strPassword = new String(password_Field.getPassword());
-            passwordSha1 = convertToSha1(strPassword);
-
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(Login_Account_Create.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
+        if (checkTimeout() == false) {
             /*
-             * Register JDBC driver.
+             * declares and new instance of the Suite_Database class and then checks if the
+             * the database exists and if is does not then creates it for the system.
              */
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+            Suite_Database d = new Suite_Database();
 
             /*
-             * creates and executes an SQL statement to be run against the database.
+             * declares the variables for use in connecting and checking the database.
              */
-            stmt = conn.createStatement();
-            String sql = "SELECT account_Details_ID FROM Account_Details "
-                    + "WHERE account_Username = '" + username_Field.getText()
-                    + "' AND account_Password = '" + passwordSha1 + "';";
+            Connection conn = null;
+            Statement stmt = null;
+            String passwordSha1 = null;
+
             /*
-             * extracts the data from the results of the SQL statment and checks
-             * if they are empty or not
+             * creates the SHA1 hash of the password the user has entered.
              */
-            try (ResultSet rs = stmt.executeQuery(sql)) {
+            try {
+                String strPassword = new String(password_Field.getPassword());
+                passwordSha1 = convertToSha1(strPassword);
+
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(Login_Account_Create.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                /*
+                 * Register JDBC driver.
+                 */
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
+
+                /*
+                 * creates and executes an SQL statement to be run against the database.
+                 */
+                stmt = conn.createStatement();
+                String sql = "SELECT account_Details_ID FROM Account_Details "
+                        + "WHERE account_Username = '" + username_Field.getText()
+                        + "' AND account_Password = '" + passwordSha1 + "';";
                 /*
                  * extracts the data from the results of the SQL statment and checks
                  * if they are empty or not
                  */
-                if (!rs.isBeforeFirst()) {
-
+                try (ResultSet rs = stmt.executeQuery(sql)) {
                     /*
-                     * shows an error message due to the username or password being
-                     * incorrect or not existing.
+                     * extracts the data from the results of the SQL statment and checks
+                     * if they are empty or not
                      */
-                    Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                    JOptionPane.showMessageDialog(this,
-                            "No Account With These Details Exists On This System. Please Try Again.",
-                            "Account Login Error",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            crossIcon);
+                    if (!rs.isBeforeFirst()) {
+                        counter++;
 
-                } else {
+                        /*
+                         * shows an error message due to the username or password being
+                         * incorrect or not existing.
+                         */
+                        Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                        JOptionPane.showMessageDialog(this,
+                                "No Account With These Details Exists On This System. Please Try Again.",
+                                "Account Login Error",
+                                JOptionPane.INFORMATION_MESSAGE,
+                                crossIcon);
 
-                    /*
-                     * saves the account_Details_ID into a variable and passes it into
-                     * the main window and opens it while closing the old window.
-                     */
-                    while (rs.next()) {
-                        //retrieves the information and puts it into a variable
-                        int account_ID = rs.getInt("account_Details_ID");
-                        Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null, -1, null);
-                        mWSameple.setVisible(true);
+                        stmt.close();
+                        conn.close();
 
-                        this.dispose();
+                    } else {
+
+                        /*
+                         * saves the account_Details_ID into a variable and passes it into
+                         * the main window and opens it while closing the old window.
+                         */
+                        while (rs.next()) {
+                            //retrieves the information and puts it into a variable
+                            int account_ID = rs.getInt("account_Details_ID");
+                            Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null, -1, null);
+                            mWSameple.setVisible(true);
+
+                            this.dispose();
+                        }
+
                     }
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (SQLException se) {
+            } catch (ClassNotFoundException | HeadlessException e) {
+            } finally {
+                //finally block used to close resources
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                        conn.close();
+                    }
+                } catch (SQLException se) {
 
+                }// do nothing
+                try {
+                    if (conn != null) {
+                        stmt.close();
+                        conn.close();
+                    }
+                } catch (SQLException se) {
                 }
             }
-        } catch (SQLException se) {
-        } catch (ClassNotFoundException | HeadlessException e) {
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+        } else {
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog(this,
+                    "Program Timeout Mode Enabled, Please Wait For It TO Expire",
+                    "Account Login Error",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
+        }
+
+        if (counter == randomCounter) {
+            startTimeout();
+            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+            JOptionPane.showMessageDialog(this,
+                    "TIMEOUT ENABLED",
+                    "Account Login Error",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    crossIcon);
         }
     }//GEN-LAST:event_login_ButtonActionPerformed
+
+    private int counter = 0;
+    private int randomCounter;
 
     /**
      * a method that when a user presses enter on the Username_Field it will

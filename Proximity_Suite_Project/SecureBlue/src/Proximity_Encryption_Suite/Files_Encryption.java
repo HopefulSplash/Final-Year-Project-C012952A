@@ -89,7 +89,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
         public Void doInBackground() {
             counter = 0;
             progressBar.setValue(0);
-setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
             jComboBox2.setEnabled(false);
@@ -353,6 +353,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -401,6 +402,7 @@ setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }

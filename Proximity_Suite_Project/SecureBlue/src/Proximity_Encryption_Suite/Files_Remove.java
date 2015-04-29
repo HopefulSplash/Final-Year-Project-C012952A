@@ -218,6 +218,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -462,6 +463,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -515,6 +517,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -563,6 +566,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }

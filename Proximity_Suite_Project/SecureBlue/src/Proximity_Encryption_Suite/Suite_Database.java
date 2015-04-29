@@ -46,11 +46,13 @@ public class Suite_Database {
             try {
                 if (stmt != null) {
                     stmt.close();
+                    conn.close();
                 }
             } catch (SQLException se2) {
             }// nothing we can do
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
@@ -193,8 +195,19 @@ public class Suite_Database {
                     + "CONSTRAINT fk_Folder_Device_List FOREIGN KEY (folder_Details_ID) REFERENCES Folder_Details (folder_Details_ID),\n"
                     + "CONSTRAINT fk_File_Account_List FOREIGN KEY (file_Details_ID) REFERENCES File_Details (file_Details_ID)\n"
                     + ");";
-
             stmt.executeUpdate(createFolderFile);
+
+            String createTimeout = "CREATE TABLE program_Timeout\n"
+                    + "(\n"
+                    + "program_Timeout_ID int  NOT NULL AUTO_INCREMENT,\n"
+                    + "program_Timeout_Date datetime NOT NULL,\n"
+                    + "\n"
+                    + "CONSTRAINT pk_Program_Timeout_ID PRIMARY KEY (program_Timeout_ID),\n"
+                    + "CONSTRAINT chk_Program_Timeout_ID CHECK (program_Timeout_ID > 0))\n;";
+            stmt.executeUpdate(createTimeout);
+
+            String createTimeout2 = "INSERT INTO program_Timeout VALUES (NULL, '1212-12-12 12:12:12');";
+            stmt.executeUpdate(createTimeout2);
 
         } catch (SQLException se) {
             //Handle errors for JDBC

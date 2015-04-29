@@ -150,6 +150,8 @@ public class Device_Management extends javax.swing.JDialog {
 
                     }
                 }
+                conn.close();
+                stmt.close();
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -157,12 +159,14 @@ public class Device_Management extends javax.swing.JDialog {
                 try {
                     if (stmt != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }// do nothing
                 try {
                     if (conn != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }
@@ -210,6 +214,8 @@ public class Device_Management extends javax.swing.JDialog {
                         deviceCreated.add(created);
                     }
                 }
+                conn.close();
+                stmt.close();
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -217,12 +223,14 @@ public class Device_Management extends javax.swing.JDialog {
                 try {
                     if (stmt != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }// do nothing
                 try {
                     if (conn != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }
@@ -282,6 +290,7 @@ public class Device_Management extends javax.swing.JDialog {
                 if (conn != null) {
                     try {
                         conn.close();
+                        stmt.close();
                     } catch (SQLException ex) {
                     }
                 }

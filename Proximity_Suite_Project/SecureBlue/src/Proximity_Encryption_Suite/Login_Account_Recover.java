@@ -403,7 +403,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                     resetPassword.setQuestion(question_ComboBox.getSelectedItem().toString());
                     resetPassword.setUsername(username_Field.getText().trim());
                     resetPassword.setVisible(true);
-                    
+
                     if (resetPassword.isShouldAdd() == true) {
                         /*
                          * creates and executes an SQL statement to insert into the database.
@@ -413,8 +413,8 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                                 + "SET account_Password = '" + resetPassword.getPasswordSha1() + "' WHERE account_Username = '" + username_Field.getText().trim()
                                 + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
                                 + "' AND account_Answer = '" + answer_Field.getText().trim() + "';";
-                        stmt.executeUpdate(sql); 
-                        
+                        stmt.executeUpdate(sql);
+
                         if (!resetPassword.getPasswordSha1().equals(tempPass)) {
                             Encryption_Script des = new Encryption_Script(tempPass, "Decrypt", accountID);
                             Encryption_Script ees = new Encryption_Script(resetPassword.getPasswordSha1(), "Encrypt", accountID);
@@ -433,6 +433,8 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                         question_ComboBox.setSelectedIndex(0);
                         username_Field.setText(null);
                     }
+                    stmt.close();
+                    conn.close();
 
                 }
             }
@@ -442,12 +444,14 @@ public class Login_Account_Recover extends javax.swing.JFrame {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
@@ -564,18 +568,22 @@ public class Login_Account_Recover extends javax.swing.JFrame {
 
                 }
             }
+            stmt.close();
+            conn.close();
         } catch (SQLException se) {
         } catch (ClassNotFoundException | HeadlessException e) {
         } finally {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {

@@ -45,7 +45,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
      */
     public Login_Account_Create(String Parent) {
 
-     this.getContentPane().setBackground(Color.WHITE);
+        this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
@@ -511,12 +511,15 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     String createFolder = "INSERT INTO Folder_Details "
                             + "VALUES (NULL, " + accountID + ", '" + username + "''s" + " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
                     stmt.executeUpdate(createFolder);
+                    stmt.close();
+                    conn.close();
 
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
+                            stmt.close();
                             conn.close();
                         }
                     } catch (SQLException se) {
@@ -591,7 +594,6 @@ public class Login_Account_Create extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_question_ComboBoxActionPerformed
-
 
     /**
      * a method that will close the window and open the standard login window.
@@ -700,18 +702,22 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
@@ -770,18 +776,22 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {

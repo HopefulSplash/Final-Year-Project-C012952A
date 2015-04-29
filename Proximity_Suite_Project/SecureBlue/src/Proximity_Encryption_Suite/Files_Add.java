@@ -94,8 +94,8 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
-            setCursor (Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-             int counter = 0;
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            int counter = 0;
             progress = 0;
             progressBar.setValue(0);
 
@@ -130,7 +130,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                     progressBar.setIndeterminate(true);
                     for (int i = 0; i < addFilesList.size(); i++) {
                         sendFileDetials(i);
-                       counter++;
+                        counter++;
                     }
                 }
             }
@@ -307,6 +307,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -348,10 +349,9 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
                     temp = rs.getInt("folder_Details_ID");
 
-                   
                 }
-                 pStmt.close();
-                    conn.close();
+                pStmt.close();
+                conn.close();
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -364,6 +364,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -406,6 +407,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -452,7 +454,9 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 if (conn != null) {
                     try {
                         conn.close();
+                        stmt.close();
                     } catch (SQLException ex) {
+
                     }
                 }
 
@@ -500,6 +504,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 if (conn != null) {
                     try {
                         conn.close();
+                        stmt.close();
                     } catch (SQLException ex) {
                     }
                 }

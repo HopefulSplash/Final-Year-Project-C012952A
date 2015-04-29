@@ -98,23 +98,21 @@ public class BT_Dummy extends Thread implements DiscoveryListener {
     public synchronized void broadcastCommand() {
         for (ServiceRecord sr : services) {
             String url = sr.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
-
             conn = null;
-
             try {
-
                 conn = (StreamConnection) Connector.open(url);
-                didConnect = 0;
                 String buffer;
 
                 DataInputStream in = new DataInputStream(conn.openDataInputStream());
-
                 String c = null;
                 try {
+                    didConnect = 0;
+
                     while (true) {
 
                         c = in.readUTF();
-                        if (!c.equals("Go")) {
+                        if (c.isEmpty()) {
+                            didConnect = 1;
                             connected = false;
                             in.close();
                             conn.close();
@@ -122,12 +120,13 @@ public class BT_Dummy extends Thread implements DiscoveryListener {
                         }
                         c = "";
                     }
-                    in.close();
-                    conn.close();
                     didConnect = 1;
                     connected = false;
+                    in.close();
+                    conn.close();
                     break;
                 } catch (IOException wq) {
+                    didConnect = 1;
                     connected = false;
                     in.close();
                     conn.close();
@@ -135,13 +134,23 @@ public class BT_Dummy extends Thread implements DiscoveryListener {
                 }
 
             } catch (IOException e) {
+                didConnect = 1;
                 connected = false;
+                try {
+                    conn.close();
+                } catch (IOException ex) {
+                    break;
+                }
                 break;
             }
 
         }
         didConnect = 1;
         connected = false;
+        try {
+            conn.close();
+        } catch (IOException ex) {
+        }
     }
 
     public boolean isConnected() {

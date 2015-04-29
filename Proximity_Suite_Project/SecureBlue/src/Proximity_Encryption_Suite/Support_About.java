@@ -191,8 +191,8 @@ public class Support_About extends javax.swing.JDialog {
             .addGroup(about_Details_PanelLayout.createSequentialGroup()
                 .addComponent(details_Project__Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
 
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));

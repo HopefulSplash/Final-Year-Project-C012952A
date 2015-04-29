@@ -1,6 +1,5 @@
 package Proximity_Encryption_Suite;
 
-import static Proximity_Encryption_Suite.Files_Add.addFilesList;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -28,11 +27,8 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AttributeSet;
@@ -176,6 +172,8 @@ public class Device_Add extends javax.swing.JDialog {
 
                     }
                 }
+                conn.close();
+                stmt.close();
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -183,12 +181,14 @@ public class Device_Add extends javax.swing.JDialog {
                 try {
                     if (stmt != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }// do nothing
                 try {
                     if (conn != null) {
                         conn.close();
+                        stmt.close();
                     }
                 } catch (SQLException se) {
                 }
@@ -270,6 +270,7 @@ public class Device_Add extends javax.swing.JDialog {
                 if (conn != null) {
                     try {
                         conn.close();
+                        stmt.close();
                     } catch (SQLException ex) {
                     }
                 }

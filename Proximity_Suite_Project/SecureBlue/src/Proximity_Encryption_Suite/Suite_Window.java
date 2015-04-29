@@ -113,7 +113,11 @@ public class Suite_Window extends javax.swing.JFrame {
                             bt.start();
 
                             //waiting for attempt to connect
-                            while (bt.getDidConnect() == -1) {
+                            while (true) {
+
+                                if (bt.getDidConnect() != -1){
+                                    break;
+                                }
                             }
 
                             //if it did connect
@@ -1184,7 +1188,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         if (loginType.equals("Account")) {
             this.accountID = account_ID; //accountID
-            accountID = 4;
+            accountID = 1;
             this.deviceID = deviceIsD;
             Task task = new Task();
             task.setStatus("Login");

@@ -519,6 +519,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -572,6 +573,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
+                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -622,6 +624,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }
@@ -683,6 +686,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
     }
 
     private String accountPass;
+
     public void getAccountDetails() {
         /*
          * declares and new instance of the Suite_Database class and then checks if the
@@ -711,11 +715,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             while (rs.next()) {
                 accountPass = rs.getString("account_Password");
             }
-
+            stmt.close();
+            conn.close();
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }
@@ -933,11 +939,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
-
+            stmt.close();
+            conn.close();
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
+                    stmt.close();
                     conn.close();
                 } catch (SQLException ex) {
                 }

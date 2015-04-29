@@ -3,13 +3,10 @@ package Proximity_Encryption_Suite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Frame;
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,26 +14,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
-import javax.swing.text.PlainDocument;
 
 public class Device_Delete extends javax.swing.JDialog {
 
@@ -261,11 +245,13 @@ public class Device_Delete extends javax.swing.JDialog {
                 pStmt.executeUpdate();
 
                 pStmt.close();
+                  conn.close();
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
+                        stmt.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -298,7 +284,7 @@ public class Device_Delete extends javax.swing.JDialog {
                         "File Addirion Successful!",
                         JOptionPane.INFORMATION_MESSAGE,
                         tickIcon);
-                
+
                 jButton1.doClick();
 
             }
@@ -556,7 +542,7 @@ public class Device_Delete extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
                 "Are You Sure You Want to Modify This Folder?",
@@ -569,10 +555,10 @@ public class Device_Delete extends javax.swing.JDialog {
 
         // if the user has clicked confirm.
         if (n == 0) {
-        Task task = new Task();
-        task.setStatus("Update");
-        task.setO1(this);
-        task.execute();
+            Task task = new Task();
+            task.setStatus("Update");
+            task.setO1(this);
+            task.execute();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

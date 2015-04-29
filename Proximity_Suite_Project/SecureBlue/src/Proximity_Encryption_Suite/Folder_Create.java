@@ -310,11 +310,14 @@ public class Folder_Create extends javax.swing.JDialog {
 
                     pStmt.executeUpdate();
 
+                    pStmt.close();
+
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
+                            stmt.close();
                             conn.close();
                         }
                     } catch (SQLException se) {
@@ -391,18 +394,22 @@ public class Folder_Create extends javax.swing.JDialog {
                         isTaken = true;
                     }
                 }
+                stmt.close();
+                conn.close();
             }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (stmt != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
             try {
                 if (conn != null) {
+                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
