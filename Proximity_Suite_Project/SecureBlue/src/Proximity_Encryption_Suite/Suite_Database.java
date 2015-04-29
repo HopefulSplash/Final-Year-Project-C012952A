@@ -2,6 +2,8 @@ package Proximity_Encryption_Suite;
 
 //STEP 1. Import required packages
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Suite_Database {
 
@@ -33,7 +35,6 @@ public class Suite_Database {
     public void startDatabase() {
 
         Connection conn = null;
-        Statement stmt = null;
 
         try {
             if (checkDBExists("Proximity_Suite_DB") == true) {
@@ -42,17 +43,8 @@ public class Suite_Database {
                 createDatabase();
             }
         } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se2) {
-            }// nothing we can do
             try {
                 if (conn != null) {
-                    stmt.close();
                     conn.close();
                 }
             } catch (SQLException se) {
@@ -67,7 +59,6 @@ public class Suite_Database {
 
     private void createDatabase() {
         Connection conn = null;
-        Statement stmt = null;
 
         try {
             //STEP 2: Register JDBC driver
@@ -77,7 +68,7 @@ public class Suite_Database {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //STEP 4: Execute a query
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
 
             String createDatabase = "CREATE DATABASE Proximity_Suite_DB";
             stmt.executeUpdate(createDatabase);
@@ -209,13 +200,16 @@ public class Suite_Database {
             String createTimeout2 = "INSERT INTO program_Timeout VALUES (NULL, '1212-12-12 12:12:12');";
             stmt.executeUpdate(createTimeout2);
 
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        }
+        } catch (SQLException | ClassNotFoundException ex) {
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }//end finally try
+        }//end try
     }
 
     private boolean checkDBExists(String dbName) {

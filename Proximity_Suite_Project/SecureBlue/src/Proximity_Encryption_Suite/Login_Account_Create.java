@@ -459,8 +459,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         //popup window asking the user if they are sure they want to create the account.
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
@@ -496,7 +495,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     createAccount.setString(2, answer);
                     createAccount.executeUpdate();
 
-                    stmt = conn.createStatement();
+                    Statement stmt = conn.createStatement();
                     String sql = "SELECT account_Details_ID FROM Account_Details "
                             + "WHERE account_Username = '" + username + "';";
 
@@ -511,16 +510,13 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     String createFolder = "INSERT INTO Folder_Details "
                             + "VALUES (NULL, " + accountID + ", '" + username + "''s" + " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
                     stmt.executeUpdate(createFolder);
-                    stmt.close();
-                    conn.close();
-
+  
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
-                            stmt.close();
-                            conn.close();
+                             conn.close();
                         }
                     } catch (SQLException se) {
                     }
@@ -676,8 +672,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -687,7 +682,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username FROM Account_Details";
 
             /*
@@ -702,26 +697,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
-                stmt.close();
-                conn.close();
-            }
+              }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+             
         }
         //returns isTaken value so it can be used.
         return isTaken;
@@ -750,8 +736,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -761,7 +746,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+           Statement stmt = conn.createStatement();
             String sql = "SELECT account_Email FROM Account_Details";
 
             /*
@@ -776,26 +761,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
-                stmt.close();
-                conn.close();
-            }
+              }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+             
         }
 
         //returns isTaken value so it can be used.

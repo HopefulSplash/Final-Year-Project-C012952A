@@ -95,14 +95,13 @@ public class Account_Current extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username, account_Email, account_Question FROM Account_Details "
                     + "WHERE account_Details_ID = '" + accountID + "';";
 
@@ -113,15 +112,13 @@ public class Account_Current extends javax.swing.JDialog {
                 tempEmail = rs.getString("account_Email");
                 tempQuestion = rs.getString("account_Question");
             }
-            conn.close();
-            stmt.close();
+            
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
-                    stmt.close();
-                } catch (SQLException ex) {
+                 } catch (SQLException ex) {
                 }
             }
         }

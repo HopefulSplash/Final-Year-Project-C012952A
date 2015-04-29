@@ -149,7 +149,6 @@ public class Login_Account extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
 
         try {
             /*
@@ -161,16 +160,13 @@ public class Login_Account extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT program_Timeout_Date FROM program_Timeout;";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 databaseDate = new Date(rs.getTimestamp("program_Timeout_Date").getTime());
             }
-
-            stmt.close();
-            conn.close();
 
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
@@ -201,20 +197,11 @@ public class Login_Account extends javax.swing.JFrame {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
+                if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-
-            }
 
         }
 
@@ -233,7 +220,6 @@ public class Login_Account extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
 
         try {
             /*
@@ -245,31 +231,21 @@ public class Login_Account extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+           Statement  stmt = conn.createStatement();
             String createTimeout = "UPDATE program_Timeout SET program_Timeout_Date = NOW() ORDER BY program_Timeout_ID DESC LIMIT 1;";
             stmt.executeUpdate(createTimeout);
-            stmt.close();
-            conn.close();
         } catch (SQLException se) {
         } catch (ClassNotFoundException | HeadlessException e) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
+                if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
-        }
 
+        }
     }
 
     /**
@@ -552,7 +528,6 @@ public class Login_Account extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             String passwordSha1 = null;
 
             /*
@@ -577,7 +552,7 @@ public class Login_Account extends javax.swing.JFrame {
                 /*
                  * creates and executes an SQL statement to be run against the database.
                  */
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT account_Details_ID FROM Account_Details "
                         + "WHERE account_Username = '" + username_Field.getText()
                         + "' AND account_Password = '" + passwordSha1 + "';";
@@ -604,8 +579,6 @@ public class Login_Account extends javax.swing.JFrame {
                                 JOptionPane.INFORMATION_MESSAGE,
                                 crossIcon);
 
-                        stmt.close();
-                        conn.close();
 
                     } else {
 
@@ -623,28 +596,19 @@ public class Login_Account extends javax.swing.JFrame {
                         }
 
                     }
-                    stmt.close();
-                    conn.close();
-                }
+                 }
             } catch (SQLException se) {
             } catch (ClassNotFoundException | HeadlessException e) {
             } finally {
                 //finally block used to close resources
                 try {
-                    if (stmt != null) {
-                        stmt.close();
+                    if (conn != null) {
                         conn.close();
                     }
                 } catch (SQLException se) {
 
                 }// do nothing
-                try {
-                    if (conn != null) {
-                        stmt.close();
-                        conn.close();
-                    }
-                } catch (SQLException se) {
-                }
+
             }
         } else {
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));

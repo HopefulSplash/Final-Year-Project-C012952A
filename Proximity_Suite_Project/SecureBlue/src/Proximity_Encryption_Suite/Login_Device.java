@@ -15,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.text.AttributeSet;
@@ -79,8 +77,8 @@ public class Login_Device extends javax.swing.JFrame {
 
                     int intDevicePosition = 0;
 
-                    /* Create an object of ServicesSearch */
-                    ServicesSearch ss = new ServicesSearch();
+                    /* Create an object of Device_Service */
+                    Device_Service ss = new Device_Service();
                     /* Get bluetooth device details */
                     mapReturnResult = ss.getBluetoothDevices();
 
@@ -525,7 +523,6 @@ public class Login_Device extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
 
         try {
             /*
@@ -537,7 +534,7 @@ public class Login_Device extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+           Statement stmt = conn.createStatement();
             String sql = "SELECT program_Timeout_Date FROM program_Timeout;";
 
             ResultSet rs = stmt.executeQuery(sql);
@@ -576,17 +573,12 @@ public class Login_Device extends javax.swing.JFrame {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }
+            }// do nothing
+            
         }
 
         return timeout;
@@ -604,8 +596,7 @@ public class Login_Device extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver.
@@ -616,7 +607,7 @@ public class Login_Device extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String createTimeout = "UPDATE program_Timeout SET program_Timeout_Date = NOW() ORDER BY program_Timeout_ID DESC LIMIT 1;";
             stmt.executeUpdate(createTimeout);
 
@@ -625,17 +616,12 @@ public class Login_Device extends javax.swing.JFrame {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }
+            }// do nothing
+             
         }
 
     }
@@ -662,7 +648,6 @@ public class Login_Device extends javax.swing.JFrame {
                  * declares the variables for use in connecting and checking the database.
                  */
                 Connection conn = null;
-                Statement stmt = null;
                 String passwordSha1 = null;
 
                 /*
@@ -687,7 +672,7 @@ public class Login_Device extends javax.swing.JFrame {
                     /*
                      * creates and executes an SQL statement to be run against the database.
                      */
-                    stmt = conn.createStatement();
+                    Statement stmt = conn.createStatement();
                     String sql = "SELECT device_Details_ID FROM device_Details "
                             + "WHERE device_Address = '" + address
                             + "' AND device_Password = '" + passwordSha1 + "';";
@@ -735,27 +720,32 @@ public class Login_Device extends javax.swing.JFrame {
                 } finally {
                     //finally block used to close resources
                     try {
-                        if (stmt != null) {
-                            conn.close();
-                        }
-                    } catch (SQLException se) {
-                    }// do nothing
-                    try {
                         if (conn != null) {
                             conn.close();
                         }
                     } catch (SQLException se) {
-                    }
+                    }// do nothing
+                     
                 }
             } else {
-                            counter++;
+                counter++;
 
-                Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                JOptionPane.showMessageDialog(this,
-                        "Select A Device",
-                        "Account Login Error",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        crossIcon);
+                if (counter == randomCounter) {
+                    startTimeout();
+                    Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                    JOptionPane.showMessageDialog(this,
+                            "TIMEOUT ENABLED",
+                            "Account Login Error",
+                            JOptionPane.INFORMATION_MESSAGE,
+                            crossIcon);
+                } else {
+                    Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                    JOptionPane.showMessageDialog(this,
+                            "Select A Device",
+                            "Account Login Error",
+                            JOptionPane.INFORMATION_MESSAGE,
+                            crossIcon);
+                }
 
             }
         } else {
@@ -767,15 +757,7 @@ public class Login_Device extends javax.swing.JFrame {
                     crossIcon);
         }
 
-        if (counter == randomCounter) {
-            startTimeout();
-            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-            JOptionPane.showMessageDialog(this,
-                    "TIMEOUT ENABLED",
-                    "Account Login Error",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    crossIcon);
-        }
+
     }//GEN-LAST:event_login_ButtonActionPerformed
     String dName;
     int dID = -1;
@@ -792,7 +774,6 @@ public class Login_Device extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
         try {
 
             // Register JDBC driver
@@ -812,8 +793,7 @@ public class Login_Device extends javax.swing.JFrame {
 
             }
 
-            pStmt.close();
-        } catch (SQLException | ClassNotFoundException se) {
+         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {

@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -251,7 +252,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             try {
 
                 // Register JDBC driver
@@ -259,7 +259,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
                 fileID = 0;
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT file_Details_ID, file_Directory FROM File_Details "
                         + "WHERE file_Directory = ?;";
 
@@ -277,10 +277,13 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 }
 
                 if (fileID == 0) {
+System.out.println(1);
 
                     addFile(addFilesList.get(i).getAbsolutePath());
+System.out.println(2);
 
                     newFileID = getFileID(addFilesList.get(i).getAbsolutePath());
+System.out.println(3);
 
                     if (getdupFile(newFileID, Current_Folder_ID) == true) {
 
@@ -292,22 +295,23 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 } else {
 
                     if (getdupFile(fileID, Current_Folder_ID) == true) {
+
                         dupList.add(addFilesList.get(i).getAbsolutePath());
+
 
                     } else {
 
                         addFileFolder(fileID);
+
                     }
 
                 }
-                getFolderID.close();
-                conn.close();
+
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -315,6 +319,8 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
             }
         }
+        
+     
 
         private boolean getdupFile(int FileID, int FolderID) {
 
@@ -331,7 +337,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             try {
 
                 // Register JDBC driver
@@ -350,9 +355,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                     temp = rs.getInt("folder_Details_ID");
 
                 }
-                pStmt.close();
-                conn.close();
-
+              
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
 
@@ -364,7 +367,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
 
                 if (conn != null) {
                     try {
-                        stmt.close();
                         conn.close();
                     } catch (SQLException ex) {
                     }
@@ -386,7 +388,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             try {
 
                 // Register JDBC driver
@@ -398,23 +399,23 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 PreparedStatement pStmt = conn.prepareStatement(sql);
                 pStmt.setString(1, filePath);
                 pStmt.setInt(2, 0);
+                
 
                 pStmt.executeUpdate();
-                pStmt.close();
-                conn.close();
+
+
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
+                        
                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
 
             }
-
         }
         boolean alreadyInFolder = false;
         ArrayList<String> dupList = new ArrayList<>();
@@ -431,7 +432,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             try {
 
                 // Register JDBC driver
@@ -443,18 +443,13 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                 PreparedStatement pStmt = conn.prepareStatement(sql);
                 pStmt.setInt(1, Current_Folder_ID);
                 pStmt.setInt(2, FileID);
-
                 pStmt.executeUpdate();
-
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                        stmt.close();
                     } catch (SQLException ex) {
 
                     }
@@ -467,7 +462,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         public int getFileID(String file_Path) {
 
             int fileID = 0;
-
             /*
              * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
@@ -478,7 +472,6 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
             try {
 
                 // Register JDBC driver
@@ -496,15 +489,12 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
                     fileID = rs.getInt("file_Details_ID");
                 }
 
-                pStmt.close();
-                conn.close();
-
+ 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                        stmt.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -589,6 +579,7 @@ public class Files_Add extends javax.swing.JDialog implements ActionListener,
         getAccountFolders();
 
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1068,7 +1059,6 @@ boolean didAdd = false;
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
         try {
 
             // Register JDBC driver
@@ -1085,9 +1075,7 @@ boolean didAdd = false;
             while (rs.next()) {
                 folderID = rs.getInt("folder_Details_ID");
             }
-            pStmt.close();
-            conn.close();
-
+ 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
@@ -1149,7 +1137,6 @@ boolean didAdd = false;
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
 
         try {
 
@@ -1157,7 +1144,7 @@ boolean didAdd = false;
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + Account_ID + ";";
 
@@ -1168,8 +1155,6 @@ boolean didAdd = false;
                 folderName = rs.getString("folder_Name");
                 folderNameList.add(folderName);
             }
-            stmt.close();
-            conn.close();
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {

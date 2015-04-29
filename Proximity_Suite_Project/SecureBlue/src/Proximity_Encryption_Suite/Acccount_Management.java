@@ -817,14 +817,13 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+           Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username, account_Password, account_Email, account_Question, account_Answer FROM Account_Details "
                     + "WHERE account_Details_ID = '" + accountID + "';";
 
@@ -842,8 +841,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -898,7 +896,6 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
 
         //popup window asking the user if they are sure they want to create the account.
         Object[] options = {"Confirm", "Cancel"};
@@ -932,8 +929,6 @@ public class Acccount_Management extends javax.swing.JDialog {
                     updateFolder.setString(5, answer);
                     updateFolder.setInt(6, accountID);
                     updateFolder.executeUpdate();
-
-                    conn.close();
 
                     if (!passwordSha1.equals(tempPass)) {
                         Encryption_Script des = new Encryption_Script(tempPass, "Decrypt", accountID);
@@ -1003,8 +998,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -1014,7 +1008,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username FROM Account_Details";
 
             /*
@@ -1029,26 +1023,18 @@ public class Acccount_Management extends javax.swing.JDialog {
                         isTaken = true;
                     }
                 }
-                stmt.close();
-                conn.close();
+
             }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+
         }
         //returns isTaken value so it can be used.
         return isTaken;
@@ -1077,8 +1063,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -1088,7 +1073,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+             Statement stmt = conn.createStatement();
             String sql = "SELECT account_Email FROM Account_Details";
 
             /*
@@ -1108,19 +1093,12 @@ public class Acccount_Management extends javax.swing.JDialog {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    conn.close();
-                    stmt.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
                 if (conn != null) {
                     conn.close();
-                    stmt.close();
-                }
+                 }
             } catch (SQLException se) {
-            }
+            }// do nothing
+           
         }
 
         //returns isTaken value so it can be used.

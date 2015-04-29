@@ -8,7 +8,7 @@ import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.ServiceRecord;
 
-public class RemoteDeviceDiscovery {
+public class Device_Discovery {
 
     /**
      *

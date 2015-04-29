@@ -16,7 +16,7 @@ import javax.microedition.io.*;
  *
  * @author Fernando Alexandre
  */
-public class BT_Dummy extends Thread implements DiscoveryListener {
+public class Device_Monitoring_Thread extends Thread implements DiscoveryListener {
 
     /**
      * Service serial-port UUID
@@ -54,7 +54,7 @@ public class BT_Dummy extends Thread implements DiscoveryListener {
      */
     private Vector<ServiceRecord> services;
 
-    public BT_Dummy() {
+    public Device_Monitoring_Thread() {
         services = new Vector<ServiceRecord>();
     }
 
@@ -187,7 +187,7 @@ public class BT_Dummy extends Thread implements DiscoveryListener {
                 devices.add(arg0);
             }
         } catch (IOException ex) {
-            Logger.getLogger(BT_Dummy.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Device_Monitoring_Thread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

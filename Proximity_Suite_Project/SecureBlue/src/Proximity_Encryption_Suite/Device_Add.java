@@ -95,8 +95,8 @@ public class Device_Add extends javax.swing.JDialog {
                 int intDevicePosition = 0;
                 JListBluetoothDevices.setModel(defaultModel);
 
-                /* Create an object of ServicesSearch */
-                ServicesSearch ss = new ServicesSearch();
+                /* Create an object of Device_Service */
+                Device_Service ss = new Device_Service();
                 /* Get bluetooth device details */
                 mapReturnResult = ss.getBluetoothDevices();
 
@@ -146,8 +146,7 @@ public class Device_Add extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-
+ 
             try {
                 /*
                  * Register JDBC driver
@@ -157,7 +156,7 @@ public class Device_Add extends javax.swing.JDialog {
                 /*
                  * creates and executes an SQL statement to be run against the database.
                  */
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT device_Address FROM device_Details";
 
                 PreparedStatement getFolderID = conn.prepareStatement(sql);
@@ -172,27 +171,18 @@ public class Device_Add extends javax.swing.JDialog {
 
                     }
                 }
-                conn.close();
-                stmt.close();
+                 
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 //finally block used to close resources
                 try {
-                    if (stmt != null) {
-                        conn.close();
-                        stmt.close();
-                    }
-                } catch (SQLException se) {
-                }// do nothing
-                try {
                     if (conn != null) {
                         conn.close();
-                        stmt.close();
-                    }
+                     }
                 } catch (SQLException se) {
-                }
-
+                }// do nothing
+                 
             }
 
             return isTaken;
@@ -224,8 +214,7 @@ public class Device_Add extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -239,7 +228,6 @@ public class Device_Add extends javax.swing.JDialog {
                 pStmt.setString(3, passwordSha1);
                 pStmt.executeUpdate();
 
-                pStmt.close();
 
                 sql = "SELECT device_Details_ID FROM device_Details WHERE device_Name = ? ;";
 
@@ -252,7 +240,6 @@ public class Device_Add extends javax.swing.JDialog {
                     tempID = rs.getInt("device_Details_ID");
 
                 }
-                pStmt.close();
 
                 //add to device list
                 sql = "INSERT INTO account_device_list VALUES (NULL, ? , ? );";
@@ -262,16 +249,13 @@ public class Device_Add extends javax.swing.JDialog {
                 pStmt.setInt(2, tempID);
                 pStmt.executeUpdate();
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                        stmt.close();
-                    } catch (SQLException ex) {
+                     } catch (SQLException ex) {
                     }
                 }
 

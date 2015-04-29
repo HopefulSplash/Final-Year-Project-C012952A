@@ -1,10 +1,8 @@
 package Proximity_Encryption_Suite;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -13,23 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
-import javax.swing.UIManager;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -419,8 +407,7 @@ public class Folder_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         //popup window asking the user if they are sure they want to create the account.
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
@@ -442,7 +429,7 @@ public class Folder_Management extends javax.swing.JDialog {
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-                    stmt = conn.createStatement();
+                    Statement stmt = conn.createStatement();
                     String sql = "SELECT folder_Details_ID FROM Folder_Details "
                             + "WHERE account_Details_ID = " + accountID + " AND folder_Name = ?;";
                     PreparedStatement getFolderID = conn.prepareStatement(sql);
@@ -467,18 +454,14 @@ public class Folder_Management extends javax.swing.JDialog {
                     updateFolder.setInt(4, folderID);
                     updateFolder.setInt(5, accountID);
                     updateFolder.executeUpdate();
-                    stmt.close();
-                    conn.close();
-                    updateFolder.close();
-                    getFolderID.close();
+       
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
-                            stmt.close();
                             conn.close();
-                        }
+                         }
                     } catch (SQLException se) {
                     }
                 }
@@ -535,8 +518,7 @@ public class Folder_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -546,7 +528,7 @@ public class Folder_Management extends javax.swing.JDialog {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + accountID + ";";
 
@@ -562,26 +544,17 @@ public class Folder_Management extends javax.swing.JDialog {
                         isTaken = true;
                     }
                 }
-                stmt.close();
-                conn.close();
-            }
+              }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+             
         }
         //returns isTaken value so it can be used.
         return isTaken;
@@ -606,15 +579,14 @@ public class Folder_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + accountID + ";";
 
@@ -626,14 +598,11 @@ public class Folder_Management extends javax.swing.JDialog {
                 folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
-            stmt.close();
-            conn.close();
-        } catch (SQLException | ClassNotFoundException se) {
+          } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -674,8 +643,7 @@ public class Folder_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -699,7 +667,7 @@ public class Folder_Management extends javax.swing.JDialog {
                 created_Field.setText(rs.getString("folder_Created"));
             }
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             sql = "SELECT file_Details_ID FROM Folder_File_List "
                     + "WHERE folder_Details_ID = " + folderID + ";";
 
@@ -709,16 +677,13 @@ public class Folder_Management extends javax.swing.JDialog {
                 fileID = rs.getInt("file_Details_ID");
                 fileIDList.add(fileID);
             }
-            stmt.close();
-            conn.close();
-            getAccountFiles(fileIDList);
+              getAccountFiles(fileIDList);
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -743,8 +708,7 @@ public class Folder_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -752,22 +716,19 @@ public class Folder_Management extends javax.swing.JDialog {
 
             for (int i = 0; i < fileIDList.size(); i++) {
 
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT file_Directory,  file_EStatus FROM File_Details "
                         + "WHERE file_Details_ID = " + fileIDList.get(i) + ";";
 
                 ResultSet rs = stmt.executeQuery(sql);
-                rs = stmt.executeQuery(sql);
-
+ 
                 while (rs.next()) {
                     fileDir = rs.getString("file_Directory");
                     fileStatus = rs.getBoolean("file_EStatus");
                     fileDirList.add(fileDir);
                     fileStatusList.add(fileStatus);
                 }
-                stmt.close();
-                conn.close();
-            }
+              }
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {

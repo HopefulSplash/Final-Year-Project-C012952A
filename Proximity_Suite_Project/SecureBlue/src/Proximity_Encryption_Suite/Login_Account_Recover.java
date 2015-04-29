@@ -367,7 +367,6 @@ public class Login_Account_Recover extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
         try {
             //Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -375,7 +374,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Details_ID, account_Password FROM Account_Details "
                     + "WHERE account_Username = '" + username_Field.getText().trim()
                     + "' AND account_Question = '" + question_ComboBox.getSelectedItem().toString()
@@ -433,9 +432,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                         question_ComboBox.setSelectedIndex(0);
                         username_Field.setText(null);
                     }
-                    stmt.close();
-                    conn.close();
-
+ 
                 }
             }
         } catch (SQLException se) {
@@ -443,19 +440,12 @@ public class Login_Account_Recover extends javax.swing.JFrame {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+
         }
     }//GEN-LAST:event_reset_Password_ButtonActionPerformed
 
@@ -507,8 +497,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         /*
          * creates the SHA1 hash of the password the user has entered.
          */
@@ -529,7 +518,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username FROM Account_Details "
                     + "WHERE account_Password = '" + passwordSha1 + "' AND account_Email = '" + email_Field.getText() + "';";
 
@@ -568,26 +557,17 @@ public class Login_Account_Recover extends javax.swing.JFrame {
 
                 }
             }
-            stmt.close();
-            conn.close();
-        } catch (SQLException se) {
+         } catch (SQLException se) {
         } catch (ClassNotFoundException | HeadlessException e) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+
         }
 
 

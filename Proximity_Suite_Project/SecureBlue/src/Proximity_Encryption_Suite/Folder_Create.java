@@ -276,8 +276,7 @@ public class Folder_Create extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         //popup window asking the user if they are sure they want to create the account.
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
@@ -300,7 +299,7 @@ public class Folder_Create extends javax.swing.JDialog {
                     conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
                     //creates and SQL statement and executes it.
-                    stmt = conn.createStatement();
+                    Statement stmt = conn.createStatement();
 
                     String sql = "INSERT INTO Folder_Details VALUES (NULL, " + accountID + ", ? , '" + type + "' , ? , DEFAULT);";
 
@@ -310,15 +309,13 @@ public class Folder_Create extends javax.swing.JDialog {
 
                     pStmt.executeUpdate();
 
-                    pStmt.close();
-
+ 
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
-                            stmt.close();
-                            conn.close();
+                             conn.close();
                         }
                     } catch (SQLException se) {
                     }
@@ -367,8 +364,7 @@ public class Folder_Create extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
             /*
              * Register JDBC driver
@@ -378,7 +374,7 @@ public class Folder_Create extends javax.swing.JDialog {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + accountID + ";";
 
@@ -394,26 +390,17 @@ public class Folder_Create extends javax.swing.JDialog {
                         isTaken = true;
                     }
                 }
-                stmt.close();
-                conn.close();
-            }
+              }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
-                if (stmt != null) {
-                    stmt.close();
-                    conn.close();
+                if (conn != null) {
+                     conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-            try {
-                if (conn != null) {
-                    stmt.close();
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }
+            
         }
         //returns isTaken value so it can be used.
         return isTaken;

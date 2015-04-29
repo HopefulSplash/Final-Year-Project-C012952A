@@ -142,8 +142,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -160,9 +159,8 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     folderID = rs.getInt("folder_Details_ID");
 
                 }
-                pStmt.close();
-
-                stmt = conn.createStatement();
+ 
+                Statement stmt = conn.createStatement();
                 sql = "SELECT file_Details_ID FROM Folder_File_List "
                         + "WHERE folder_Details_ID = " + folderID + ";";
 
@@ -174,8 +172,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
                 }
 
-                stmt.close();
-                conn.close();
+     ;
 
                 for (int i = 0; i < fileIDList.size(); i++) {
 
@@ -220,8 +217,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -232,8 +228,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 pStmt.setInt(1, folderid);
                 pStmt.executeUpdate();
 
-                pStmt.close();
-            } catch (SQLException | ClassNotFoundException se) {
+             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
@@ -259,8 +254,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -276,9 +270,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     fileID = rs.getString("file_EType");
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
@@ -490,8 +482,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -508,19 +499,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     pStmt = conn.prepareStatement(sql);
                     pStmt.setInt(1, fileid);
                     pStmt.executeUpdate();
-                    pStmt.close();
-                    conn.close();
-                } else {
-                    pStmt.close();
-                    conn.close();
-                }
+                  }  
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -542,8 +527,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -560,9 +544,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
                 if (file != 0) {
                     is = true;
                 } else {
@@ -573,8 +555,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -600,8 +581,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -617,15 +597,12 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 fileID = rs.getString("file_Directory");
             }
 
-            pStmt.close();
-            conn.close();
-
+  
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -699,14 +676,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username, account_Password FROM Account_Details "
                     + "WHERE account_Details_ID = '" + accountID + "';";
 
@@ -715,14 +691,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             while (rs.next()) {
                 accountPass = rs.getString("account_Password");
             }
-            stmt.close();
-            conn.close();
-        } catch (SQLException | ClassNotFoundException se) {
+          } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -919,15 +892,14 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-
+ 
         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-            stmt = conn.createStatement();
+           Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + accountID + ";";
 
@@ -939,14 +911,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
-            stmt.close();
-            conn.close();
-        } catch (SQLException | ClassNotFoundException se) {
+          } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }

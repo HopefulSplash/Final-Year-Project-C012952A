@@ -323,8 +323,7 @@ public class Folder_Current extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -345,7 +344,7 @@ public class Folder_Current extends javax.swing.JDialog {
                 created_Field.setText(rs.getString("folder_Created"));
             }
 
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             sql = "SELECT file_Details_ID FROM Folder_File_List "
                     + "WHERE folder_Details_ID = " + folderID + ";";
 
@@ -355,17 +354,14 @@ public class Folder_Current extends javax.swing.JDialog {
                 fileID = rs.getInt("file_Details_ID");
                 fileIDList.add(fileID);
             }
-            pStmt.close();
-            stmt.close();
-            conn.close();
+              
             getAccountFiles(fileIDList);
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -390,8 +386,7 @@ public class Folder_Current extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -399,13 +394,12 @@ public class Folder_Current extends javax.swing.JDialog {
 
             for (int i = 0; i < fileIDList.size(); i++) {
 
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT file_Directory,  file_EStatus FROM File_Details "
                         + "WHERE file_Details_ID = " + fileIDList.get(i) + ";";
 
                 ResultSet rs = stmt.executeQuery(sql);
-                rs = stmt.executeQuery(sql);
-
+                
                 while (rs.next()) {
                     fileDir = rs.getString("file_Directory");
                     fileStatus = rs.getBoolean("file_EStatus");
@@ -413,14 +407,11 @@ public class Folder_Current extends javax.swing.JDialog {
                     fileStatusList.add(fileStatus);
                 }
             }
-            stmt.close();
-            conn.close();
-        } catch (SQLException | ClassNotFoundException se) {
+          } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                    stmt.close();
-                    conn.close();
+                     conn.close();
                 } catch (SQLException ex) {
                 }
             }

@@ -194,8 +194,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -211,15 +210,12 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
                     fileID = rs.getString("file_EType");
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -418,8 +414,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -435,9 +430,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
                         pStmt = conn.prepareStatement(sql);
                         pStmt.setInt(1, getFileID(File.getAbsolutePath()));
                         pStmt.executeUpdate();
-                        pStmt.close();
-                        conn.close();
-                        break;
+                          break;
                     }
                     case "Folder": {
                         String sql = "DELETE FROM folder_file_list WHERE file_Details_ID = ? AND folder_Details_ID = ?;";
@@ -453,9 +446,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
                             pStmt.executeUpdate();
 
                         }
-                        pStmt.close();
-                        conn.close();
-                        break;
+                          break;
                     }
                 }
 
@@ -463,8 +454,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -486,8 +476,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -504,9 +493,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
 
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
                 if (file != 0) {
                     is = true;
                 } else {
@@ -517,8 +504,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -542,8 +528,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -559,15 +544,12 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
                     fileID = rs.getInt("file_Details_ID");
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -915,8 +897,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-        Statement stmt = null;
-        try {
+         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -932,8 +913,7 @@ public class Files_Remove extends javax.swing.JDialog implements ActionListener,
             while (rs.next()) {
                 folderID = rs.getInt("folder_Details_ID");
             }
-            pStmt.close();
-            conn.close();
+            
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {

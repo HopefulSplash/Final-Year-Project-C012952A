@@ -330,8 +330,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -346,15 +345,12 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
 
                 pStmt.executeUpdate();
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -378,8 +374,7 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -395,15 +390,12 @@ public class Files_Encryption extends javax.swing.JDialog implements ActionListe
                     fileID = rs.getInt("file_Details_ID");
                 }
 
-                pStmt.close();
-                conn.close();
-
+  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                        stmt.close();
-                        conn.close();
+                         conn.close();
                     } catch (SQLException ex) {
                     }
                 }

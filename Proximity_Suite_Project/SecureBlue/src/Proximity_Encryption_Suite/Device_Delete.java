@@ -107,8 +107,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-
+ 
             try {
                 /*
                  * Register JDBC driver
@@ -118,7 +117,7 @@ public class Device_Delete extends javax.swing.JDialog {
                 /*
                  * creates and executes an SQL statement to be run against the database.
                  */
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT device_Details_ID FROM account_device_list WHERE account_Details_ID = ?";
 
                 PreparedStatement getFolderID = conn.prepareStatement(sql);
@@ -137,17 +136,12 @@ public class Device_Delete extends javax.swing.JDialog {
             } finally {
                 //finally block used to close resources
                 try {
-                    if (stmt != null) {
-                        conn.close();
-                    }
-                } catch (SQLException se) {
-                }// do nothing
-                try {
                     if (conn != null) {
                         conn.close();
                     }
                 } catch (SQLException se) {
-                }
+                }// do nothing
+                
 
             }
 
@@ -164,8 +158,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-
+ 
             try {
                 /*
                  * Register JDBC driver
@@ -175,7 +168,7 @@ public class Device_Delete extends javax.swing.JDialog {
                 /*
                  * creates and executes an SQL statement to be run against the database.
                  */
-                stmt = conn.createStatement();
+                Statement stmt = conn.createStatement();
                 String sql = "SELECT device_Name, device_Address, device_Created FROM device_details WHERE device_Details_ID = ?";
 
                 PreparedStatement getFolderID = conn.prepareStatement(sql);
@@ -197,17 +190,12 @@ public class Device_Delete extends javax.swing.JDialog {
             } finally {
                 //finally block used to close resources
                 try {
-                    if (stmt != null) {
-                        conn.close();
-                    }
-                } catch (SQLException se) {
-                }// do nothing
-                try {
                     if (conn != null) {
                         conn.close();
                     }
                 } catch (SQLException se) {
-                }
+                }// do nothing
+                 
 
             }
 
@@ -225,8 +213,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-            Statement stmt = null;
-            try {
+             try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -237,7 +224,7 @@ public class Device_Delete extends javax.swing.JDialog {
                 pStmt.setInt(1, deviceIDList.get(jComboBox1.getSelectedIndex() - 1));
                 pStmt.executeUpdate();
 
-                pStmt.close();
+                 
 
                 sql = "DELETE FROM device_Details WHERE device_Details_ID = ?;";
                 pStmt = conn.prepareStatement(sql);
@@ -245,14 +232,12 @@ public class Device_Delete extends javax.swing.JDialog {
                 pStmt.executeUpdate();
 
                 pStmt.close();
-                  conn.close();
-            } catch (SQLException | ClassNotFoundException se) {
+             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                        stmt.close();
-                    } catch (SQLException ex) {
+                     } catch (SQLException ex) {
                     }
                 }
 

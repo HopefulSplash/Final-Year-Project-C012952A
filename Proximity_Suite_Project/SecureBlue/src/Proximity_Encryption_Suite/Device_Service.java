@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.bluetooth.*;
 
-public class ServicesSearch {
+public class Device_Service {
 
     /** 
      * UUID used to find specific service supported by bluetooth device
@@ -38,7 +38,7 @@ public class ServicesSearch {
         int[] attrIDs = new int[]{URL_ATTRIBUTE};
         
         /* Create an object to get list of devices in range or paired */
-        RemoteDeviceDiscovery remoteDeviceDiscovery = new RemoteDeviceDiscovery();
+        Device_Discovery remoteDeviceDiscovery = new Device_Discovery();
         /* Create map to return Bluetooth device address, name and URL */
         final Map<String, List<String>> mapReturnResult = new HashMap<String, List<String>>(); 
 
@@ -87,7 +87,7 @@ public class ServicesSearch {
                 }
             };
 
-            /* Get list of bluetooth device from class RemoteDeviceDiscovery */
+            /* Get list of bluetooth device from class Device_Discovery */
             for (Enumeration en = remoteDeviceDiscovery.getDevices().elements(); en.hasMoreElements();) {
                 /* Get RemoteDevice object */
                 RemoteDevice btDevice = (RemoteDevice) en.nextElement();
