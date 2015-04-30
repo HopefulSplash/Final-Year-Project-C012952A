@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.bluetooth.*;
 import javax.microedition.io.*;
+
 /**
  * The Device_Monitoring_Thread.Java Class implements an method of checking the
  * status of a connection between a mobile device and the application.
@@ -55,10 +57,14 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
     /**
      * Services of interest (defined in UUID) of each device.
      */
-    private Vector<ServiceRecord> services;
+    private final Vector<ServiceRecord> services;
+
+    private volatile boolean connected = true;
+    private int didConnect = -1;
+    private String deviceAddress;
 
     public Device_Monitoring_Thread() {
-        services = new Vector<ServiceRecord>();
+        services = new Vector<>();
     }
 
     @Override
@@ -72,12 +78,12 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
      */
     protected void findDevices() {
         try {
-            devices = new Vector<RemoteDevice>();
-            LocalDevice local = LocalDevice.getLocalDevice();
-            DiscoveryAgent agent = local.getDiscoveryAgent();
+            devices = new Vector<>();
+            LocalDevice local_B = LocalDevice.getLocalDevice();
+            DiscoveryAgent agent_B = local_B.getDiscoveryAgent();
 
-            agent.startInquiry(DiscoveryAgent.GIAC, this);
-        } catch (Exception e) {
+            agent_B.startInquiry(DiscoveryAgent.GIAC, this);
+        } catch (BluetoothStateException e) {
         }
     }
 
@@ -94,26 +100,31 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
             agent = local.getDiscoveryAgent();
 
             agent.searchServices(null, uuids, device, this);
-        } catch (Exception e) {
+        } catch (BluetoothStateException e) {
         }
     }
-
+    /**
+     * a method that will receive signals from a mobile device.
+     */
     public synchronized void broadcastCommand() {
+
+        // connects and recives singals from the desired device
         for (ServiceRecord sr : services) {
             String url = sr.getConnectionURL(ServiceRecord.NOAUTHENTICATE_NOENCRYPT, false);
             conn = null;
             try {
                 conn = (StreamConnection) Connector.open(url);
                 String buffer;
-
+                //opening inputstream 
                 DataInputStream in = new DataInputStream(conn.openDataInputStream());
                 String c = null;
                 try {
                     didConnect = 0;
 
                     while (true) {
-
+                        //read input stream
                         c = in.readUTF();
+                        //ends the program when stream is cancelled 
                         if (c.isEmpty()) {
                             didConnect = 1;
                             connected = false;
@@ -123,12 +134,14 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
                         }
                         c = "";
                     }
+                    //ends the program when stream is cancelled 
                     didConnect = 1;
                     connected = false;
                     in.close();
                     conn.close();
                     break;
                 } catch (IOException wq) {
+                    //ends the program when stream is cancelled 
                     didConnect = 1;
                     connected = false;
                     in.close();
@@ -137,6 +150,7 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
                 }
 
             } catch (IOException e) {
+                //ends the program when stream is cancelled 
                 didConnect = 1;
                 connected = false;
                 try {
@@ -148,6 +162,7 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
             }
 
         }
+        //ends the program when stream is cancelled 
         didConnect = 1;
         connected = false;
         try {
@@ -155,37 +170,54 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
         } catch (IOException ex) {
         }
     }
-
+    /**
+     * a method to get is the connection is still active
+     * 
+     * @return 
+     */
     public boolean isConnected() {
 
         return connected;
     }
-
+    /**
+     * a method to set the connection status
+     * 
+     * @param connected 
+     */
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
-
+    /**
+     * a method to get if the device did connect
+     * 
+     * @return 
+     */
     public int getDidConnect() {
         return didConnect;
     }
-
+    /**
+     * a method to set the status if the device was connected to
+     * 
+     * @param didConnect 
+     */
     public void setDidConnect(int didConnect) {
         this.didConnect = didConnect;
     }
-
+    /**
+     * a method the set the device address
+     * 
+     * @param deviceAddress 
+     */
     public void setDeviceAddress(String deviceAddress) {
         this.deviceAddress = deviceAddress;
     }
-
-    static volatile boolean connected = true;
-    int didConnect = -1;
-    String deviceAddress;
 
     @Override
     public void deviceDiscovered(RemoteDevice arg0, DeviceClass arg1) {
         try {
             String address = arg0.getBluetoothAddress();
             String name = arg0.getFriendlyName(true);
+            //only store desired device
             if (address.equals(deviceAddress) && name.startsWith("Proximity_")) {
                 devices.add(arg0);
             }

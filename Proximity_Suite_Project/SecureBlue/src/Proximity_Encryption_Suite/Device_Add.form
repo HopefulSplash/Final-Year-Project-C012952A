@@ -3,7 +3,7 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
-    <Property name="title" type="java.lang.String" value="Bluecove Bluetooth Discovery"/>
+    <Property name="title" type="java.lang.String" value="Proximity Suite | Device Add"/>
     <Property name="modalityType" type="java.awt.Dialog$ModalityType" editor="org.netbeans.modules.form.editors.EnumEditor">
       <Value id="APPLICATION_MODAL"/>
     </Property>
@@ -33,12 +33,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+              <Component id="device_Panel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel1" max="32767" attributes="0"/>
-                  <Component id="jPanel3" max="32767" attributes="0"/>
-                  <Component id="jPanel4" max="32767" attributes="0"/>
+                  <Component id="button_Panel" max="32767" attributes="0"/>
+                  <Component id="device_Info_Panel" max="32767" attributes="0"/>
+                  <Component id="device_Details_Panel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
           </Group>
@@ -50,13 +50,13 @@
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="device_Info_Panel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                      <Component id="device_Details_Panel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="button_Panel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jPanel2" max="32767" attributes="0"/>
+                  <Component id="device_Panel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
           </Group>
@@ -64,7 +64,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="button_Panel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -76,9 +76,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="230" max="32767" attributes="0"/>
-                  <Component id="jButton2" min="-2" pref="90" max="-2" attributes="0"/>
+                  <Component id="accept_Button" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="90" max="-2" attributes="0"/>
+                  <Component id="cancel_Button" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -88,8 +88,8 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cancel_Button" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="accept_Button" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -97,27 +97,27 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="cancel_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancel_ButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="accept_Button">
           <Properties>
             <Property name="text" type="java.lang.String" value="Accept"/>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="accept_ButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel3">
+    <Container class="javax.swing.JPanel" name="device_Info_Panel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -135,20 +135,20 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" alignment="0" pref="398" max="32767" attributes="1"/>
+                      <Component id="services_ScrollPane" alignment="0" pref="398" max="32767" attributes="1"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblServiceDetails" min="-2" max="-2" attributes="0"/>
+                          <Component id="services_Label" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblDeviceAddress" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDeviceName" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="address_Label" min="-2" max="-2" attributes="0"/>
+                              <Component id="name_Label" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblRuntimeDeviceName" max="32767" attributes="0"/>
-                              <Component id="lblRuntimeDeviceAddress" max="32767" attributes="0"/>
+                              <Component id="name_Field" max="32767" attributes="0"/>
+                              <Component id="address_Field" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -161,42 +161,42 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblDeviceName" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblRuntimeDeviceName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="name_Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="name_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblDeviceAddress" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblRuntimeDeviceAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="address_Label" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="address_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="lblServiceDetails" min="-2" max="-2" attributes="0"/>
+                  <Component id="services_Label" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="151" max="-2" attributes="0"/>
+                  <Component id="services_ScrollPane" min="-2" pref="151" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="lblDeviceAddress">
+        <Component class="javax.swing.JLabel" name="address_Label">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bluetooth Device Address"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblServiceDetails">
+        <Component class="javax.swing.JLabel" name="services_Label">
           <Properties>
             <Property name="text" type="java.lang.String" value="Service Details"/>
           </Properties>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+        <Container class="javax.swing.JScrollPane" name="services_ScrollPane">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="JTextAreaServiceDetails">
+            <Component class="javax.swing.JTextArea" name="services_Area">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -209,12 +209,12 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="lblDeviceName">
+        <Component class="javax.swing.JLabel" name="name_Label">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bluetooth Device Name"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="lblRuntimeDeviceAddress">
+        <Component class="javax.swing.JTextField" name="address_Field">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -223,7 +223,7 @@
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="lblRuntimeDeviceName">
+        <Component class="javax.swing.JTextField" name="name_Field">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -234,7 +234,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel2">
+    <Container class="javax.swing.JPanel" name="device_Panel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -252,9 +252,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
-                      <Component id="progressBar" pref="200" max="32767" attributes="0"/>
-                      <Component id="jButton3" max="32767" attributes="0"/>
+                      <Component id="bluetooth_Device_ScrollPane" pref="0" max="32767" attributes="0"/>
+                      <Component id="device_ProgressBar" pref="200" max="32767" attributes="0"/>
+                      <Component id="device_Scan_Button" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
@@ -263,40 +263,37 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jScrollPane1" min="-2" pref="294" max="-2" attributes="0"/>
+                  <Component id="bluetooth_Device_ScrollPane" min="-2" pref="294" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="progressBar" min="-2" pref="24" max="-2" attributes="0"/>
+                  <Component id="device_ProgressBar" min="-2" pref="24" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                  <Component id="device_Scan_Button" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+        <Container class="javax.swing.JScrollPane" name="bluetooth_Device_ScrollPane">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="JListBluetoothDevices">
+            <Component class="javax.swing.JList" name="bluetooth_Devices_List">
               <Properties>
                 <Property name="selectionMode" type="int" value="0"/>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="JListBluetoothDevicesMouseClicked"/>
-              </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="ListSelectionListener listSelectionListener = new ListSelectionListener() {&#xa;      public void valueChanged(ListSelectionEvent listSelectionEvent) {&#xa;&#xa;  if(JListBluetoothDevices.getSelectedIndex()&gt;-1){&#xa; /* Get bluetooth device details from temporary list */&#xa;        List&lt;String&gt; tmpDeviceDetails = mapDevicePosition.get(JListBluetoothDevices.getSelectedIndex());&#xa;        /* Set bluetooth device name */&#xa;        lblRuntimeDeviceName.setText(tmpDeviceDetails.get(0));&#xa;        /* Set bluetooth device Address */&#xa;        lblRuntimeDeviceAddress.setText(tmpDeviceDetails.get(1));&#xa;&#xa;        if (tmpDeviceDetails.size() &gt; 2 &amp;&amp; tmpDeviceDetails.get(2) != null) {&#xa;            /* Set bluetooth device service name and URL */&#xa;            JTextAreaServiceDetails.setText(tmpDeviceDetails.get(2));&#xa;        } else {&#xa;            JTextAreaServiceDetails.setText(&quot;Service not found&quot;);&#xa;        }&#xa;}&#xa;&#xa;jPasswordField1.setText(&quot;&quot;);&#xa;                jPasswordField2.setText(&quot;&quot;);&#xa;                jPasswordField1.setEnabled(true);&#xa;                jPasswordField1.setEditable(true);&#xa;                jPasswordField1.setFocusable(true);&#xa;&#xa;&#xa;       &#xa;}&#xa;    };&#xa;    JListBluetoothDevices.addListSelectionListener(listSelectionListener);"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="ListSelectionListener listSelectionListener = new ListSelectionListener() {&#xa;      public void valueChanged(ListSelectionEvent listSelectionEvent) {&#xa;&#xa;  if(bluetooth_Devices_List.getSelectedIndex()&gt;-1){&#xa; /* Get bluetooth device details from temporary list */&#xa;        List&lt;String&gt; tmpDeviceDetails = map_Device_Position.get(bluetooth_Devices_List.getSelectedIndex());&#xa;        /* Set bluetooth device name */&#xa;        name_Field.setText(tmpDeviceDetails.get(0));&#xa;        /* Set bluetooth device Address */&#xa;        address_Field.setText(tmpDeviceDetails.get(1));&#xa;&#xa;        if (tmpDeviceDetails.size() &gt; 2 &amp;&amp; tmpDeviceDetails.get(2) != null) {&#xa;            /* Set bluetooth device service name and URL */&#xa;            services_Area.setText(tmpDeviceDetails.get(2));&#xa;        } else {&#xa;            services_Area.setText(&quot;Service not found&quot;);&#xa;        }&#xa;}&#xa;&#xa;pin_Field.setText(&quot;&quot;);&#xa;                confirm_Pin_Field.setText(&quot;&quot;);&#xa;                pin_Field.setEnabled(true);&#xa;                pin_Field.setEditable(true);&#xa;                pin_Field.setFocusable(true);&#xa;&#xa;&#xa;       &#xa;}&#xa;    };&#xa;    bluetooth_Devices_List.addListSelectionListener(listSelectionListener);"/>
               </AuxValues>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JProgressBar" name="progressBar">
+        <Component class="javax.swing.JProgressBar" name="device_ProgressBar">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="device_Scan_Button">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Proximity/graphic_Device/device_Refresh.png"/>
@@ -304,12 +301,12 @@
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_Scan_ButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel4">
+    <Container class="javax.swing.JPanel" name="device_Details_Panel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -327,14 +324,14 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jLabel2" max="32767" attributes="0"/>
-                      <Component id="jLabel1" max="32767" attributes="0"/>
+                      <Component id="confirm_Pin_Label" max="32767" attributes="0"/>
+                      <Component id="pin_Label" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel3" max="32767" attributes="0"/>
-                      <Component id="jPasswordField1" max="32767" attributes="0"/>
-                      <Component id="jPasswordField2" max="32767" attributes="0"/>
+                      <Component id="strength_Label" max="32767" attributes="0"/>
+                      <Component id="pin_Field" max="32767" attributes="0"/>
+                      <Component id="confirm_Pin_Field" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
@@ -345,55 +342,55 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jPasswordField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="pin_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="pin_Label" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jPasswordField2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="confirm_Pin_Field" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="confirm_Pin_Label" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel3" max="32767" attributes="0"/>
+                  <Component id="strength_Label" max="32767" attributes="0"/>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="pin_Label">
           <Properties>
             <Property name="text" type="java.lang.String" value="Enter Device PIN (Length 6): "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="confirm_Pin_Label">
           <Properties>
             <Property name="text" type="java.lang.String" value="Confirm Device PIN (Length 6): "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+        <Component class="javax.swing.JPasswordField" name="pin_Field">
           <Properties>
             <Property name="columns" type="int" value="6"/>
           </Properties>
           <Events>
-            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="jPasswordField1CaretUpdate"/>
+            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="pin_FieldCaretUpdate"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PlainDocument document = (PlainDocument) jPasswordField1.getDocument();&#xa;        document.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PlainDocument document = (PlainDocument) pin_Field.getDocument();&#xa;        document.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField2">
+        <Component class="javax.swing.JPasswordField" name="confirm_Pin_Field">
           <Properties>
             <Property name="columns" type="int" value="6"/>
           </Properties>
           <Events>
-            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="jPasswordField2CaretUpdate"/>
+            <EventHandler event="caretUpdate" listener="javax.swing.event.CaretListener" parameters="javax.swing.event.CaretEvent" handler="confirm_Pin_FieldCaretUpdate"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PlainDocument document1 = (PlainDocument) jPasswordField2.getDocument();&#xa;        document1.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PlainDocument document1 = (PlainDocument) confirm_Pin_Field.getDocument();&#xa;        document1.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
+        <Component class="javax.swing.JLabel" name="strength_Label">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>

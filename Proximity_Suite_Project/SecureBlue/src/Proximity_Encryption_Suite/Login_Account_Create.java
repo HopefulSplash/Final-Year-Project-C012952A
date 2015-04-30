@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+
 /**
  * The Login_Account_Create.Java Class implements an application that allows a
  * users to create an account so why can be given access to the Proximity
@@ -457,7 +459,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         //popup window asking the user if they are sure they want to create the account.
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
@@ -508,13 +510,13 @@ public class Login_Account_Create extends javax.swing.JFrame {
                     String createFolder = "INSERT INTO Folder_Details "
                             + "VALUES (NULL, " + accountID + ", '" + username + "''s" + " Default Folder'" + ", 'Default'" + ", 'Account Default Folder', DEFAULT );";
                     stmt.executeUpdate(createFolder);
-  
+
                 } catch (SQLException | ClassNotFoundException se) {
                 } finally {
                     //finally block used to close resources.
                     try {
                         if (conn != null) {
-                             conn.close();
+                            conn.close();
                         }
                     } catch (SQLException se) {
                     }
@@ -670,7 +672,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
             /*
              * Register JDBC driver
@@ -695,17 +697,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
-              }
+            }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (conn != null) {
-                     conn.close();
+                    conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-             
+
         }
         //returns isTaken value so it can be used.
         return isTaken;
@@ -734,7 +736,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
             /*
              * Register JDBC driver
@@ -744,7 +746,7 @@ public class Login_Account_Create extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-           Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Email FROM Account_Details";
 
             /*
@@ -759,17 +761,17 @@ public class Login_Account_Create extends javax.swing.JFrame {
                         isTaken = true;
                     }
                 }
-              }
+            }
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             //finally block used to close resources
             try {
                 if (conn != null) {
-                     conn.close();
+                    conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
-             
+
         }
 
         //returns isTaken value so it can be used.

@@ -2,13 +2,16 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
 import java.sql.*;
+
 /**
- * The Suite_Database.Java Class implements the database features such as implementing
- * the database if it has not been created, storing the connection details.
+ * The Suite_Database.Java Class implements the database features such as
+ * implementing the database if it has not been created, storing the connection
+ * details.
  *
  * @author Harry Clewlow (C012952A)
  * @version 1.0
@@ -25,22 +28,45 @@ public class Suite_Database {
     final String USER = "root";
     final String PASS = "Password123$";
 
+    /**
+     * a method that return the JDBC driver
+     *
+     * @return
+     */
     public String getJDBC_DRIVER() {
         return JDBC_DRIVER;
     }
 
+    /**
+     * a method that will set the database URL
+     *
+     * @return
+     */
     public String getDB_URL() {
         return DB_URL;
     }
 
+    /**
+     * a method the get the user that will be logging into the system
+     *
+     * @return
+     */
     public String getUSER() {
         return USER;
     }
 
+    /**
+     * a method to get the password for the system
+     *
+     * @return
+     */
     public String getPASS() {
         return PASS;
     }
 
+    /**
+     * a method that will start the database
+     */
     public void startDatabase() {
 
         Connection conn = null;
@@ -57,15 +83,22 @@ public class Suite_Database {
                     conn.close();
                 }
             } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
+            }
+        }
     }
 
+    /**
+     * a method that will get the string to connect to the database
+     *
+     * @return
+     */
     public String getCONNECT_DB_URL() {
         return CONNECT_DB_URL;
     }
 
+    /**
+     * a method that will create all the tables for the program
+     */
     private void createDatabase() {
         Connection conn = null;
 
@@ -216,11 +249,16 @@ public class Suite_Database {
                     conn.close();
                 }
             } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
+            }
+        }
     }
 
+    /**
+     * a method that will check if the database exists or not.
+     *
+     * @param dbName
+     * @return
+     */
     private boolean checkDBExists(String dbName) {
 
         Connection conn = null;
@@ -242,8 +280,6 @@ public class Suite_Database {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-
         return false;
     }
-
-}//end JDBCExample
+}

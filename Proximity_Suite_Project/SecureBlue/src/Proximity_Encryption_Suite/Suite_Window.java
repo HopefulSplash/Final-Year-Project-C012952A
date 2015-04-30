@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -58,9 +59,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
 /**
- * The Suite_Window.Java Class implements an application that allows a users
- * use all of the features that are currently implemented using the Proximity
+ * The Suite_Window.Java Class implements an application that allows a users use
+ * all of the features that are currently implemented using the Proximity
  * Encryption Suite.
  *
  * @author Harry Clewlow (C012952A)
@@ -69,25 +71,31 @@ import javax.swing.table.TableRowSorter;
  */
 public class Suite_Window extends javax.swing.JFrame {
 
-    boolean didDecrypt = false;
-
     class Task extends SwingWorker<Void, Void> {
 
         int counter = 0;
-        JFrame o1;
+        JFrame background_Frame;
 
         public Object getO1() {
-            return o1;
+            return background_Frame;
         }
 
-        public void setO1(JFrame o1) {
-            this.o1 = o1;
+        public void setBackground_Frame(JFrame background_Frame) {
+            this.background_Frame = background_Frame;
         }
 
         String status;
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public int getCounter() {
+            return counter;
+        }
+
+        public void setCounter(int counter) {
+            this.counter = counter;
         }
 
         @Override
@@ -100,56 +108,62 @@ public class Suite_Window extends javax.swing.JFrame {
             setProgress(0);
 
             while (counter != 1) {
+                //setup GUI
                 progressBar.setIndeterminate(true);
 
                 if ("Login".equals(status)) {
 
                     switch (loginType) {
                         case "Account":
+                            //load the account details
                             getAccountDetails();
                             counter++;
                             break;
                         case "Device":
-
+                            //start the monitoring thread.
                             Device_Monitoring_Thread bt = new Device_Monitoring_Thread();
                             bt.setDeviceAddress(deviceAddress);
                             bt.start();
 
                             //waiting for attempt to connect
                             while (true) {
-
                                 if (bt.getDidConnect() != -1) {
                                     break;
                                 }
                             }
+                            System.out.println(bt.getDidConnect());
 
-                            //if it did connect
+                            System.out.println(bt.getDidConnect());
+
+                            //if the device did connect 
                             if (bt.getDidConnect() == 0) {
-
-                                System.out.println(accountID);
+                                //get account id                               
                                 getAccountID();
-                                System.out.println(accountID);
-
+                                //get account information
                                 getAccountDetails();
-
+                                //decrypt all files
                                 for (int i = 0; i < folderIDList.size(); i++) {
                                     decryptAllFiles(folderIDList.get(i));
                                 }
-
+                                // set variables
                                 didDecrypt = true;
                                 bt.setConnected(true);
 
-                                //loops untill it di
+                                System.out.println(bt.isConnected());
+                                System.out.println(bt.isConnected());
+                                //loops untill it device disconnected
                                 while (bt.isConnected()) {
 
                                 }
+
+                                System.out.println(bt.isConnected());
                                 counter++;
 
                             } else {
                                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                                JOptionPane.showMessageDialog(o1,
-                                        "Could Not Connect To Device.",
-                                        "Folder Creation Error!",
+                                JOptionPane.showMessageDialog(background_Frame,
+                                        "Failed To Connect To Your Device. Please Visit User Guide For Help.",
+                                        "Device Connection Error!",
                                         JOptionPane.INFORMATION_MESSAGE,
                                         crossIcon);
 
@@ -163,13 +177,12 @@ public class Suite_Window extends javax.swing.JFrame {
                             counter++;
                             break;
                         case "Device":
-
+                            //encrypt all files that need to be before logging out 
                             if (didDecrypt == true) {
                                 for (int i = 0; i < folderIDList.size(); i++) {
                                     encryptAllFiles(folderIDList.get(i));
                                 }
                             }
-
                             counter++;
                             break;
                     }
@@ -177,11 +190,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
                     switch (loginType) {
                         case "Account":
-
+                            // do nothing
                             counter++;
                             break;
                         case "Device":
-
+                            //encrypt all files that need to be before logging out 
                             if (didDecrypt == true) {
                                 for (int i = 0; i < folderIDList.size(); i++) {
                                     encryptAllFiles(folderIDList.get(i));
@@ -193,13 +206,15 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 } else if ("Delete".equals(status)) {
                     getAccountDevices();
+                    //remove all devices
                     for (int i = 0; i < deviceIDList.size(); i++) {
                         removeDevice(deviceIDList.get(i));
                     }
+                    //remove all folders
                     for (int i = 0; i < folderIDList.size(); i++) {
-                        RemoveALLFOLDERS(folderIDList.get(i));
+                        Remove_All_Folders(folderIDList.get(i));
                     }
-
+                    //delete an account
                     deleteAcccount();
                     counter++;
                 }
@@ -208,14 +223,9 @@ public class Suite_Window extends javax.swing.JFrame {
             return null;
         }
 
-        public int getCounter() {
-            return counter;
-        }
-
-        public void setCounter(int counter) {
-            this.counter = counter;
-        }
-
+        /**
+         * a method that will get an accounts ID
+         */
         private void getAccountID() {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -259,6 +269,9 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that will delete an account
+         */
         private void deleteAcccount() {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -294,8 +307,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
-        private ArrayList<Integer> deviceIDList = new ArrayList<>();
-
+        /**
+         * a method that will decrypt all the files connected to an account
+         *
+         * @param FolderID
+         */
         private void decryptAllFiles(int FolderID) {
 
             ArrayList<Integer> fileIDList = new ArrayList<>();
@@ -357,6 +373,11 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         }
 
+        /**
+         * a method that will encrypt all the files connected to an account
+         *
+         * @param FolderID
+         */
         private void encryptAllFiles(int FolderID) {
 
             ArrayList<Integer> fileIDList = new ArrayList<>();
@@ -369,7 +390,6 @@ public class Suite_Window extends javax.swing.JFrame {
              * the database exists and if is does not then creates it for the system.
              */
             Suite_Database d = new Suite_Database();
-            d.startDatabase();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -418,6 +438,12 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         }
 
+        /**
+         * a method that will encrypt files that are meant to be encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean encryptAES(File file) {
             boolean encrypted = false;
 
@@ -465,6 +491,12 @@ public class Suite_Window extends javax.swing.JFrame {
             return encrypted;
         }
 
+        /**
+         * a method that will encrypt files that are meant to be encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean encryptDES(File file) {
 
             boolean encrypted = false;
@@ -504,6 +536,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that will encrypt files that are meant to be encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean encryptTripleDES(File file) {
             boolean encrypted = false;
             if (file.canRead() && file.canWrite() && file.canExecute()) {
@@ -551,7 +589,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
-        private void RemoveALLFOLDERS(int FolderID) {
+        /**
+         * a method that will remove all the folders from a account
+         *
+         * @param FolderID
+         */
+        private void Remove_All_Folders(int FolderID) {
 
             ArrayList<Integer> fileIDList = new ArrayList<>();
 
@@ -605,7 +648,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     }
 
                 }
-
+                //remove folder
                 removeFolder(FolderID);
 
             } catch (SQLException | ClassNotFoundException se) {
@@ -619,6 +662,12 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         }
 
+        /**
+         * a method that will generate a key for the encryption.
+         *
+         * @param key
+         * @return
+         */
         private String generateKey(String key) {
 
             String toString = new StringBuilder(key).reverse().toString();
@@ -626,6 +675,12 @@ public class Suite_Window extends javax.swing.JFrame {
             return toString;
         }
 
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptAES(File file) {
             boolean decrypted = false;
 
@@ -634,7 +689,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 try {
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-
+                    //generate ke
                     String eKey = generateKey(accountPass);
                     int length = eKey.length();
 
@@ -649,7 +704,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
                     FileInputStream originalInput = new FileInputStream(file);
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
-
+                    //decrypt file
                     Encryption_AES aes = new Encryption_AES();
                     aes.decrypt(eKey, originalInput, encryptedOutput);
 
@@ -674,6 +729,12 @@ public class Suite_Window extends javax.swing.JFrame {
             return decrypted;
         }
 
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptDES(File file) {
 
             boolean encrypted = false;
@@ -684,9 +745,9 @@ public class Suite_Window extends javax.swing.JFrame {
 
                     FileInputStream originalInput = new FileInputStream(file);
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
-
+                    //generate key
                     String eKey = generateKey(accountPass);
-
+                    //decrypt file
                     Encryption_DES des = new Encryption_DES();
                     des.decrypt(eKey, originalInput, encryptedOutput);
 
@@ -713,13 +774,19 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptTripleDES(File file) {
             boolean encrypted = false;
             if (file.canRead() && file.canWrite() && file.canExecute()) {
                 try {
 
                     File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-
+                    //generate key
                     String eKey = generateKey(accountPass);
                     int length = eKey.length();
                     if (length > 16 && length != 16) {
@@ -733,7 +800,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
                     FileInputStream originalInput = new FileInputStream(file);
                     FileOutputStream encryptedOutput = new FileOutputStream(temp);
-
+                    //decrypt file
                     Encryption_Triple_DES tdes = new Encryption_Triple_DES();
                     tdes.decrypt(eKey, originalInput, encryptedOutput);
 
@@ -759,6 +826,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that removes a file
+         *
+         * @param fileid
+         * @param folderid
+         */
         public void removeFile(int fileid, int folderid) {
 
             /*
@@ -806,6 +879,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that will check if the file is in another folder
+         *
+         * @param fileID
+         * @return
+         */
         private boolean checkFileInOtherFolders(int fileID) {
             boolean is = false;
             int file = 0;
@@ -856,6 +935,12 @@ public class Suite_Window extends javax.swing.JFrame {
             return is;
         }
 
+        /**
+         * a method that will get the id of a file
+         *
+         * @param file_Path
+         * @return
+         */
         public String getFileID(int file_Path) {
 
             String fileID = null;
@@ -898,6 +983,13 @@ public class Suite_Window extends javax.swing.JFrame {
             return fileID;
         }
 
+        /**
+         * a method that will get the type of encryption that has been used on a
+         * file
+         *
+         * @param file_Path
+         * @return
+         */
         public String getFileEncryptionStatus(int file_Path) {
 
             String fileID = null;
@@ -940,6 +1032,11 @@ public class Suite_Window extends javax.swing.JFrame {
             return fileID;
         }
 
+        /**
+         * a method that will delete a folder
+         *
+         * @param folderid
+         */
         public void removeFolder(int folderid) {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -974,6 +1071,9 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         }
 
+        /**
+         * a method that will get all the devices connected to an account
+         */
         private void getAccountDevices() {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -1023,6 +1123,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
+        /**
+         * a method that will remove a device
+         *
+         * @param deviceID
+         */
         private void removeDevice(int deviceID) {
 
             /*
@@ -1064,43 +1169,42 @@ public class Suite_Window extends javax.swing.JFrame {
 
         }
 
-        /*
-         * Executed in event dispatching thread
-         */
         @Override
         public void done() {
             setCursor(null); //turn off the wait cursor
-
+            //stops the progressbar
             progressBar.setIndeterminate(false);
             progressBar.setValue(0);
 
             if ("Delete".equals(status)) {
+                //opens the login menu
                 Login_Account als = new Login_Account();
                 als.setVisible(true);
-
             } else if ("Logout".equals(status)) {
+                //opens the login menu 
                 Login_Account als = new Login_Account();
                 als.setVisible(true);
-
+                //exits the system  
             } else if ("Exit".equals(status)) {
                 System.exit(0);
             } else if ("Login".equals(status)) {
+                //logout the system
                 if ("Device".equals(loginType)) {
                     home_Logout.doClick();
                 }
 
             }
         }
-
-        public void getkey(int accountID) {
-            // get password for encryption
-        }
     }
 
     /**
-     * Creates new form MainWindowSample
+     * Creates new form Suite_Window
      *
      * @param account_ID
+     * @param loginType
+     * @param DeviceAdddress
+     * @param deviceIsD
+     * @param dName
      */
     public Suite_Window(int account_ID, String loginType, String DeviceAdddress, int deviceIsD, String dName) {
         this.getContentPane().setBackground(Color.WHITE);
@@ -1144,21 +1248,24 @@ public class Suite_Window extends javax.swing.JFrame {
          */
         this.setIconImages(icons);
 
+        //load the date into the main GUI
         java.util.Date now = new java.util.Date();
         String ss = DateFormat.getDateTimeInstance().format(now);
         statusbar_Date_Label.setText("System Date & Time: " + ss);
         status_Session_Label.setText("Session Time: 00:00:00 ");
 
         if (loginType.equals("Account")) {
-            this.accountID = account_ID; //accountID
+            //setup variables
+            this.accountID = account_ID;
             this.deviceID = deviceIsD;
+            //start login task
             Task task = new Task();
             task.setStatus("Login");
-            task.setO1(this);
+            task.setBackground_Frame(this);
             this.loginType = "Account";
             task.execute();
         } else if (loginType.equals("Device")) {
-
+            //setup GUI
             table_Add_Button.setEnabled(false);
             table_Remove_Button.setEnabled(false);
             table_Select_Button.setEnabled(false);
@@ -1170,22 +1277,23 @@ public class Suite_Window extends javax.swing.JFrame {
             menu_Home.setEnabled(false);
             menu_Folder.setEnabled(false);
             menu_Account.setEnabled(false);
-
+            //setup variables
             this.deviceAddress = DeviceAdddress;
             this.deviceID = deviceIsD;
             this.deviceName = dName;
+            //start login task
             Task task = new Task();
             task.setStatus("Login");
-            task.setO1(this);
+            task.setBackground_Frame(this);
             this.loginType = "Device";
             task.execute();
         }
 
     }
-    private String deviceAddress;
-    private String deviceName;
-    String loginType;
 
+    /**
+     * a method that will get all the information about an account
+     */
     public void getAccountDetails() {
         /*
          * declares and new instance of the Suite_Database class and then checks if the
@@ -1225,13 +1333,13 @@ public class Suite_Window extends javax.swing.JFrame {
             }
         }
         account_Current.setText(accountName);
-
+        //gets account folders 
         getAccountFolders();
     }
 
-    ArrayList<Integer> folderIDList = new ArrayList<>();
-    ArrayList<String> folderNameList = new ArrayList<>();
-
+    /**
+     * a method that gets all the folders related to an account
+     */
     private void getAccountFolders() {
 
         int folderID;
@@ -1242,8 +1350,6 @@ public class Suite_Window extends javax.swing.JFrame {
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1278,14 +1384,17 @@ public class Suite_Window extends javax.swing.JFrame {
                 }
             }
         }
-
+        //update GUI
         updateFolderListGUI();
     }
 
+    /**
+     * a method that updates the folder GUI
+     */
     private void updateFolderListGUI() {
-
+        // removes all items from the combo box
         table_Folder_ComboBox.removeAllItems();
-
+        //update folder selection combo box
         for (int i = 0; i < folderIDList.size(); i++) {
             if (!folderIDList.isEmpty()) {
 
@@ -1296,6 +1405,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
+    /**
+     * a method that gets all the file ids that belong to a folder
+     *
+     * @param folderName
+     */
     private void getFolderFiles(String folderName) {
 
         ArrayList<Integer> fileIDList = new ArrayList<>();
@@ -1309,7 +1423,6 @@ public class Suite_Window extends javax.swing.JFrame {
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1343,7 +1456,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 fileIDList.add(fileID);
             }
 
-            getFolderFiles1(fileIDList);
+            getFoldersFiles(fileIDList);
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
@@ -1355,7 +1468,12 @@ public class Suite_Window extends javax.swing.JFrame {
         }
     }
 
-    public void getFolderFiles1(ArrayList<Integer> fileIDList) {
+    /**
+     * a method that will get all the files that belong to a folder
+     *
+     * @param fileIDList
+     */
+    public void getFoldersFiles(ArrayList<Integer> fileIDList) {
         ArrayList<String> fileDirList = new ArrayList<>();
         ArrayList<String> fileStatusList = new ArrayList<>();
 
@@ -1368,7 +1486,6 @@ public class Suite_Window extends javax.swing.JFrame {
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1401,7 +1518,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     }
                 }
             }
-
+            //update the tables content
             updateTableContents(fileDirList, fileStatusList);
 
         } catch (SQLException | ClassNotFoundException se) {
@@ -1416,6 +1533,11 @@ public class Suite_Window extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * a method that will remove a file
+     *
+     * @param fileID
+     */
     public void removeFile(int fileID) {
 
         /*
@@ -1456,10 +1578,16 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
+    /**
+     * a method that update the tables contents with the files that are linked
+     * to an accounts folder
+     *
+     * @param fileDirList
+     * @param fileStatusList
+     */
     public void updateTableContents(ArrayList<String> fileDirList, ArrayList<String> fileStatusList) {
-
         File_Loading_Thread myRunnable = null;
-
+        //define all the needed varialbles.
         File file;
         Boolean select;
         String name;
@@ -1473,7 +1601,7 @@ public class Suite_Window extends javax.swing.JFrame {
         if (!fileDirList.isEmpty()) {
             Task task = new Task();
             task.execute();
-
+            //start the thread to search for all the files on the system.
             for (String fileDirList1 : fileDirList) {
 
                 myRunnable = new File_Loading_Thread((Suite_Window) this, new File(fileDirList1));
@@ -1493,12 +1621,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
                 file = filelists.get(i);
 
-                //file name
+                //gets a file name
                 fname = file.getName();
-                //date
+                //gets a date
                 date = DateFormat.getDateTimeInstance().format(file.lastModified());
 
-                //file extension
+                //gets a file extension
                 pos = fname.lastIndexOf('.');
                 if (pos > 0) {
                     type = fname.substring(pos);
@@ -1509,7 +1637,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     name = file.getName();
                 }
 
-                // size
+                // gets a file size
                 fileSize = getFileSize(file.length());
 
                 if (!fileStatusList.get(i).equals("AES Encryption") && !fileStatusList.get(i).equals("DES Encryption") && !fileStatusList.get(i).equals("Triple DES Encryption")) {
@@ -1517,13 +1645,19 @@ public class Suite_Window extends javax.swing.JFrame {
                 } else {
                     status = "Encrypted";
                 }
-
+                //add the information to the table
                 dw.addRow(new Object[]{false, " " + name, date, type, fileSize, status, "Open"});
             }
         }
 
     }
 
+    /**
+     * a method that will generate the size of a file
+     *
+     * @param fileLength
+     * @return
+     */
     public String getFileSize(double fileLength) {
         int unitSize = 1024;
         if (fileLength < unitSize) {
@@ -1542,16 +1676,8 @@ public class Suite_Window extends javax.swing.JFrame {
         return ss;
     }
 
-    ArrayList<File> filelists = new ArrayList();
-
-    private int accountID;
-    private String accountName;
-    private String accountPass;
-
     /**
      * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1843,11 +1969,6 @@ public class Suite_Window extends javax.swing.JFrame {
             table_View.getColumnModel().getColumn(a).setResizable(false);
 
         }
-        table_View.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                table_ViewFocusLost(evt);
-            }
-        });
         proximity_Table_Scroll_Pane.setViewportView(table_View);
         model = table_View.getModel();
         sorter = new TableRowSorter<>(model);
@@ -2321,15 +2442,17 @@ public class Suite_Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    ArrayList<File> addFiles = new ArrayList();
-
+    /**
+     * a method that will open the file add form
+     *
+     * @param evt
+     */
     private void table_Add_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Add_ButtonActionPerformed
-        // TODO add your handling code here:
         Files_Add aw = new Files_Add(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         aw.setVisible(true);
 
         String fodler = aw.getCurrent_Folder();
-
+        //clear and reload the data
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
@@ -2337,17 +2460,17 @@ public class Suite_Window extends javax.swing.JFrame {
         table_Folder_ComboBox.setSelectedItem(aw.getCurrent_Folder());
 
     }//GEN-LAST:event_table_Add_ButtonActionPerformed
-
-    ArrayList<File> filesRemove = new ArrayList();
-
+    /**
+     * a method that will remove selected files from the program
+     *
+     * @param evt
+     */
     private void table_Remove_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Remove_ButtonActionPerformed
-        // TODO add your handling code here:
-
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesRemove.clear();
 
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
-
+        //gets all the selected files 
         for (int i = 0; i < tableModel.getRowCount(); i++) {
 
             if (tableModel.getValueAt(i, 0).equals(true)) {
@@ -2358,15 +2481,16 @@ public class Suite_Window extends javax.swing.JFrame {
         }
 
         if (!filesRemove.isEmpty()) {
-
+            //opens the remove file form
             Files_Remove aw = new Files_Remove(this, true, accountID, filesRemove, (String) table_Folder_ComboBox.getSelectedItem());
             aw.setVisible(true);
 
-            if (aw.isDidAdd()) {
+            if (aw.isDidRemove()) {
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     tableModel.setValueAt(false, i, 0);
 
                 }
+                //clear and reloads the data
                 folderIDList.clear();
                 folderNameList.clear();
                 clearTableFiles();
@@ -2376,23 +2500,25 @@ public class Suite_Window extends javax.swing.JFrame {
             }
 
         } else if (filesRemove.isEmpty()) {
-
+            //error when no files have been selected
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "No Files Selected. Please Try Again.",
-                    "Account Creation Error!",
+                    "No Files Have Been Selected. Please Try Again.",
+                    "File Removal Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         }
 
 
     }//GEN-LAST:event_table_Remove_ButtonActionPerformed
-
+    /**
+     * a method that will select all the item in the table
+     *
+     * @param evt
+     */
     private void table_Select_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Select_ButtonActionPerformed
-        // TODO add your handling code here:
-
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
-
+        // selects all the items in the table
         for (int i = 0; i < tableModel.getRowCount(); i++) {
 
             tableModel.setValueAt(true, i, 0);
@@ -2400,102 +2526,121 @@ public class Suite_Window extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_table_Select_ButtonActionPerformed
-
+    /**
+     * a method that will open the support form
+     *
+     * @param evt
+     */
     private void support_AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_support_AboutActionPerformed
-        // TODO add your handling code here:
-        //  AboutSample accountSampleWindow = new AboutSample();
-        //       accountSampleWindow.setVisible(true);
-        //      accountSampleWindow.setLocationRelativeTo(this);
-
-        JDialog Register = new Support_About(this, true);
-        Register.setLocationRelativeTo(this);
-        Register.setVisible(true);
-
-
+        JDialog support = new Support_About(this, true);
+        support.setVisible(true);
     }//GEN-LAST:event_support_AboutActionPerformed
-
+    /**
+     * a method that will logout of the system.
+     *
+     * @param evt
+     */
     private void home_LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LogoutActionPerformed
-        // TODO add your handling code here:
-
         Task task = new Task();
         task.setStatus("Logout");
         task.execute();
         this.dispose();
     }//GEN-LAST:event_home_LogoutActionPerformed
-
+    /**
+     * a method that will exit the system
+     *
+     * @param evt
+     */
     private void home_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_ExitActionPerformed
-        // TODO add your handling code here:
-
         Task task = new Task();
         task.setStatus("Exit");
         task.execute();
         this.dispose();
 
     }//GEN-LAST:event_home_ExitActionPerformed
-    private int deviceID;
 
+    /**
+     * a method that will open the current device form.
+     */
     private void device_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_CurrentActionPerformed
-        // TODO add your handling code here:
-
         if (deviceID != -1) {
             Device_Current vcd = new Device_Current(this, true, deviceID, accountID);
             vcd.setVisible(true);
         } else {
-
+            // a message to the user to inform them that they are not in device mode.
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "Not in device mode please login using your device.",
-                    "Account Creation Error!",
+                    "Device Login Mode Not Activated. Please Login Using Your Device.",
+                    "Device Current Notice!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         }
     }//GEN-LAST:event_device_CurrentActionPerformed
-
+    /**
+     * a method that will open a website
+     *
+     * @param evt
+     */
     private void social_TwitterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_social_TwitterActionPerformed
-        // TODO add your handling code here:
         openWebpage("www.twitter.com/ProximitySuite");
     }//GEN-LAST:event_social_TwitterActionPerformed
-
+    /**
+     * a method that will open a website
+     *
+     * @param evt
+     */
     private void social_FacebookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_social_FacebookActionPerformed
-        // TODO add your handling code here:
         openWebpage("www.facebook.com/ProximityEncryptionSuite");
     }//GEN-LAST:event_social_FacebookActionPerformed
-
+    /**
+     * a method that will open a website
+     *
+     * @param evt
+     */
     private void social_WebsiteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_social_WebsiteActionPerformed
-        // TODO add your handling code here:
         openWebpage("www.proximitysuite.wix.com/proximitysuite");
     }//GEN-LAST:event_social_WebsiteActionPerformed
-
+    /**
+     * a method that will deselect all the items in the table
+     *
+     * @param evt
+     */
     private void table_Deselect_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Deselect_ButtonActionPerformed
-        // TODO add your handling code here:
-
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
-
+        //deselect all the items in the table
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             tableModel.setValueAt(false, i, 0);
 
         }
 
     }//GEN-LAST:event_table_Deselect_ButtonActionPerformed
-
+    /**
+     * a method that will clear the contents of the search box.
+     *
+     * @param evt
+     */
     private void table_Search_Clear_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Search_Clear_ButtonActionPerformed
-        // TODO add your handling code here:
         table_Search_Field.setText("");
     }//GEN-LAST:event_table_Search_Clear_ButtonActionPerformed
-
+    /**
+     * a method that will open the user guide for the system.
+     *
+     * @param evt
+     */
     private void support_GuideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_support_GuideActionPerformed
-        // TODO add your handling code here:
         String pathPDF = this.getClass().getResource("/Proximity/user_Guide/Proximity_User_Guide.pdf").getPath();
         File filePDF = new File(pathPDF);
         openFile(filePDF);
     }//GEN-LAST:event_support_GuideActionPerformed
-
+    /**
+     * a method that will open the current folder form
+     *
+     * @param evt
+     */
     private void folder_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CurrentActionPerformed
-        // TODO add your handling code here:
-
         Folder_Current vcf = new Folder_Current(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         vcf.setVisible(true);
-
+        //reload the data on the main GUI
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
@@ -2504,62 +2649,80 @@ public class Suite_Window extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_folder_CurrentActionPerformed
-
+    /**
+     * a method that will open the create folder form
+     *
+     * @param evt
+     */
     private void folder_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_CreateActionPerformed
-        // TODO add your handling code here:
         Folder_Create af = new Folder_Create(this, true, accountID);
         af.setVisible(true);
 
         if (af.isCreatedFolder() == true) {
+            //reload the data on the main GUI
             folderIDList.clear();
             folderNameList.clear();
             clearTableFiles();
             getAccountFolders();
             table_Folder_ComboBox.setSelectedIndex(table_Folder_ComboBox.getItemCount() - 1);
 
-        } else {
         }
     }//GEN-LAST:event_folder_CreateActionPerformed
-
+    /**
+     * a method that will clear the table of all its data
+     */
     private void clearTableFiles() {
         filelists.clear();
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
-
+        //remove all the data
         while (tableModel.getRowCount() > 0) {
             tableModel.removeRow(0);
 
         }
     }
 
+    /**
+     * a method that will open the folder management form.
+     *
+     * @param evt
+     */
     private void folder_ManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_ManageActionPerformed
-        // TODO add your handling code here:
         Folder_Management mf = new Folder_Management(this, true, accountID, table_Folder_ComboBox.getSelectedItem().toString());
         mf.setVisible(true);
-
+        //clear and reload the data
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
         getAccountFolders();
         table_Folder_ComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_folder_ManageActionPerformed
-
+    /**
+     * a method that will open the device delete form
+     *
+     * @param evt
+     */
     private void device_DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DisconnectActionPerformed
-        // TODO add your handling code here:
         Device_Delete j1 = new Device_Delete(this, true, accountID, deviceID);
         j1.setVisible(true);
     }//GEN-LAST:event_device_DisconnectActionPerformed
-
+    /**
+     * a method that will open the device management form
+     *
+     * @param evt
+     */
     private void device_ManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_ManageActionPerformed
-        // TODO add your handling code here:
         Device_Management md = new Device_Management(this, true, accountID, deviceID);
         md.setVisible(true);
     }//GEN-LAST:event_device_ManageActionPerformed
-
+    /**
+     * a method that will pen the folder delete form
+     *
+     * @param evt
+     */
     private void folder_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folder_DeleteActionPerformed
-        // TODO add your handling code here
         Folder_Delete md = new Folder_Delete(this, true, accountID);
         md.setVisible(true);
-
+        //clear and reloads the data on the main GUI
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
@@ -2569,32 +2732,34 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_folder_DeleteActionPerformed
 
-
+    /**
+     * a method that will log the system out and open up a login box.
+     *
+     * @param evt
+     */
     private void home_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LoginActionPerformed
-        // TODO add your handling code here:
-
         Task task = new Task();
         task.setStatus("Logout");
         task.execute();
-
         this.dispose();
     }//GEN-LAST:event_home_LoginActionPerformed
 
-    ArrayList<File> filesEncrypt = new ArrayList();
-    ArrayList<File> filesAlreadyEncrypt = new ArrayList();
-
+    /**
+     * a method that will open the encryption form after gathering all the file
+     * selected
+     *
+     * @param evt
+     */
     private void table_Encrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Encrypt_ButtonActionPerformed
-        // TODO add your handling code here:
-
+        //saves the relevant information and then clears all the information that is going to be used.
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesEncrypt.clear();
         filesAlreadyEncrypt.clear();
-
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
 
         String fname;
         int pos;
-
+        //gathers all the files that are selected and their relevent information
         for (int i = 0; i < filelists.size(); i++) {
 
             fname = filelists.get(i).getName();
@@ -2628,14 +2793,15 @@ public class Suite_Window extends javax.swing.JFrame {
         }
 
         if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
-
+            //opens the file encryption form
             Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt, accountPass);
             ew.setVisible(true);
-            if (ew.isDidAdd()) {
+            if (ew.isDidEncrypt()) {
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     tableModel.setValueAt(false, i, 0);
 
                 }
+                //clear and reloads that data
                 folderIDList.clear();
                 folderNameList.clear();
                 clearTableFiles();
@@ -2645,10 +2811,11 @@ public class Suite_Window extends javax.swing.JFrame {
             }
 
         } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
-            Object[] options = {"Encrypted Files (Deselect Encrypted Files)", "Canel"};
+            // tells the user they have already selected files that are encrypted
+            Object[] options = {"Encrypted Files (Deselect Already Encrypted Files)", "Canel"};
             int n = JOptionPane.showOptionDialog(this,
                     "One or More Files were Already Encrypted. Would you like To Conitue Without Encryption Them.",
-                    "Decrypt Files",
+                    "File Encryption Notice!",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -2656,14 +2823,15 @@ public class Suite_Window extends javax.swing.JFrame {
                     options[0]);
 
             if (n == 0) {
-
+                //opens the encryption form
                 Files_Encryption ew = new Files_Encryption(this, true, accountID, filesEncrypt, accountPass);
                 ew.setVisible(true);
-                if (ew.isDidAdd()) {
+                if (ew.isDidEncrypt()) {
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
                         tableModel.setValueAt(false, i, 0);
 
                     }
+                    //clear and reload data
                     folderIDList.clear();
                     folderNameList.clear();
                     clearTableFiles();
@@ -2673,17 +2841,19 @@ public class Suite_Window extends javax.swing.JFrame {
                 }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            //error when not files have been selected
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "No Files Selected. Please Try Again.",
-                    "Account Creation Error!",
+                    "No Files Have Been Selected. Please Try Again.",
+                    "File Encryption Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         } else if (!filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            //error when already encrypted files have been selected
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "Only Selected Encrypted Files. Please Try Again.",
-                    "Account Creation Error!",
+                    "Only Encrypted Files Have Been Selected. Please Try Again.",
+                    "File Encryption Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
 
@@ -2692,12 +2862,14 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_table_Encrypt_ButtonActionPerformed
 
-    //
-    ArrayList<File> filesdecrypt = new ArrayList();
-    ArrayList<File> filesAlreadydecrypt = new ArrayList();
-
+    /**
+     * a method that will open the decryption form after gather all the file a
+     * user has selected/
+     *
+     * @param evt
+     */
     private void table_Decrypt_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Decrypt_ButtonActionPerformed
-        // TODO add your handling code here:
+        //clears the data and saves the relevant folder
         table_Search_Field.setText("");
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
         filesEncrypt.clear();
@@ -2705,8 +2877,8 @@ public class Suite_Window extends javax.swing.JFrame {
 
         String fname;
         int pos;
-        //date
 
+        // gets all the files status and adds then to the relevant list
         for (int i = 0; i < filelists.size(); i++) {
 
             fname = filelists.get(i).getName();
@@ -2740,14 +2912,15 @@ public class Suite_Window extends javax.swing.JFrame {
         }
 
         if (filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
-
+            //opens the decryption form
             Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt, accountPass);
             ew.setVisible(true);
-            if (ew.isDidAdd()) {
+            if (ew.isDid_Decrypt()) {
                 for (int i = 0; i < table_View.getRowCount(); i++) {
                     table_View.setValueAt(false, i, 0);
 
                 }
+                //clears and reloads data in the main GUI
                 folderIDList.clear();
                 folderNameList.clear();
                 clearTableFiles();
@@ -2757,10 +2930,11 @@ public class Suite_Window extends javax.swing.JFrame {
             }
 
         } else if (!filesAlreadyEncrypt.isEmpty() && !filesEncrypt.isEmpty()) {
-            Object[] options = {"Encrypted Files (Deselect Encrypted Files)", "Canel"};
+            // asks the user if they want to continue and ignore unencrypted files
+            Object[] options = {"Decrypt Files (Deselect Decrypted Files)", "Canel"};
             int n = JOptionPane.showOptionDialog(this,
-                    "One or More Files are not Encrypted. Would you like To Conitue Without decryption Them.",
-                    "Decrypt Files",
+                    "One or More Files are not Encrypted. Would You Like To Conitue.",
+                    "File Decryption Notice!",
                     JOptionPane.YES_NO_CANCEL_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
@@ -2768,15 +2942,15 @@ public class Suite_Window extends javax.swing.JFrame {
                     options[0]);
 
             if (n == 0) {
-
+                // opens the decryption form
                 Files_Decryption ew = new Files_Decryption(this, true, accountID, filesEncrypt, accountPass);
                 ew.setVisible(true);
-                if (ew.isDidAdd()) {
+                if (ew.isDid_Decrypt()) {
                     for (int i = 0; i < table_View.getRowCount(); i++) {
                         table_View.setValueAt(false, i, 0);
 
                     }
-
+                    //clears and relods the data
                     folderIDList.clear();
                     folderNameList.clear();
                     clearTableFiles();
@@ -2786,17 +2960,19 @@ public class Suite_Window extends javax.swing.JFrame {
                 }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            //error when no files have been selected
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "No Files Selected. Please Try Again.",
-                    "Account Creation Error!",
+                    "No Files Have Been Selected. Please Try Again.",
+                    "File Decryption Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         } else if (!filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
+            //error when no encrypted files have been selected
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog((Component) this,
-                    "Only Selected Encrypted Files. Please Try Again.",
-                    "Account Creation Error!",
+                    "Only Decrypted Files Have Been Selected. Please Try Again.",
+                    "File Decryption Error!",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
 
@@ -2805,10 +2981,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }//GEN-LAST:event_table_Decrypt_ButtonActionPerformed
 
-    int selectedIndex = -1;
+    /**
+     * a method that will switch folders and load the correct data into the GUI
+     *
+     * @param evt
+     */
     private void table_Folder_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_table_Folder_ComboBoxActionPerformed
-        // TODO add your handling code here:
-
         int encryptCounter = 0;
         int decryptCounter = 0;
 
@@ -2828,7 +3006,7 @@ public class Suite_Window extends javax.swing.JFrame {
             clearTableFiles();
 
             getFolderFiles((String) table_Folder_ComboBox.getSelectedItem());
-
+            //counters the number of files that are encrypted or decrypted
             for (int i = 0; i < tableModel.getRowCount(); i++) {
 
                 if (tableModel.getValueAt(i, 5).equals("Encrypted")) {
@@ -2839,52 +3017,59 @@ public class Suite_Window extends javax.swing.JFrame {
                     }
                 }
             }
-
+            //displays information to the user
             jLabel2.setText("Encrypted Files: " + encryptCounter);
             jLabel3.setText("Decrypted Files: " + decryptCounter);
             jLabel1.setText("Total Files: " + tableModel.getRowCount());
         }
         selectedIndex = table_Folder_ComboBox.getSelectedIndex();
     }//GEN-LAST:event_table_Folder_ComboBoxActionPerformed
-
+    /**
+     * a method that will search the tables contents
+     *
+     * @param evt
+     */
     private void table_Search_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_table_Search_FieldCaretUpdate
-        // TODO add your handling code here:
-
         if (table_Search_Field.getText().length() != 0) {
 
             searchAll();
         }
 
     }//GEN-LAST:event_table_Search_FieldCaretUpdate
-
+    /**
+     * a method that will open the account modification form
+     *
+     * @param evt
+     */
     private void account_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_ModifyActionPerformed
-        // TODO add your handling code here:
-
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
 
         Account_Management md = new Account_Management(this, true, accountID);
         md.setVisible(true);
-
+        //clear and load data 
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
         getAccountDetails();
         table_Folder_ComboBox.setSelectedIndex(tempFolder);
-
-
     }//GEN-LAST:event_account_ModifyActionPerformed
-
+    /**
+     * a method that will open the create account form
+     *
+     * @param evt
+     */
     private void account_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CreateActionPerformed
-        // TODO add your handling code here:
         new Login_Account_Create("Main").setVisible(true);
     }//GEN-LAST:event_account_CreateActionPerformed
-
+    /**
+     * a method that will ask the user if they want to delete their account.
+     *
+     */
     private void account_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_DeleteActionPerformed
-        // TODO add your handling code here:
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
-                "Are You Sure You Want to Modify This Folder?",
-                "Confirm Folder Modification",
+                "Are You Sure You Want to Delete Your Account?",
+                "Confirm Account Removal",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null, //do not use a custom Icon
@@ -2896,53 +3081,58 @@ public class Suite_Window extends javax.swing.JFrame {
 
             Task task = new Task();
             task.setStatus("Delete");
-            task.setO1(this);
+            task.setBackground_Frame(this);
             task.execute();
             this.dispose();
 
         }
     }//GEN-LAST:event_account_DeleteActionPerformed
-
+    /**
+     * a method that will open the current account form
+     *
+     * @param evt
+     */
     private void account_CurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CurrentActionPerformed
-        // TODO add your handling code here:
-
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
 
         Account_Current md = new Account_Current(this, true, accountID);
         md.setVisible(true);
-
+        //clearing data and loading it back up
         folderIDList.clear();
         folderNameList.clear();
         clearTableFiles();
         getAccountDetails();
         table_Folder_ComboBox.setSelectedIndex(tempFolder);
 
-
     }//GEN-LAST:event_account_CurrentActionPerformed
-
-    private void table_ViewFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_table_ViewFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_table_ViewFocusLost
-
+    /**
+     * a method that will open the device_add form
+     *
+     * @param evt
+     */
     private void device_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_AddActionPerformed
-        // TODO add your handling code here:
         Device_Add da = new Device_Add(this, true, accountID);
         da.setVisible(true);
     }//GEN-LAST:event_device_AddActionPerformed
-
+    /**
+     * a method that will log the system out when the user presses the cross.
+     *
+     * @param evt
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
         Task task = new Task();
         task.setStatus("Exit");
         task.execute();
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * a method that will search the tables contents
+     */
     private void searchAll() {
 
         String expr = table_Search_Field.getText();
-        //stop feilds from filtering
-
+        //checks that something has been entered
         if (expr.length() == 0) {
             sorter.setRowFilter(null);
         } else {
@@ -2951,6 +3141,11 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
+    /**
+     * a method that will open a website
+     *
+     * @param url
+     */
     private void openWebpage(String url) {
         Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -2961,14 +3156,20 @@ public class Suite_Window extends javax.swing.JFrame {
         }
     }
 
-    void openFile(File file1) {
+    /**
+     * a method that will open a file depending on while operating system the
+     * package is on
+     *
+     * @param file1
+     */
+    private void openFile(File file1) {
 
         boolean isWindows = false;
         boolean isLinux = false;
         boolean isMac = false;
         boolean couldOpenWithDesktop = false;
         boolean couldOpenWithDesktop1 = false;
-
+        // gets the operating system
         String os = System.getProperty("os.name").toLowerCase();
         isWindows = os.contains("win");
         isLinux = os.contains("nux") || os.contains("nix");
@@ -2985,7 +3186,7 @@ public class Suite_Window extends javax.swing.JFrame {
             couldOpenWithDesktop = false;
         }
         if (couldOpenWithDesktop == false) {
-
+            // check which operating system is being used
             if (isLinux == true || isMac == true) {
                 try {
                     Process process = Runtime.getRuntime().exec("/usr/bin/open" + file1.toURI());
@@ -2998,23 +3199,21 @@ public class Suite_Window extends javax.swing.JFrame {
                     Process process = Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + file1);
 
                     couldOpenWithDesktop1 = true;
-                } catch (Exception exception) {
-                    System.err.println("Exception occured: " + exception);
+                } catch (IOException exception) {
+
                     couldOpenWithDesktop1 = false;
                 }
             } else {
                 ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Error/page_error.png"));
 
                 String filePath = file1.getAbsolutePath();
-
+                //error for file is not supported
                 JOptionPane.showMessageDialog(this.getRootPane(),
                         "File Located: \n" + filePath + "\nCannot Be Opened",
-                        "File Canot Be Opened UNSUPPORTED OPERATING SYSTEM",
+                        "File Canot Be Opened. UNSUPPORTED OPERATING SYSTEM",
                         JOptionPane.INFORMATION_MESSAGE,
                         icon);
             }
-
-            //check if it opened file
         }
 
         if (couldOpenWithDesktop1 == false && couldOpenWithDesktop == false) {
@@ -3022,7 +3221,7 @@ public class Suite_Window extends javax.swing.JFrame {
             ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Error/page_error.png"));
 
             String filePath = file1.getAbsolutePath();
-
+            // error for file cannot be opened
             JOptionPane.showMessageDialog(this.getRootPane(),
                     "File Located: \n" + filePath + "\nCannot Be Opened",
                     "File Canot Be Opened",
@@ -3030,12 +3229,30 @@ public class Suite_Window extends javax.swing.JFrame {
                     icon);
         }
     }
-
+    private ArrayList<File> filesdecrypt = new ArrayList();
+    private ArrayList<File> filesAlreadydecrypt = new ArrayList();
+    private ArrayList<File> filesEncrypt = new ArrayList();
+    private ArrayList<File> filesAlreadyEncrypt = new ArrayList();
+    private int selectedIndex = -1;
     private TableModel model;
-    TableRowSorter<TableModel> sorter;
-    long start = System.currentTimeMillis();
+    private TableRowSorter<TableModel> sorter;
+    private long start = System.currentTimeMillis();
+    private boolean didDecrypt = false;
     private boolean selected = false;
-    private javax.swing.JPopupMenu popup;
+    private int deviceID;
+    private ArrayList<File> addFiles = new ArrayList();
+    private ArrayList<File> filesRemove = new ArrayList();
+    private ArrayList<File> filelists = new ArrayList();
+    private int accountID;
+    private String accountName;
+    private String accountPass;
+    private ArrayList<Integer> folderIDList = new ArrayList<>();
+    private ArrayList<String> folderNameList = new ArrayList<>();
+    private String deviceAddress;
+    private String deviceName;
+    private String loginType;
+    private ArrayList<Integer> deviceIDList = new ArrayList<>();
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem account_Create;
     private javax.swing.JMenuItem account_Current;
@@ -3100,7 +3317,10 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JButton table_Select_Button;
     private javax.swing.JTable table_View;
     // End of variables declaration//GEN-END:variables
-
+    /**
+     * a class that will custom render a image in the tables cell
+     *
+     */
     class ImageRenderer extends DefaultTableCellRenderer {
 
         ImageIcon icon;
@@ -3136,6 +3356,12 @@ public class Suite_Window extends javax.swing.JFrame {
             return this;
         }
 
+        /**
+         * a method that will swap the tool tip used for the tables contents
+         *
+         * @param fileType
+         * @return
+         */
         private String switchToolTip(String fileType) {
             String toolTip = null;
 
@@ -3158,6 +3384,13 @@ public class Suite_Window extends javax.swing.JFrame {
             return toolTip;
         }
 
+        /**
+         * a method that will switch the icon to use as the type depending on
+         * the file type
+         *
+         * @param fileType
+         * @return
+         */
         private ImageIcon switchIcon(String fileType) {
             ImageIcon file_Type_Icon;
 
@@ -3514,9 +3747,12 @@ public class Suite_Window extends javax.swing.JFrame {
 
     }
 
+    /**
+     * a class that will custom render the tables cell
+     *
+     */
     class ButtonRenderer extends JButton implements TableCellRenderer {
 
-        ImageIcon deleteButtonIcon = new ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Buttons/table_Delete.png"));
         ImageIcon openButtonIcon = new ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Buttons/table_Open.png"));
 
         public ButtonRenderer() {
@@ -3540,9 +3776,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 setBackground(UIManager.getColor("Button.background"));
             }
             setText((value == null) ? "" : value.toString());
-            if (value == "Delete") {
-                setIcon(deleteButtonIcon);
-            } else if (value == "Open") {
+            if (value == "Open") {
                 setIcon(openButtonIcon);
             }
             return this;
@@ -3550,15 +3784,14 @@ public class Suite_Window extends javax.swing.JFrame {
     }
 
     /**
-     * @version 1.0 11/09/98
+     * a class that will custom the action the tables cell
+     *
      */
     class ButtonEditor extends DefaultCellEditor {
 
         protected JButton button;
 
         private String label;
-
-        ImageIcon deleteButtonIcon = new ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Buttons/table_Delete.png"));
 
         ImageIcon openButtonIcon = new ImageIcon(getClass().getResource("/Proximity/graphic_Table/graphic_Buttons/table_Open.png"));
 
@@ -3592,9 +3825,7 @@ public class Suite_Window extends javax.swing.JFrame {
             }
             label = (value == null) ? "" : value.toString();
             button.setText(label);
-            if (value == "Delete") {
-                button.setIcon(deleteButtonIcon);
-            } else if (value == "Open") {
+            if (value == "Open") {
                 button.setIcon(openButtonIcon);
             }
             isPushed = true;

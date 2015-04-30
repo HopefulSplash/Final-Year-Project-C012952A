@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.HeadlessException;
 import java.awt.Image;
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -201,7 +200,7 @@ public class Login_Device extends javax.swing.JFrame {
         account_Recover_Button1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SecureBlue | Device Login");
+        setTitle("Proximity Suite | Device Login");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(null);
         setMinimumSize(null);

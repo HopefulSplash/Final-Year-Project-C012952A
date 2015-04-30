@@ -6,6 +6,7 @@ package Proximity_Encryption_Suite;
  * Import all of the necessary libraries.
  */
 import java.util.Vector;
+import javax.bluetooth.BluetoothStateException;
 import javax.bluetooth.DeviceClass;
 import javax.bluetooth.DiscoveryAgent;
 import javax.bluetooth.DiscoveryListener;
@@ -23,7 +24,8 @@ import javax.bluetooth.ServiceRecord;
 public class Device_Discovery {
 
     /**
-     *
+     * a method that will get all the nearby devices.
+     * 
      * @return
      */
     public Vector getDevices() {
@@ -69,8 +71,7 @@ public class Device_Discovery {
                     inquiryCompletedEvent.wait();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (BluetoothStateException | InterruptedException e) {
         }
         /* Return list of devices */
         return devicesDiscovered;

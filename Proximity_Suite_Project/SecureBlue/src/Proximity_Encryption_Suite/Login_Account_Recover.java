@@ -2,6 +2,7 @@
  * Defines to package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -25,6 +26,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+
 /**
  * The Login_Account_Recover.Java Class implements an application that allows a
  * users recover certain account details so why can be given access to the
@@ -430,7 +432,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
                         question_ComboBox.setSelectedIndex(0);
                         username_Field.setText(null);
                     }
- 
+
                 }
             }
         } catch (SQLException se) {
@@ -439,7 +441,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
             //finally block used to close resources
             try {
                 if (conn != null) {
-                     conn.close();
+                    conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
@@ -495,7 +497,7 @@ public class Login_Account_Recover extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         /*
          * creates the SHA1 hash of the password the user has entered.
          */
@@ -555,13 +557,13 @@ public class Login_Account_Recover extends javax.swing.JFrame {
 
                 }
             }
-         } catch (SQLException se) {
+        } catch (SQLException se) {
         } catch (ClassNotFoundException | HeadlessException e) {
         } finally {
             //finally block used to close resources
             try {
                 if (conn != null) {
-                     conn.close();
+                    conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing

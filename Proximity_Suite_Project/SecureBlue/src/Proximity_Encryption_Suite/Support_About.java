@@ -189,8 +189,8 @@ public class Support_About extends javax.swing.JDialog {
             .addGroup(about_Details_PanelLayout.createSequentialGroup()
                 .addComponent(details_Project__Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addComponent(details_System_Scroll_Pane, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         button_Panel.setBackground(new java.awt.Color(255, 255, 255));
@@ -259,41 +259,6 @@ public class Support_About extends javax.swing.JDialog {
     }//GEN-LAST:event_close_ButtonActionPerformed
 
     /**
-     * This is the main method which launches the frame.
-     *
-     * @param args
-     */
-    public static void main(String args[]) {
-        /* Set the Windows look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Support_About.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-                Support_About dialog = new Support_About(new javax.swing.JFrame(), true);
-                dialog.setVisible(true);
-            }
-        });
-    }
-
-    /**
      * a method that will put text into GUI components and get system information for the user to see
      */
     private void setupTextArea() {
@@ -306,8 +271,6 @@ public class Support_About extends javax.swing.JDialog {
         aboutRuntime = System.getProperty("java.runtime.name") + " " + System.getProperty("java.runtime.version");
 
         aboutSystem = System.getProperty("os.name") + " version " + System.getProperty("os.version") + " running on " + System.getProperty("os.arch");
-
-        aboutUser = System.getProperty("user.dir");
 
         details_Text_Pane2.setText("<html>\n"
                 + "	<head>\n"
@@ -323,8 +286,6 @@ public class Support_About extends javax.swing.JDialog {
                 + "			<strong>Runtime:</strong>&nbsp;" + aboutRuntime + "</div>\n"
                 + "		<div>\n"
                 + "			<strong>System:</strong>&nbsp;" + aboutSystem + "</div>\n"
-                + "		<div>\n"
-                + "			<strong>User Directory:</strong>&nbsp;" + aboutUser + "</div>"
                 + "	</body>\n"
                 + "</html>\n"
                 + "");

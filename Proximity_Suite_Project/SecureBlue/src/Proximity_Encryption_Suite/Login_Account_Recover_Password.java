@@ -254,9 +254,7 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
      * a method that will close the dialog
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        // closing the dialog
-        setVisible(false);
-        dispose();
+        this.dispose();
     }//GEN-LAST:event_closeDialog
 
     /**
@@ -577,12 +575,12 @@ public class Login_Account_Recover_Password extends java.awt.Dialog {
     private javax.swing.JLabel password_Strength_Label;
     private javax.swing.JLabel password_Strength_Status_Label;
     // End of variables declaration//GEN-END:variables
-    Color darkGreen = new Color(0x006400);
-    Color darkRed = new Color(0x640000);
-    public String username;
-    public String question;
-    public String answer;
-    public boolean validPass;
-    public boolean shouldAdd = false;
-    public String passwordSha1 = null;
+    private Color darkGreen = new Color(0x006400);
+    private Color darkRed = new Color(0x640000);
+    private String username;
+    private String question;
+    private String answer;
+    private boolean validPass;
+    private boolean shouldAdd = false;
+    private String passwordSha1 = null;
 }

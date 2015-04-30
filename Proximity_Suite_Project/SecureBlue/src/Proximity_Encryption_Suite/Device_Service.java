@@ -5,6 +5,7 @@ package Proximity_Encryption_Suite;
 /**
  * Import all of the necessary libraries.
  */
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -23,27 +24,19 @@ public class Device_Service {
 
     /** 
      * UUID used to find specific service supported by bluetooth device
-     * https://www.bluetooth.org/en-us/specification/assigned-numbers/service-discovery
-     * Find UUIDs for all types of bluetooth services.
-     */
+    */
     /* To find push object service */
-    private UUID OBEX_OBJECT_PUSH_PROFILE = new UUID(0x1105);
+    private final UUID OBEX_OBJECT_PUSH_PROFILE = new UUID(0x1105);
     /* To find file transfer service */
-    private UUID OBEX_FILE_TRANSFER_PROFILE = new UUID(0x1106);
+    private final UUID OBEX_FILE_TRANSFER_PROFILE = new UUID(0x1106);
     /* To find hands free service */
-    private UUID HANDS_FREE = new UUID(0x111E);
+    private final UUID HANDS_FREE = new UUID(0x111E);
     /* Get URL attribute from bluetooth service */
-    private int URL_ATTRIBUTE = 0X0100;
+    private final int URL_ATTRIBUTE = 0X0100;
     
     public Map<String, List<String>> getBluetoothDevices() {        
         /**
          * Find service on bluetooth device 
-         * Note: In following line you can use one service at a time. I'm new to bluetooth programming it might me wrong perception.
-         * UUID[] searchUuidSet = new UUID[]{OBEX_FILE_TRANSGER_PROFILE};
-         * 
-         * CORRECT: UUID[] searchUuidSet = new UUID[]{OBEX_FILE_TRANSGER_PROFILE};
-         * WRONG: UUID[] searchUuidSet = new UUID[]{OBEX_FILE_TRANSGER_PROFILE, OBEX_OBJECT_PUSH_PROFILE};
-         */
         /* Initialize UUID Array */
         UUID[] searchUuidSet = new UUID[]{HANDS_FREE};
         final Object serviceSearchCompletedEvent = new Object();
@@ -52,21 +45,25 @@ public class Device_Service {
         /* Create an object to get list of devices in range or paired */
         Device_Discovery remoteDeviceDiscovery = new Device_Discovery();
         /* Create map to return Bluetooth device address, name and URL */
-        final Map<String, List<String>> mapReturnResult = new HashMap<String, List<String>>(); 
+        final Map<String, List<String>> mapReturnResult = new HashMap<>(); 
 
         try {
             /* Create an object of DiscoveryListener */
-            DiscoveryListener listener = new DiscoveryListener() {
-
+            DiscoveryListener listener;
+            listener = new DiscoveryListener() {
+                
                 /* To find bluetooth devices */
+                @Override
                 public void deviceDiscovered(RemoteDevice btDevice, DeviceClass cod) {
                 }
 
                 /* To find bluetooth devices */
+                @Override
                 public void inquiryCompleted(int discType) {
                 }
 
                 /* Find service URL of bluetooth device */
+                @Override
                 public void servicesDiscovered(int transID, ServiceRecord[] servRecord) {
                     for (int i = 0; i < servRecord.length; i++) {
                         /* Find URL of bluetooth device */
@@ -91,6 +88,7 @@ public class Device_Service {
                     }
                 }
 
+                @Override
                 public void serviceSearchCompleted(int transID, int respCode) {
                     /* Notify thread when search completed */
                     synchronized (serviceSearchCompletedEvent) {
@@ -104,13 +102,13 @@ public class Device_Service {
                 /* Get RemoteDevice object */
                 RemoteDevice btDevice = (RemoteDevice) en.nextElement();
                 /* Create list to return details */
-                List<String> listDeviceDetails = new ArrayList<String>();
+                List<String> listDeviceDetails = new ArrayList<>();
                 
                 try {
                     /* Add bluetooth device name and address in list */
                     listDeviceDetails.add(btDevice.getFriendlyName(false));
                     listDeviceDetails.add(btDevice.getBluetoothAddress());
-                } catch (Exception e) {
+                } catch (IOException e) {
                 }
                 
                 /* Put bluetooth device details in map */
@@ -120,8 +118,7 @@ public class Device_Service {
                     serviceSearchCompletedEvent.wait();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (BluetoothStateException | InterruptedException e) {
         }
         /* Return bluetooth devices detail */
         return mapReturnResult;

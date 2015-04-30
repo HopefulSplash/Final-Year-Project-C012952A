@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -40,9 +41,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
+
 /**
- * The Device_Add.Java Class implements an application that allows a users
- * to link a mobile device to their account.
+ * The Device_Add.Java Class implements an application that allows a users to
+ * link a mobile device to their account.
  *
  * @author Harry Clewlow (C012952A)
  * @version 1.0
@@ -50,103 +52,123 @@ import javax.swing.text.PlainDocument;
  */
 public class Device_Add extends javax.swing.JDialog {
 
+    //a swingwoker to do work in the background of the application.
     class Task extends SwingWorker<Void, Void> {
 
-        int counter = 0;
-        boolean notTaken = false;
+        //defining the variables for use.
+        private int background_Counter = 0;
+        private boolean not_Taken = false;
+        private final boolean add_Device = false;
+        private String background_Status;
+        private Object background_Object;
 
-        public int getCounter() {
-            return counter;
-        }
-
-        public void setCounter(int counter) {
-            this.counter = counter;
-        }
-
-        boolean addedFile = false;
-
-        String status;
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        Object o1;
-
-        public void setO1(Object o1) {
-            this.o1 = o1;
-        }
-        /*
-         * Main task. Executed in background thread.
+        /**
+         * a method that will return the counter.
+         *
+         * @return
          */
+        public int getBackground_Counter() {
+            return background_Counter;
+        }
+
+        /**
+         * a method that will set the counter
+         *
+         * @param background_Counter
+         */
+        public void setBackground_Counter(int background_Counter) {
+            this.background_Counter = background_Counter;
+        }
+
+        /**
+         * a method that will get the status
+         *
+         * @return
+         */
+        public String getBackground_Status() {
+            return background_Status;
+        }
+
+        /**
+         * a method that will set the status
+         *
+         * @param background_Status
+         */
+        public void setBackground_Status(String background_Status) {
+            this.background_Status = background_Status;
+        }
+
+        /**
+         * a method that will set the object.
+         *
+         * @param background_Object
+         */
+        public void setBackground_Object(Object background_Object) {
+            this.background_Object = background_Object;
+        }
 
         @Override
         public Void doInBackground() {
-
+            // setup GUI
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            jButton2.setEnabled(false);
-
-            jButton1.setEnabled(false);
-            jButton3.setEnabled(false);
-            jPasswordField1.setEnabled(false);
-            jPasswordField2.setEnabled(false);
-            JListBluetoothDevices.setFocusable(false);
-            jPasswordField1.setFocusable(false);
-            jPasswordField2.setFocusable(false);
-
-            progressBar.setValue(0);
-            progressBar.setIndeterminate(true);
+            accept_Button.setEnabled(false);
+            cancel_Button.setEnabled(false);
+            device_Scan_Button.setEnabled(false);
+            pin_Field.setEnabled(false);
+            confirm_Pin_Field.setEnabled(false);
+            bluetooth_Devices_List.setFocusable(false);
+            pin_Field.setFocusable(false);
+            confirm_Pin_Field.setFocusable(false);
+            device_ProgressBar.setValue(0);
+            device_ProgressBar.setIndeterminate(true);
 
             //Initialize progress property.
-            if ("Loading".equals(status)) {
+            if ("Loading".equals(background_Status)) {
 
-                int intDevicePosition = 0;
-                JListBluetoothDevices.setModel(defaultModel);
-
+                int device_Position = 0;
+                bluetooth_Devices_List.setModel(default_Model);
                 /* Create an object of Device_Service */
                 Device_Service ss = new Device_Service();
                 /* Get bluetooth device details */
-                mapReturnResult = ss.getBluetoothDevices();
-
+                map_Return_Result = ss.getBluetoothDevices();
 
                 /* Add devices in JList */
-                for (Map.Entry<String, List<String>> entry : mapReturnResult.entrySet()) {
-                    defaultModel.addElement(entry.getValue().get(0));
-                    mapDevicePosition.put(intDevicePosition, entry.getValue());
-                    intDevicePosition++;
+                for (Map.Entry<String, List<String>> entry : map_Return_Result.entrySet()) {
+                    default_Model.addElement(entry.getValue().get(0));
+                    map_Device_Position.put(device_Position, entry.getValue());
+                    device_Position++;
                 }
-
             }
 
-            if ("Adding".equals(status)) {
-
+            if ("Adding".equals(background_Status)) {
+                // check if the password is valid
                 if (validPass == true) {
-                    notTaken = checkifTaken(lblRuntimeDeviceAddress.getText());
-
-                    if (notTaken == false) {
-                        addDevice(lblRuntimeDeviceName.getText());
+                    not_Taken = check_Taken(address_Field.getText());
+                    // check if the device is taken
+                    if (not_Taken == false) {
+                        add_Device(name_Field.getText());
 
                     } else {
                         Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                        JOptionPane.showMessageDialog((Component) o1,
-                                "Device Already Taken.",
-                                "File Addirion Successful!",
+                        JOptionPane.showMessageDialog((Component) background_Object,
+                                "Device Already Link To An Account. Please Try Again.",
+                                "Device Linking Error!",
                                 JOptionPane.INFORMATION_MESSAGE,
                                 crossIcon);
                     }
                 }
-
             }
-
             return null;
         }
 
-        private boolean checkifTaken(String deviceAddress) {
-
+        /**
+         * a method that will check if the device is linked to another account.
+         *
+         * @param deviceAddress
+         * @return
+         */
+        private boolean check_Taken(String deviceAddress) {
+            // define variable.
             boolean isTaken = false;
 
             /*
@@ -158,7 +180,7 @@ public class Device_Add extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
- 
+
             try {
                 /*
                  * Register JDBC driver
@@ -183,25 +205,26 @@ public class Device_Add extends javax.swing.JDialog {
 
                     }
                 }
-                 
-
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 //finally block used to close resources
                 try {
                     if (conn != null) {
                         conn.close();
-                     }
+                    }
                 } catch (SQLException se) {
-                }// do nothing
-                 
+                }
             }
-
             return isTaken;
         }
 
-        private void addDevice(String deviceName) {
-
+        /**
+         * a method that will add the device to the database.
+         *
+         * @param deviceName
+         */
+        private void add_Device(String deviceName) {
+            // define variables
             String passwordSha1 = null;
             int tempID = 0;
 
@@ -209,7 +232,7 @@ public class Device_Add extends javax.swing.JDialog {
              * creates the SHA1 hash of the password the user has entered.
              */
             try {
-                String strPassword = new String(jPasswordField1.getPassword());
+                String strPassword = new String(pin_Field.getPassword());
                 passwordSha1 = convertToSha1(strPassword);
 
             } catch (NoSuchAlgorithmException ex) {
@@ -226,7 +249,7 @@ public class Device_Add extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -235,16 +258,15 @@ public class Device_Add extends javax.swing.JDialog {
                 String sql = "INSERT INTO Device_Details VALUES (NULL, ? , ? , ? , DEFAULT);";
 
                 PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setString(1, lblRuntimeDeviceName.getText());
-                pStmt.setString(2, lblRuntimeDeviceAddress.getText());
+                pStmt.setString(1, name_Field.getText());
+                pStmt.setString(2, address_Field.getText());
                 pStmt.setString(3, passwordSha1);
                 pStmt.executeUpdate();
-
 
                 sql = "SELECT device_Details_ID FROM device_Details WHERE device_Name = ? ;";
 
                 pStmt = conn.prepareStatement(sql);
-                pStmt.setString(1, lblRuntimeDeviceName.getText());
+                pStmt.setString(1, name_Field.getText());
 
                 ResultSet rs = pStmt.executeQuery();
                 while (rs.next()) {
@@ -252,7 +274,6 @@ public class Device_Add extends javax.swing.JDialog {
                     tempID = rs.getInt("device_Details_ID");
 
                 }
-
                 //add to device list
                 sql = "INSERT INTO account_device_list VALUES (NULL, ? , ? );";
 
@@ -261,18 +282,15 @@ public class Device_Add extends javax.swing.JDialog {
                 pStmt.setInt(2, tempID);
                 pStmt.executeUpdate();
 
-  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                     } catch (SQLException ex) {
+                    } catch (SQLException ex) {
                     }
                 }
-
             }
-
         }
 
         /**
@@ -297,74 +315,67 @@ public class Device_Add extends javax.swing.JDialog {
             for (int i = 0; i < result.length; i++) {
                 sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
             }
-
             /*
              * returns the string so it can be used.
              */
             return sb.toString();
         }
-
         /*
          * Executed in event dispatching thread
          */
+
         @Override
         public void done() {
             setCursor(null); //turn off the wait cursor
 
-            if ("Loading".equals(status)) {
-                progressBar.setValue(0);
-                progressBar.setIndeterminate(false);
-                jButton3.setEnabled(true);
-
-                JListBluetoothDevices.setFocusable(true);
-                JListBluetoothDevices.setSelectedIndex(0);
-
-                jButton1.setEnabled(true);
-                jButton2.setEnabled(false);
-
+            if ("Loading".equals(background_Status)) {
+                //setup GUI
+                device_ProgressBar.setValue(0);
+                device_ProgressBar.setIndeterminate(false);
+                device_Scan_Button.setEnabled(true);
+                bluetooth_Devices_List.setFocusable(true);
+                bluetooth_Devices_List.setSelectedIndex(0);
+                cancel_Button.setEnabled(true);
+                accept_Button.setEnabled(false);
             }
-            if ("Adding".equals(status)) {
-                progressBar.setValue(0);
-                progressBar.setIndeterminate(false);
-                jButton3.setEnabled(true);
+            if ("Adding".equals(background_Status)) {
+                //setup GUI
+                device_ProgressBar.setValue(0);
+                device_ProgressBar.setIndeterminate(false);
+                device_Scan_Button.setEnabled(true);
+                bluetooth_Devices_List.setFocusable(true);
+                bluetooth_Devices_List.setSelectedIndex(0);
+                cancel_Button.setEnabled(true);
+                accept_Button.setEnabled(false);
 
-                JListBluetoothDevices.setFocusable(true);
-                JListBluetoothDevices.setSelectedIndex(0);
-
-                jButton1.setEnabled(true);
-                jButton2.setEnabled(false);
-                if (notTaken == false) {
+                if (not_Taken == false) {
                     Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
-                    JOptionPane.showMessageDialog((Component) o1,
-                            "Device Add Successfully.",
-                            "File Addirion Successful!",
+                    JOptionPane.showMessageDialog((Component) background_Object,
+                            "Device Linking Successfully.",
+                            "Device Linking Successful!",
                             JOptionPane.INFORMATION_MESSAGE,
                             tickIcon);
-                    jButton1.doClick();
+                    //close application
+                    cancel_Button.doClick();
                 } else {
-                    jPasswordField1.setText("");
-                    jPasswordField2.setText("");
-                    jPasswordField1.setEnabled(true);
-                    jPasswordField1.setEditable(true);
-                    jPasswordField1.setFocusable(true);
+                    //setup GUI
+                    pin_Field.setText("");
+                    confirm_Pin_Field.setText("");
+                    pin_Field.setEnabled(true);
+                    pin_Field.setEditable(true);
+                    pin_Field.setFocusable(true);
                 }
             }
         }
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {
-
-    }
-
-    /* DefaultListModel to attach it with JList */
-    private DefaultListModel defaultModel;
-    /* Map to get device details list */
-    private Map<String, List<String>> mapReturnResult = new HashMap<String, List<String>>();
-    /* Map to identify device on user click of JList */
-    private Map<Integer, List<String>> mapDevicePosition = new HashMap<Integer, List<String>>();
-
-    private int accountID;
-
+    /**
+     * a method that will create a new form of Device_Add
+     *
+     * @param parent
+     * @param modal
+     * @param account_ID
+     */
     public Device_Add(java.awt.Frame parent, boolean modal, int account_ID) {
         this.getContentPane().setBackground(Color.WHITE);
         /**
@@ -402,20 +413,22 @@ public class Device_Add extends javax.swing.JDialog {
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+        //setup account id
         this.accountID = account_ID;
-        jButton1.requestFocus();
-        defaultModel = new DefaultListModel();
+        //GUI setup
+        cancel_Button.requestFocus();
+        default_Model = new DefaultListModel();
 
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (jButton1.isEnabled()) {
+                if (cancel_Button.isEnabled()) {
                     e.getWindow().dispose();
                 } else {
                     Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                     JOptionPane.showMessageDialog((Component) e.getWindow(),
-                            "Wating for search to finish",
-                            "Account Creation Error!",
+                            "Wating For Scan To Finish. Please Wait.",
+                            "Device Linking!",
                             JOptionPane.INFORMATION_MESSAGE,
                             crossIcon);
                 }
@@ -427,31 +440,31 @@ public class Device_Add extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        lblDeviceAddress = new javax.swing.JLabel();
-        lblServiceDetails = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        JTextAreaServiceDetails = new javax.swing.JTextArea();
-        lblDeviceName = new javax.swing.JLabel();
-        lblRuntimeDeviceAddress = new javax.swing.JTextField();
-        lblRuntimeDeviceName = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        JListBluetoothDevices = new javax.swing.JList();
-        progressBar = new javax.swing.JProgressBar();
-        jButton3 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
+        button_Panel = new javax.swing.JPanel();
+        cancel_Button = new javax.swing.JButton();
+        accept_Button = new javax.swing.JButton();
+        device_Info_Panel = new javax.swing.JPanel();
+        address_Label = new javax.swing.JLabel();
+        services_Label = new javax.swing.JLabel();
+        services_ScrollPane = new javax.swing.JScrollPane();
+        services_Area = new javax.swing.JTextArea();
+        name_Label = new javax.swing.JLabel();
+        address_Field = new javax.swing.JTextField();
+        name_Field = new javax.swing.JTextField();
+        device_Panel = new javax.swing.JPanel();
+        bluetooth_Device_ScrollPane = new javax.swing.JScrollPane();
+        bluetooth_Devices_List = new javax.swing.JList();
+        device_ProgressBar = new javax.swing.JProgressBar();
+        device_Scan_Button = new javax.swing.JButton();
+        device_Details_Panel = new javax.swing.JPanel();
+        pin_Label = new javax.swing.JLabel();
+        confirm_Pin_Label = new javax.swing.JLabel();
+        pin_Field = new javax.swing.JPasswordField();
+        confirm_Pin_Field = new javax.swing.JPasswordField();
+        strength_Label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Bluecove Bluetooth Discovery");
+        setTitle("Proximity Suite | Device Add");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -460,187 +473,182 @@ public class Device_Add extends javax.swing.JDialog {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Cancel");
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
+        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cancel_ButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Accept");
-        jButton2.setFocusPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        accept_Button.setText("Accept");
+        accept_Button.setFocusPainted(false);
+        accept_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                accept_ButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout button_PanelLayout = new javax.swing.GroupLayout(button_Panel);
+        button_Panel.setLayout(button_PanelLayout);
+        button_PanelLayout.setHorizontalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
                 .addContainerGap(230, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        button_PanelLayout.setVerticalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(button_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancel_Button)
+                    .addComponent(accept_Button))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Details"));
+        device_Info_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        device_Info_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Details"));
 
-        lblDeviceAddress.setText("Bluetooth Device Address");
+        address_Label.setText("Bluetooth Device Address");
 
-        lblServiceDetails.setText("Service Details");
+        services_Label.setText("Service Details");
 
-        JTextAreaServiceDetails.setEditable(false);
-        JTextAreaServiceDetails.setColumns(20);
-        JTextAreaServiceDetails.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        JTextAreaServiceDetails.setRows(5);
-        JTextAreaServiceDetails.setFocusable(false);
-        jScrollPane2.setViewportView(JTextAreaServiceDetails);
+        services_Area.setEditable(false);
+        services_Area.setColumns(20);
+        services_Area.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        services_Area.setRows(5);
+        services_Area.setFocusable(false);
+        services_ScrollPane.setViewportView(services_Area);
 
-        lblDeviceName.setText("Bluetooth Device Name");
+        name_Label.setText("Bluetooth Device Name");
 
-        lblRuntimeDeviceAddress.setEditable(false);
-        lblRuntimeDeviceAddress.setBackground(new java.awt.Color(255, 255, 255));
-        lblRuntimeDeviceAddress.setFocusable(false);
+        address_Field.setEditable(false);
+        address_Field.setBackground(new java.awt.Color(255, 255, 255));
+        address_Field.setFocusable(false);
 
-        lblRuntimeDeviceName.setEditable(false);
-        lblRuntimeDeviceName.setBackground(new java.awt.Color(255, 255, 255));
-        lblRuntimeDeviceName.setFocusable(false);
+        name_Field.setEditable(false);
+        name_Field.setBackground(new java.awt.Color(255, 255, 255));
+        name_Field.setFocusable(false);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout device_Info_PanelLayout = new javax.swing.GroupLayout(device_Info_Panel);
+        device_Info_Panel.setLayout(device_Info_PanelLayout);
+        device_Info_PanelLayout.setHorizontalGroup(
+            device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Info_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblServiceDetails)
+                .addGroup(device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(services_ScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                    .addGroup(device_Info_PanelLayout.createSequentialGroup()
+                        .addComponent(services_Label)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDeviceAddress)
-                            .addComponent(lblDeviceName))
+                    .addGroup(device_Info_PanelLayout.createSequentialGroup()
+                        .addGroup(device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(address_Label)
+                            .addComponent(name_Label))
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblRuntimeDeviceName)
-                            .addComponent(lblRuntimeDeviceAddress))))
+                        .addGroup(device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(name_Field)
+                            .addComponent(address_Field))))
                 .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        device_Info_PanelLayout.setVerticalGroup(
+            device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Info_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDeviceName)
-                    .addComponent(lblRuntimeDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name_Label)
+                    .addComponent(name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDeviceAddress)
-                    .addComponent(lblRuntimeDeviceAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(device_Info_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(address_Label)
+                    .addComponent(address_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addComponent(lblServiceDetails)
+                .addComponent(services_Label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(services_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Device"));
+        device_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        device_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Device"));
 
-        JListBluetoothDevices.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        JListBluetoothDevices.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JListBluetoothDevicesMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(JListBluetoothDevices);
+        bluetooth_Devices_List.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        bluetooth_Device_ScrollPane.setViewportView(bluetooth_Devices_List);
         ListSelectionListener listSelectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 
-                if(JListBluetoothDevices.getSelectedIndex()>-1){
+                if(bluetooth_Devices_List.getSelectedIndex()>-1){
                     /* Get bluetooth device details from temporary list */
-                    List<String> tmpDeviceDetails = mapDevicePosition.get(JListBluetoothDevices.getSelectedIndex());
+                    List<String> tmpDeviceDetails = map_Device_Position.get(bluetooth_Devices_List.getSelectedIndex());
                     /* Set bluetooth device name */
-                    lblRuntimeDeviceName.setText(tmpDeviceDetails.get(0));
+                    name_Field.setText(tmpDeviceDetails.get(0));
                     /* Set bluetooth device Address */
-                    lblRuntimeDeviceAddress.setText(tmpDeviceDetails.get(1));
+                    address_Field.setText(tmpDeviceDetails.get(1));
 
                     if (tmpDeviceDetails.size() > 2 && tmpDeviceDetails.get(2) != null) {
                         /* Set bluetooth device service name and URL */
-                        JTextAreaServiceDetails.setText(tmpDeviceDetails.get(2));
+                        services_Area.setText(tmpDeviceDetails.get(2));
                     } else {
-                        JTextAreaServiceDetails.setText("Service not found");
+                        services_Area.setText("Service not found");
                     }
                 }
 
-                jPasswordField1.setText("");
-                jPasswordField2.setText("");
-                jPasswordField1.setEnabled(true);
-                jPasswordField1.setEditable(true);
-                jPasswordField1.setFocusable(true);
+                pin_Field.setText("");
+                confirm_Pin_Field.setText("");
+                pin_Field.setEnabled(true);
+                pin_Field.setEditable(true);
+                pin_Field.setFocusable(true);
 
             }
         };
-        JListBluetoothDevices.addListSelectionListener(listSelectionListener);
+        bluetooth_Devices_List.addListSelectionListener(listSelectionListener);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Refresh.png"))); // NOI18N
-        jButton3.setFocusPainted(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        device_Scan_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Refresh.png"))); // NOI18N
+        device_Scan_Button.setFocusPainted(false);
+        device_Scan_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                device_Scan_ButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout device_PanelLayout = new javax.swing.GroupLayout(device_Panel);
+        device_Panel.setLayout(device_PanelLayout);
+        device_PanelLayout.setHorizontalGroup(
+            device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bluetooth_Device_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(device_ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(device_Scan_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+        device_PanelLayout.setVerticalGroup(
+            device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_PanelLayout.createSequentialGroup()
+                .addComponent(bluetooth_Device_ScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(device_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(device_Scan_Button)
                 .addGap(6, 6, 6))
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Password"));
+        device_Details_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        device_Details_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Password"));
 
-        jLabel1.setText("Enter Device PIN (Length 6): ");
+        pin_Label.setText("Enter Device PIN (Length 6): ");
 
-        jLabel2.setText("Confirm Device PIN (Length 6): ");
+        confirm_Pin_Label.setText("Confirm Device PIN (Length 6): ");
 
-        jPasswordField1.setColumns(6);
-        PlainDocument document = (PlainDocument) jPasswordField1.getDocument();
+        pin_Field.setColumns(6);
+        PlainDocument document = (PlainDocument) pin_Field.getDocument();
         document.setDocumentFilter(new DocumentFilter() {
 
             @Override
@@ -653,14 +661,14 @@ public class Device_Add extends javax.swing.JDialog {
             }
 
         });
-        jPasswordField1.addCaretListener(new javax.swing.event.CaretListener() {
+        pin_Field.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                jPasswordField1CaretUpdate(evt);
+                pin_FieldCaretUpdate(evt);
             }
         });
 
-        jPasswordField2.setColumns(6);
-        PlainDocument document1 = (PlainDocument) jPasswordField2.getDocument();
+        confirm_Pin_Field.setColumns(6);
+        PlainDocument document1 = (PlainDocument) confirm_Pin_Field.getDocument();
         document1.setDocumentFilter(new DocumentFilter() {
 
             @Override
@@ -673,45 +681,45 @@ public class Device_Add extends javax.swing.JDialog {
             }
 
         });
-        jPasswordField2.addCaretListener(new javax.swing.event.CaretListener() {
+        confirm_Pin_Field.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                jPasswordField2CaretUpdate(evt);
+                confirm_Pin_FieldCaretUpdate(evt);
             }
         });
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Place Holder");
+        strength_Label.setForeground(new java.awt.Color(255, 255, 255));
+        strength_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        strength_Label.setText("Place Holder");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout device_Details_PanelLayout = new javax.swing.GroupLayout(device_Details_Panel);
+        device_Details_Panel.setLayout(device_Details_PanelLayout);
+        device_Details_PanelLayout.setHorizontalGroup(
+            device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Details_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(confirm_Pin_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pin_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jPasswordField2))
+                .addGroup(device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(strength_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pin_Field)
+                    .addComponent(confirm_Pin_Field))
                 .addGap(6, 6, 6))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        device_Details_PanelLayout.setVerticalGroup(
+            device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Details_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addGroup(device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pin_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pin_Label))
                 .addGap(6, 6, 6)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                .addGroup(device_Details_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(confirm_Pin_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(confirm_Pin_Label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(strength_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
         );
 
@@ -721,12 +729,12 @@ public class Device_Add extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(device_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(device_Info_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(device_Details_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
@@ -735,47 +743,52 @@ public class Device_Add extends javax.swing.JDialog {
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(device_Info_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(device_Details_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(device_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /* Search for bluetooth device when window opened */
+    /**
+     * a method that will start searching for devices when the window opens.
+     *
+     * @param evt
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-
+        //creates a new task to search for devices
         Task task = new Task();
-        task.setStatus("Loading");
-        task.setCounter(0);
-        task.setO1(this);
+        task.setBackground_Status("Loading");
+        task.setBackground_Counter(0);
+        task.setBackground_Object(this);
         task.execute();
 
     }//GEN-LAST:event_formWindowOpened
-
-    /* On click of any item in List Box */
-    private void JListBluetoothDevicesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JListBluetoothDevicesMouseClicked
-
-
-    }//GEN-LAST:event_JListBluetoothDevicesMouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * closes the form.
+     *
+     * @param evt
+     */
+    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    }//GEN-LAST:event_cancel_ButtonActionPerformed
+    /**
+     * a method that will start the process of adding a device to the account.
+     *
+     * @param evt
+     */
+    private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
 
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
-                "Are You Sure You Want to Modify This Folder?",
-                "Confirm Folder Modification",
+                "Are You Sure You Want to Add This Device?",
+                "Confirm Device Linking",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null, //do not use a custom Icon
@@ -785,128 +798,137 @@ public class Device_Add extends javax.swing.JDialog {
         // if the user has clicked confirm.
         if (n == 0) {
             Task task = new Task();
-            task.setStatus("Adding");
-            task.setO1(this);
+            task.setBackground_Status("Adding");
+            task.setBackground_Object(this);
             task.execute();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_accept_ButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        defaultModel.clear();
-        mapReturnResult.clear();
-        mapDevicePosition.clear();
-        JTextAreaServiceDetails.setText(null);
-        lblRuntimeDeviceAddress.setText(null);
-        lblRuntimeDeviceName.setText(null);
-        jPasswordField1.setText("");
-        jPasswordField2.setText("");
-        jPasswordField1.setFocusable(false);
-        jPasswordField2.setFocusable(false);
+    private void device_Scan_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_Scan_ButtonActionPerformed
+        //GUI setup
+        default_Model.clear();
+        map_Return_Result.clear();
+        map_Device_Position.clear();
+        services_Area.setText(null);
+        address_Field.setText(null);
+        name_Field.setText(null);
+        pin_Field.setText("");
+        confirm_Pin_Field.setText("");
+        pin_Field.setFocusable(false);
+        confirm_Pin_Field.setFocusable(false);
+        // starts a new task to scan for devices
         Task task = new Task();
-        task.setStatus("Loading");
-        task.setO1(this);
-        task.setCounter(0);
+        task.setBackground_Status("Loading");
+        task.setBackground_Object(this);
+        task.setBackground_Counter(0);
         task.execute();
 
 
-    }//GEN-LAST:event_jButton3ActionPerformed
-    boolean validPass = false;
-    private void jPasswordField1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jPasswordField1CaretUpdate
-        // TODO add your handling code here:
+    }//GEN-LAST:event_device_Scan_ButtonActionPerformed
+    /**
+     * a method that will check if the pin is valid
+     *
+     * @param evt
+     */
+    private void pin_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_pin_FieldCaretUpdate
 
-        if (jPasswordField1.getPassword().length < 6 && jPasswordField1.getPassword().length != 0) {
+        if (pin_Field.getPassword().length < 6 && pin_Field.getPassword().length != 0) {
             validPass = false;
-            jLabel3.setForeground(darkRed);
-            jPasswordField2.setText("");
-            jLabel3.setText("PIN Too Short");
-            jPasswordField2.setEditable(false);
-            jPasswordField2.setEnabled(false);
-            jButton2.setEnabled(false);
+            strength_Label.setForeground(darkRed);
+            confirm_Pin_Field.setText("");
+            strength_Label.setText("PIN Too Short");
+            confirm_Pin_Field.setEditable(false);
+            confirm_Pin_Field.setEnabled(false);
+            accept_Button.setEnabled(false);
 
-            jPasswordField2.setFocusable(false);
-        } else if (jPasswordField1.getPassword().length == 0) {
+            confirm_Pin_Field.setFocusable(false);
+        } else if (pin_Field.getPassword().length == 0) {
             validPass = false;
-            jPasswordField2.setText("");
-            jLabel3.setForeground(Color.WHITE);
-            jLabel3.setText("Place Holder");
-            jPasswordField2.setEditable(false);
-            jPasswordField2.setEnabled(false);
-            jPasswordField2.setFocusable(false);
-            jButton2.setEnabled(false);
+            confirm_Pin_Field.setText("");
+            strength_Label.setForeground(Color.WHITE);
+            strength_Label.setText("Place Holder");
+            confirm_Pin_Field.setEditable(false);
+            confirm_Pin_Field.setEnabled(false);
+            confirm_Pin_Field.setFocusable(false);
+            accept_Button.setEnabled(false);
 
-        } else if (jPasswordField1.getPassword().length == 6 && !Arrays.equals(jPasswordField1.getPassword(), jPasswordField2.getPassword())) {
+        } else if (pin_Field.getPassword().length == 6 && !Arrays.equals(pin_Field.getPassword(), confirm_Pin_Field.getPassword())) {
             validPass = false;
-            jButton2.setEnabled(false);
+            accept_Button.setEnabled(false);
 
-            jLabel3.setForeground(darkRed);
-            jLabel3.setText("PIN's Do Not Match");
-            jPasswordField2.setEditable(true);
-            jPasswordField2.setEnabled(true);
-            jPasswordField2.setFocusable(true);
-        } else if (jPasswordField1.getPassword().length != 6 || !jPasswordField1.getPassword().equals(jPasswordField2.getPassword())) {
+            strength_Label.setForeground(darkRed);
+            strength_Label.setText("PIN's Do Not Match");
+            confirm_Pin_Field.setEditable(true);
+            confirm_Pin_Field.setEnabled(true);
+            confirm_Pin_Field.setFocusable(true);
+        } else if (pin_Field.getPassword().length != 6 || !pin_Field.getPassword().equals(confirm_Pin_Field.getPassword())) {
         } else {
             validPass = true;
-            jButton2.setEnabled(true);
+            accept_Button.setEnabled(true);
 
-            jLabel3.setForeground(darkGreen);
-            jLabel3.setText("PIN Confrimed");
+            strength_Label.setForeground(darkGreen);
+            strength_Label.setText("PIN Confrimed");
         }
 
-    }//GEN-LAST:event_jPasswordField1CaretUpdate
-
-    private void jPasswordField2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jPasswordField2CaretUpdate
+    }//GEN-LAST:event_pin_FieldCaretUpdate
+    /**
+     * a method that will check if the pin is valid
+     * 
+     * @param evt 
+     */
+    private void confirm_Pin_FieldCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_confirm_Pin_FieldCaretUpdate
         // TODO add your handling code here:
 
-        if (jPasswordField2.getPassword().length == 0 && jPasswordField1.getPassword().length == 0) {
+        if (confirm_Pin_Field.getPassword().length == 0 && pin_Field.getPassword().length == 0) {
             validPass = false;
-            jButton2.setEnabled(false);
+            accept_Button.setEnabled(false);
 
-            jLabel3.setForeground(Color.WHITE);
-            jLabel3.setText("Place Holder");
-        } else if (jPasswordField2.getPassword().length <= 6 && !Arrays.equals(jPasswordField2.getPassword(), jPasswordField1.getPassword())) {
+            strength_Label.setForeground(Color.WHITE);
+            strength_Label.setText("Place Holder");
+        } else if (confirm_Pin_Field.getPassword().length <= 6 && !Arrays.equals(confirm_Pin_Field.getPassword(), pin_Field.getPassword())) {
             validPass = false;
-            jLabel3.setForeground(darkRed);
-            jButton2.setEnabled(false);
+            strength_Label.setForeground(darkRed);
+            accept_Button.setEnabled(false);
 
-            jLabel3.setText("PIN's Do Not Match");
-        } else if (Arrays.equals(jPasswordField2.getPassword(), jPasswordField1.getPassword())) {
+            strength_Label.setText("PIN's Do Not Match");
+        } else if (Arrays.equals(confirm_Pin_Field.getPassword(), pin_Field.getPassword())) {
             validPass = true;
-            jButton2.setEnabled(true);
-            jLabel3.setForeground(darkGreen);
-            jLabel3.setText("PIN Confrimed");
+            accept_Button.setEnabled(true);
+            strength_Label.setForeground(darkGreen);
+            strength_Label.setText("PIN Confrimed");
         }
-    }//GEN-LAST:event_jPasswordField2CaretUpdate
-
-    /**
-     * @param args the command line arguments
-     */
+    }//GEN-LAST:event_confirm_Pin_FieldCaretUpdate
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList JListBluetoothDevices;
-    private javax.swing.JTextArea JTextAreaServiceDetails;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblDeviceAddress;
-    private javax.swing.JLabel lblDeviceName;
-    private javax.swing.JTextField lblRuntimeDeviceAddress;
-    private javax.swing.JTextField lblRuntimeDeviceName;
-    private javax.swing.JLabel lblServiceDetails;
-    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JButton accept_Button;
+    private javax.swing.JTextField address_Field;
+    private javax.swing.JLabel address_Label;
+    private javax.swing.JScrollPane bluetooth_Device_ScrollPane;
+    private javax.swing.JList bluetooth_Devices_List;
+    private javax.swing.JPanel button_Panel;
+    private javax.swing.JButton cancel_Button;
+    private javax.swing.JPasswordField confirm_Pin_Field;
+    private javax.swing.JLabel confirm_Pin_Label;
+    private javax.swing.JPanel device_Details_Panel;
+    private javax.swing.JPanel device_Info_Panel;
+    private javax.swing.JPanel device_Panel;
+    private javax.swing.JProgressBar device_ProgressBar;
+    private javax.swing.JButton device_Scan_Button;
+    private javax.swing.JTextField name_Field;
+    private javax.swing.JLabel name_Label;
+    private javax.swing.JPasswordField pin_Field;
+    private javax.swing.JLabel pin_Label;
+    private javax.swing.JTextArea services_Area;
+    private javax.swing.JLabel services_Label;
+    private javax.swing.JScrollPane services_ScrollPane;
+    private javax.swing.JLabel strength_Label;
     // End of variables declaration//GEN-END:variables
-    private Color darkGreen = new Color(0x006400);
-    private Color darkRed = new Color(0x640000);
+    private final Color darkGreen = new Color(0x006400);
+    private final Color darkRed = new Color(0x640000);
+    private final DefaultListModel default_Model;
+    private Map<String, List<String>> map_Return_Result = new HashMap<>();
+    private final Map<Integer, List<String>> map_Device_Position = new HashMap<>();
+    private final int accountID;
+    private boolean validPass = false;
 
 }

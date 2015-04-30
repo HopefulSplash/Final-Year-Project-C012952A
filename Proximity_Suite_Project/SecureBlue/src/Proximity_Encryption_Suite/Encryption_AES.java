@@ -22,34 +22,61 @@ import javax.crypto.spec.SecretKeySpec;
  * @since 18-01-2014
  */
 public class Encryption_AES {
-
-
-
-    boolean encrypted = false;
-
+    private boolean encrypted = false;
+    /**
+     * a method that will check if the class did encrypt
+     * 
+     * @return 
+     */
     public boolean isEncrypted() {
         return encrypted;
     }
-
+    /**
+     * a method to set if the file did encrypt
+     * 
+     * @param encrypted 
+     */
     public void setEncrypted(boolean encrypted) {
         this.encrypted = encrypted;
     }
-
+    /**
+     * a method that will encrypt files
+     * 
+     * @param key
+     * @param is
+     * @param os
+     * @throws Throwable 
+     */
     public void encrypt(String key, InputStream is, OutputStream os) throws Throwable {
         encryptOrDecrypt(key, Cipher.ENCRYPT_MODE, is, os);
     }
-
+    /**
+     * a method that will decrypt files
+     * 
+     * @param key
+     * @param is
+     * @param os
+     * @throws Throwable 
+     */
     public void decrypt(String key, InputStream is, OutputStream os) throws Throwable {
         encryptOrDecrypt(key, Cipher.DECRYPT_MODE, is, os);
     }
-
+    /**
+     * a method that will process if the user is encrypting or decrypting files.
+     * 
+     * @param key
+     * @param mode
+     * @param is
+     * @param os
+     * @throws Throwable 
+     */
     public void encryptOrDecrypt(String key, int mode, InputStream is, OutputStream os) throws Throwable {
-
+        // setup variables
         byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         IvParameterSpec ivspec = new IvParameterSpec(iv);
 
         SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING"); // DES/ECB/PKCS5Padding for SunJCE
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING"); 
 
         if (mode == Cipher.ENCRYPT_MODE) {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
@@ -64,7 +91,13 @@ public class Encryption_AES {
             encrypted = true;
         }
     }
-
+    /**
+     * a method that will copy the contents of one file into another.
+     * 
+     * @param is
+     * @param os
+     * @throws IOException 
+     */
     public void doCopy(InputStream is, OutputStream os) throws IOException {
         byte[] bytes = new byte[64];
         int numBytes;

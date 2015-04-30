@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -9,7 +10,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Image;
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -26,9 +26,10 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+
 /**
- * The Device_Delete.Java Class implements an application that allows a users
- * to delete a device from the account.
+ * The Device_Delete.Java Class implements an application that allows a users to
+ * delete a device from the account.
  *
  * @author Harry Clewlow (C012952A)
  * @version 1.0
@@ -36,72 +37,88 @@ import javax.swing.SwingWorker;
  */
 public class Device_Delete extends javax.swing.JDialog {
 
+    //a swingwoker to do work in the background of the application.
     class Task extends SwingWorker<Void, Void> {
 
-        int counter = 0;
-        boolean notTaken = false;
+        private int background_Counter = 0;
+        private String background_Status;
+        private Object background_Objecy;
 
-        public int getCounter() {
-            return counter;
-        }
-
-        public void setCounter(int counter) {
-            this.counter = counter;
-        }
-
-        boolean addedFile = false;
-
-        String status;
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        Object o1;
-
-        public void setO1(Object o1) {
-            this.o1 = o1;
-        }
-        /*
-         * Main task. Executed in background thread.
+        /**
+         * a method that will return the counter.
+         *
+         * @return
          */
+        public int getBackground_Counter() {
+            return background_Counter;
+        }
+
+        /**
+         * a method that will set the counter
+         *
+         * @param background_Counter
+         */
+        public void setBackground_Counter(int background_Counter) {
+            this.background_Counter = background_Counter;
+        }
+
+        /**
+         * a method that will get the status
+         *
+         * @return
+         */
+        public String getBackground_Status() {
+            return background_Status;
+        }
+
+        /**
+         * a method that will set the status
+         *
+         * @param background_Status
+         */
+        public void setBackground_Status(String background_Status) {
+            this.background_Status = background_Status;
+        }
+
+        /**
+         * a method that will set the object.
+         *
+         * @param background_Object
+         */
+        public void setBackground_Objecy(Object background_Objecy) {
+            this.background_Objecy = background_Objecy;
+        }
 
         @Override
         public Void doInBackground() {
-
+            //setup GUI
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            jButton2.setEnabled(false);
-
+            accept_Button.setEnabled(false);
             progressBar.setValue(0);
             progressBar.setIndeterminate(true);
 
-            //Initialize progress property.
-            if ("Loading".equals(status)) {
+            if ("Loading".equals(background_Status)) {
 
                 /* Get bluetooth device details */
-                getAccountDevices();
+                get_Device_ID();
 
-                if (deviceIDList.isEmpty()) {
+                if (device_ID_List.isEmpty()) {
                     //print error message
                 } else {
-                    for (int i = 0; i < deviceIDList.size(); i++) {
+                    for (int i = 0; i < device_ID_List.size(); i++) {
 
-                        getDeviceDetails(deviceIDList.get(i));
+                        get_Device_Details(device_ID_List.get(i));
 
-                        for (int u = 0; u < deviceName.size(); u++) {
-                            jComboBox1.addItem(deviceName.get(i));
+                        for (int u = 0; u < device_Name.size(); u++) {
+                            device_ComboBox.addItem(device_Name.get(i));
                         }
                     }
                 }
 
             }
 
-            if ("Update".equals(status)) {
-
+            if ("Update".equals(background_Status)) {
+                //remove the device from the account
                 removeDevice();
 
             }
@@ -109,7 +126,10 @@ public class Device_Delete extends javax.swing.JDialog {
             return null;
         }
 
-        private void getAccountDevices() {
+        /**
+         * a method that will get the relevant device id's.
+         */
+        private void get_Device_ID() {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
@@ -119,7 +139,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
- 
+
             try {
                 /*
                  * Register JDBC driver
@@ -139,7 +159,7 @@ public class Device_Delete extends javax.swing.JDialog {
                     while (rs.next()) {
                         int device = rs.getInt("device_Details_ID");
 
-                        deviceIDList.add(device);
+                        device_ID_List.add(device);
 
                     }
                 }
@@ -152,14 +172,18 @@ public class Device_Delete extends javax.swing.JDialog {
                         conn.close();
                     }
                 } catch (SQLException se) {
-                }// do nothing
-                
+                }
 
             }
 
         }
 
-        private void getDeviceDetails(int deviceID) {
+        /**
+         * a method that will get the device details
+         *
+         * @param deviceID
+         */
+        private void get_Device_Details(int deviceID) {
 
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -170,7 +194,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
- 
+
             try {
                 /*
                  * Register JDBC driver
@@ -192,9 +216,9 @@ public class Device_Delete extends javax.swing.JDialog {
                         String address = rs.getString("device_Address");
                         String created = rs.getString("device_Created");
 
-                        deviceName.add(name);
-                        deviceAddress.add(address);
-                        deviceCreated.add(created);
+                        device_Name.add(name);
+                        device_Address.add(address);
+                        device_Created.add(created);
                     }
                 }
 
@@ -206,15 +230,16 @@ public class Device_Delete extends javax.swing.JDialog {
                         conn.close();
                     }
                 } catch (SQLException se) {
-                }// do nothing
-                 
+                }
 
             }
 
         }
 
+        /**
+         * a method that will remove the device from the account.
+         */
         private void removeDevice() {
-
             /*
              * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
@@ -225,7 +250,7 @@ public class Device_Delete extends javax.swing.JDialog {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -233,74 +258,65 @@ public class Device_Delete extends javax.swing.JDialog {
 
                 String sql = "DELETE FROM account_device_list WHERE device_Details_ID = ?;";
                 PreparedStatement pStmt = conn.prepareStatement(sql);
-                pStmt.setInt(1, deviceIDList.get(jComboBox1.getSelectedIndex() - 1));
+                pStmt.setInt(1, device_ID_List.get(device_ComboBox.getSelectedIndex() - 1));
                 pStmt.executeUpdate();
-
-                 
 
                 sql = "DELETE FROM device_Details WHERE device_Details_ID = ?;";
                 pStmt = conn.prepareStatement(sql);
-                pStmt.setInt(1, deviceIDList.get(jComboBox1.getSelectedIndex() - 1));
+                pStmt.setInt(1, device_ID_List.get(device_ComboBox.getSelectedIndex() - 1));
                 pStmt.executeUpdate();
 
                 pStmt.close();
-             } catch (SQLException | ClassNotFoundException se) {
+            } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
                         conn.close();
-                     } catch (SQLException ex) {
+                    } catch (SQLException ex) {
                     }
                 }
 
             }
-
         }
 
-        /*
-         * Executed in event dispatching thread
-         */
         @Override
         public void done() {
             setCursor(null); //turn off the wait cursor
 
-            if ("Loading".equals(status)) {
+            if ("Loading".equals(background_Status)) {
+                //GUI setup
                 progressBar.setValue(0);
                 progressBar.setIndeterminate(false);
-
-                jButton2.setEnabled(false);
+                accept_Button.setEnabled(false);
 
             }
-            if ("Update".equals(status)) {
+            if ("Update".equals(background_Status)) {
+                //GUI setup
                 progressBar.setValue(0);
                 progressBar.setIndeterminate(false);
 
+                //confirmation of delete
                 Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
-                JOptionPane.showMessageDialog((Component) o1,
+                JOptionPane.showMessageDialog((Component) background_Objecy,
                         "Device Removed Successfully.",
-                        "File Addirion Successful!",
+                        "Device Removed Successful!",
                         JOptionPane.INFORMATION_MESSAGE,
                         tickIcon);
-
-                jButton1.doClick();
+                //application closes.
+                cancel_Button.doClick();
 
             }
         }
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {
-
-    }
-
-    private int accountID;
-    private int deviceID;
-
-    private ArrayList<Integer> deviceIDList = new ArrayList<>();
-
-    private ArrayList<String> deviceName = new ArrayList<>();
-    private ArrayList<String> deviceAddress = new ArrayList<>();
-    private ArrayList<String> deviceCreated = new ArrayList<>();
-
+    /**
+     * a method that will create a new Device_Delete form
+     *
+     * @param parent
+     * @param modal
+     * @param account_ID
+     * @param deviceID
+     */
     public Device_Delete(java.awt.Frame parent, boolean modal, int account_ID, int deviceID) {
         this.getContentPane().setBackground(Color.WHITE);
         /**
@@ -338,12 +354,14 @@ public class Device_Delete extends javax.swing.JDialog {
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
+        //setup variables 
         this.accountID = account_ID;
         this.deviceID = deviceID;
-        jButton1.requestFocus();
-
+        //GUI setup
+        cancel_Button.requestFocus();
+        //start new task for loading devices
         Task task = new Task();
-        task.setStatus("Loading");
+        task.setBackground_Status("Loading");
         task.execute();
     }
 
@@ -351,154 +369,152 @@ public class Device_Delete extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        lblDeviceAddress = new javax.swing.JLabel();
-        lblDeviceName = new javax.swing.JLabel();
-        lblRuntimeDeviceAddress = new javax.swing.JTextField();
-        lblRuntimeDeviceName = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        button_Panel = new javax.swing.JPanel();
+        cancel_Button = new javax.swing.JButton();
+        accept_Button = new javax.swing.JButton();
+        device_Panel = new javax.swing.JPanel();
+        address_Label = new javax.swing.JLabel();
+        name_Label = new javax.swing.JLabel();
+        address_Field = new javax.swing.JTextField();
+        name_Field = new javax.swing.JTextField();
+        created_Label = new javax.swing.JLabel();
+        created_Field = new javax.swing.JTextField();
         progressBar = new javax.swing.JProgressBar();
-        jPanel2 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel5 = new javax.swing.JLabel();
+        device_Select_Panel = new javax.swing.JPanel();
+        device_ComboBox = new javax.swing.JComboBox();
+        device_Label = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Bluecove Bluetooth Discovery");
+        setTitle("Proximity Suite | Device Delete");
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton1.setText("Cancel");
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cancel_Button.setText("Cancel");
+        cancel_Button.setFocusPainted(false);
+        cancel_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cancel_ButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Accept");
-        jButton2.setFocusPainted(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        accept_Button.setText("Accept");
+        accept_Button.setFocusPainted(false);
+        accept_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                accept_ButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout button_PanelLayout = new javax.swing.GroupLayout(button_Panel);
+        button_Panel.setLayout(button_PanelLayout);
+        button_PanelLayout.setHorizontalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        button_PanelLayout.setVerticalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(button_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancel_Button)
+                    .addComponent(accept_Button))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Details"));
+        device_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        device_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Device Details"));
 
-        lblDeviceAddress.setText("Bluetooth Device Address:");
+        address_Label.setText("Bluetooth Device Address:");
 
-        lblDeviceName.setText("Bluetooth Device Name:");
+        name_Label.setText("Bluetooth Device Name:");
 
-        lblRuntimeDeviceAddress.setEditable(false);
-        lblRuntimeDeviceAddress.setBackground(new java.awt.Color(255, 255, 255));
-        lblRuntimeDeviceAddress.setFocusable(false);
+        address_Field.setEditable(false);
+        address_Field.setBackground(new java.awt.Color(255, 255, 255));
+        address_Field.setFocusable(false);
 
-        lblRuntimeDeviceName.setEditable(false);
-        lblRuntimeDeviceName.setBackground(new java.awt.Color(255, 255, 255));
-        lblRuntimeDeviceName.setFocusable(false);
+        name_Field.setEditable(false);
+        name_Field.setBackground(new java.awt.Color(255, 255, 255));
+        name_Field.setFocusable(false);
 
-        jLabel4.setText("Device Created:");
+        created_Label.setText("Device Created:");
 
-        jTextField1.setEditable(false);
-        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
+        created_Field.setEditable(false);
+        created_Field.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout device_PanelLayout = new javax.swing.GroupLayout(device_Panel);
+        device_Panel.setLayout(device_PanelLayout);
+        device_PanelLayout.setHorizontalGroup(
+            device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(address_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(name_Label)
+                    .addComponent(created_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDeviceAddress)
-                            .addComponent(lblDeviceName)
-                            .addComponent(jLabel4))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
-                            .addComponent(lblRuntimeDeviceName)
-                            .addComponent(lblRuntimeDeviceAddress))))
+                    .addComponent(created_Field, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                    .addComponent(name_Field)
+                    .addComponent(address_Field))
                 .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDeviceName)
-                    .addComponent(lblRuntimeDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        device_PanelLayout.setVerticalGroup(
+            device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_PanelLayout.createSequentialGroup()
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name_Label)
+                    .addComponent(name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDeviceAddress)
-                    .addComponent(lblRuntimeDeviceAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(address_Label)
+                    .addComponent(address_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(device_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(created_Label)
+                    .addComponent(created_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Device"));
+        device_Select_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        device_Select_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Select Device"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please Select A Device" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        device_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Please Select A Device" }));
+        device_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                device_ComboBoxActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Select Device:");
+        device_Label.setText("Select Device:");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout device_Select_PanelLayout = new javax.swing.GroupLayout(device_Select_Panel);
+        device_Select_Panel.setLayout(device_Select_PanelLayout);
+        device_Select_PanelLayout.setHorizontalGroup(
+            device_Select_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Select_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jLabel5)
+                .addComponent(device_Label)
                 .addGap(6, 6, 6)
-                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(device_ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        device_Select_PanelLayout.setVerticalGroup(
+            device_Select_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(device_Select_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(device_Select_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(device_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(device_Label))
                 .addGap(6, 6, 6))
         );
 
@@ -509,41 +525,46 @@ public class Device_Delete extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(device_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(device_Select_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(device_Select_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(device_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    /**
+     * a method that will close the form
+     *
+     * @param evt
+     */
+    private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
+    }//GEN-LAST:event_cancel_ButtonActionPerformed
+    /**
+     * a method that will start the deleting process.
+     *
+     * @param evt
+     */
+    private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
         Object[] options = {"Confirm", "Cancel"};
         int n = JOptionPane.showOptionDialog(this,
-                "Are You Sure You Want to Modify This Folder?",
-                "Confirm Folder Modification",
+                "Are You Sure You Want to Remove This Device?",
+                "Confirm Device Removal",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null, //do not use a custom Icon
@@ -553,50 +574,56 @@ public class Device_Delete extends javax.swing.JDialog {
         // if the user has clicked confirm.
         if (n == 0) {
             Task task = new Task();
-            task.setStatus("Update");
-            task.setO1(this);
+            task.setBackground_Status("Update");
+            task.setBackground_Objecy(this);
             task.execute();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_accept_ButtonActionPerformed
+    /**
+     * a method that will load each devices details depending on what device is
+     * selected.
+     *
+     * @param evt
+     */
+    private void device_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_ComboBoxActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-
-        if (jComboBox1.getSelectedIndex() == 0) {
-            lblRuntimeDeviceName.setText(null);
-            lblRuntimeDeviceAddress.setText(null);
-            jTextField1.setText(null);
-            jButton2.setEnabled(false);
+        if (device_ComboBox.getSelectedIndex() == 0) {
+            name_Field.setText(null);
+            address_Field.setText(null);
+            created_Field.setText(null);
+            accept_Button.setEnabled(false);
 
         } else {
 
-            jButton2.setEnabled(true);
-            lblRuntimeDeviceName.setText(deviceName.get(jComboBox1.getSelectedIndex() - 1));
-            lblRuntimeDeviceAddress.setText(deviceAddress.get(jComboBox1.getSelectedIndex() - 1));
-            jTextField1.setText(deviceCreated.get(jComboBox1.getSelectedIndex() - 1));
+            accept_Button.setEnabled(true);
+            name_Field.setText(device_Name.get(device_ComboBox.getSelectedIndex() - 1));
+            address_Field.setText(device_Address.get(device_ComboBox.getSelectedIndex() - 1));
+            created_Field.setText(device_Created.get(device_ComboBox.getSelectedIndex() - 1));
         }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-    /**
-     * @param args the command line arguments
-     */
+    }//GEN-LAST:event_device_ComboBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel lblDeviceAddress;
-    private javax.swing.JLabel lblDeviceName;
-    private javax.swing.JTextField lblRuntimeDeviceAddress;
-    private javax.swing.JTextField lblRuntimeDeviceName;
+    private javax.swing.JButton accept_Button;
+    private javax.swing.JTextField address_Field;
+    private javax.swing.JLabel address_Label;
+    private javax.swing.JPanel button_Panel;
+    private javax.swing.JButton cancel_Button;
+    private javax.swing.JTextField created_Field;
+    private javax.swing.JLabel created_Label;
+    private javax.swing.JComboBox device_ComboBox;
+    private javax.swing.JLabel device_Label;
+    private javax.swing.JPanel device_Panel;
+    private javax.swing.JPanel device_Select_Panel;
+    private javax.swing.JTextField name_Field;
+    private javax.swing.JLabel name_Label;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
-    private Color darkGreen = new Color(0x006400);
-    private Color darkRed = new Color(0x640000);
-
+    private final Color darkGreen = new Color(0x006400);
+    private final Color darkRed = new Color(0x640000);
+    private final int accountID;
+    private final int deviceID;
+    private final ArrayList<Integer> device_ID_List = new ArrayList<>();
+    private final ArrayList<String> device_Name = new ArrayList<>();
+    private final ArrayList<String> device_Address = new ArrayList<>();
+    private final ArrayList<String> device_Created = new ArrayList<>();
 }

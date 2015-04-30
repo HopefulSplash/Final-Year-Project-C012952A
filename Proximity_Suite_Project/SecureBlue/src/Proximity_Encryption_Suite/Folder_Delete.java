@@ -2,6 +2,7 @@
  * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
+
 /**
  * Import all of the necessary libraries.
  */
@@ -33,45 +34,51 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+
 /**
- * The Folder_Delete.Java Class implements an application that allows a user
- * to delete a folder on the system.
+ * The Folder_Delete.Java Class implements an application that allows a user to
+ * delete a folder on the system.
  *
  * @author Harry Clewlow (C012952A)
  * @version 1.0
  * @since 18-01-2014
  */
-public class Folder_Delete extends java.awt.Dialog implements ActionListener,
-        PropertyChangeListener {
-
-    private DefaultListModel listModel;
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class Folder_Delete extends java.awt.Dialog implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
     }
 
+    //a swingwoker to do work in the background of the application.
     class Task extends SwingWorker<Void, Void> {
 
-        int progress = 0;
-        Object o1;
-        String status;
-
-        public String getStatus() {
-            return status;
+        private int background_Progress = 0;
+        private Object background_Object;
+        private String background_Status;
+        /**
+         * a method that will get the status
+         * 
+         * @return 
+         */
+        public String getBackground_Status() {
+            return background_Status;
         }
-
-        public void setStatus(String status) {
-            this.status = status;
+        /**
+         * a method that will set the status
+         * 
+         * @param background_Status 
+         */
+        public void setBackground_Status(String background_Status) {
+            this.background_Status = background_Status;
         }
-
+        /**
+         * a method that will set the Object
+         * 
+         * @param o1 
+         */
         public void setO1(Object o1) {
-            this.o1 = o1;
+            this.background_Object = o1;
         }
 
         /*
@@ -79,24 +86,23 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          */
         @Override
         public Void doInBackground() {
-            progress = 0;
+            background_Progress = 0;
             progressBar.setValue(0);
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             accept_Button.setEnabled(false);
             cancel_Button.setEnabled(false);
-            method.setEnabled(false);
+            folder_ComboBox.setEnabled(false);
 
-            //Initialize progress property.
+            //Initialize background_Progress property.
             setProgress(0);
 
-            if ("accept".equals(status)) {
+            if ("accept".equals(background_Status)) {
                 progressBar.setMaximum(1);
                 progressBar.setIndeterminate(true);
-
-                //Sleep for up to one second.
-                getFolderFiles((String) method.getSelectedItem());
-                progress += 1;
-                setProgress(progress);
+                //starts the process of deleting the foler
+                getFolderFiles((String) folder_ComboBox.getSelectedItem());
+                background_Progress += 1;
+                setProgress(background_Progress);
 
             }
             return null;
@@ -110,22 +116,27 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             setCursor(null); //turn off the wait cursor
             progressBar.setIndeterminate(false);
             progressBar.setValue(progressBar.getMaximum());
-
+            //setup GUI
             accept_Button.setEnabled(true);
             cancel_Button.setEnabled(true);
-            method.setEnabled(true);
+            folder_ComboBox.setEnabled(true);
 
             Icon tickIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Tick_Icon.png"));
-            JOptionPane.showMessageDialog((Component) o1,
-                    "One Or More Fields Are Incorrect. Please Try Again.",
-                    "Account Creation Error!",
+            JOptionPane.showMessageDialog((Component) background_Object,
+                    "Folder Deleted Successfully.",
+                    "Folder Removal Successful!",
                     JOptionPane.INFORMATION_MESSAGE,
                     tickIcon);
-
+            //close form
             cancel_Button.doClick();
 
         }
 
+        /**
+         * a method that will get all the files from a folder
+         *
+         * @param folderDelete
+         */
         private void getFolderFiles(String folderDelete) {
 
             ArrayList<Integer> fileIDList = new ArrayList<>();
@@ -145,7 +156,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -162,7 +173,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     folderID = rs.getInt("folder_Details_ID");
 
                 }
- 
+
                 Statement stmt = conn.createStatement();
                 sql = "SELECT file_Details_ID FROM Folder_File_List "
                         + "WHERE folder_Details_ID = " + folderID + ";";
@@ -174,8 +185,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     fileIDList.add(fileID);
 
                 }
-
-     ;
+                ;
 
                 for (int i = 0; i < fileIDList.size(); i++) {
 
@@ -209,6 +219,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             }
         }
 
+        /**
+         * a method that will delete a folder
+         *
+         * @param folderid
+         */
         public void deleteFolder(int folderid) {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
@@ -220,7 +235,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -231,7 +246,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 pStmt.setInt(1, folderid);
                 pStmt.executeUpdate();
 
-             } catch (SQLException | ClassNotFoundException se) {
+            } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
@@ -243,6 +258,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             }
         }
 
+        /**
+         * a method that will get the type of encryption that has been used on a
+         * file
+         *
+         * @param file_Path
+         * @return
+         */
         public String getFileEncryptionStatus(int file_Path) {
 
             String fileID = null;
@@ -257,7 +279,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -273,7 +295,6 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     fileID = rs.getString("file_EType");
                 }
 
-  
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
@@ -286,53 +307,12 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             return fileID;
         }
 
-        private boolean encryptAES(File file) {
-            boolean encrypted = false;
-
-            if (file.canRead() && file.canWrite() && file.canExecute()) {
-
-                try {
-
-                    File temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
-
-                    String key = "squirrel123"; // needs to be at least 8 characters for DES
-                    int length = key.length();
-                    if (length > 16 && length != 16) {
-                        key = key.substring(0, 15);
-                    }
-                    if (length < 16 && length != 16) {
-                        for (int i = 0; i < 16 - length; i++) {
-                            key = key + "0";
-                        }
-                    }
-
-                    FileInputStream originalInput = new FileInputStream(file);
-                    FileOutputStream encryptedOutput = new FileOutputStream(temp);
-
-                    Encryption_AES aes = new Encryption_AES();
-                    aes.encrypt(key, originalInput, encryptedOutput);
-
-                    if (aes.isEncrypted()) {
-                        FileInputStream encryptedInput = new FileInputStream(temp);
-                        try {
-                            FileOutputStream originalOutput = new FileOutputStream(file);
-                            aes.doCopy(encryptedInput, originalOutput);
-                            temp.delete();
-                            encrypted = true;
-                        } catch (Exception e) {
-                            encrypted = false;
-                        }
-                    } else {
-                        encrypted = false;
-                    }
-
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-            return encrypted;
-        }
-
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptAES(File file) {
             boolean decrypted = false;
 
@@ -367,7 +347,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                             aes.doCopy(encryptedInput, originalOutput);
                             temp.delete();
                             decrypted = true;
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             decrypted = false;
                         }
                     } else {
@@ -375,12 +355,17 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     }
 
                 } catch (Throwable e) {
-                    e.printStackTrace();
                 }
             }
             return decrypted;
         }
 
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptDES(File file) {
 
             boolean encrypted = false;
@@ -404,7 +389,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                             des.doCopy(encryptedInput, originalOutput);
                             temp.delete();
                             encrypted = true;
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             encrypted = false;
                         }
 
@@ -413,13 +398,18 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     }
 
                 } catch (Throwable e) {
-                    e.printStackTrace();
                 }
             }
             return encrypted;
 
         }
 
+        /**
+         * a method that will generate a key for the encryption.
+         *
+         * @param key
+         * @return
+         */
         private String generateKey(String key) {
 
             String toString = new StringBuilder(key).reverse().toString();
@@ -427,6 +417,12 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             return toString;
         }
 
+        /**
+         * a method that will decrypt files that are encrypted
+         *
+         * @param file
+         * @return
+         */
         private boolean decryptTripleDES(File file) {
             boolean encrypted = false;
             if (file.canRead() && file.canWrite() && file.canExecute()) {
@@ -458,7 +454,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                             tdes.doCopy(encryptedInput, originalOutput);
                             temp.delete();
                             encrypted = true;
-                        } catch (Exception e) {
+                        } catch (IOException e) {
                             encrypted = false;
                         }
 
@@ -466,13 +462,18 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                         encrypted = false;
                     }
                 } catch (Throwable e) {
-                    e.printStackTrace();
                 }
             }
             return encrypted;
 
         }
 
+        /**
+         * a method that will remove a file
+         *
+         * @param fileid
+         * @param folderid
+         */
         public void removeFile(int fileid, int folderid) {
 
             /*
@@ -485,7 +486,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -502,13 +503,13 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                     pStmt = conn.prepareStatement(sql);
                     pStmt.setInt(1, fileid);
                     pStmt.executeUpdate();
-                  }  
+                }
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
-                         conn.close();
+                        conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -517,6 +518,12 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
         }
 
+        /**
+         * a method that will check if the file is in more than 1 folder
+         *
+         * @param fileID
+         * @return
+         */
         private boolean checkFileInOtherFolders(int fileID) {
             boolean is = false;
             int file = 0;
@@ -530,7 +537,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -547,7 +554,6 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
                 }
 
-  
                 if (file != 0) {
                     is = true;
                 } else {
@@ -558,7 +564,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             } finally {
                 if (conn != null) {
                     try {
-                         conn.close();
+                        conn.close();
                     } catch (SQLException ex) {
                     }
                 }
@@ -570,6 +576,10 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
     }
 
+    /**
+     * a method that will get the files ID
+     *
+     */
     public String getFileID(int file_Path) {
 
         String fileID = null;
@@ -584,7 +594,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -600,12 +610,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 fileID = rs.getString("file_Directory");
             }
 
-  
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                     conn.close();
+                    conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -613,11 +622,12 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
         return fileID;
     }
 
-    public int accountID = 0;
-    private String key;
-
     /**
-     * Creates new form DeleteFolder
+     * Creates new form Folder_Delete
+     *
+     * @param parent
+     * @param modal
+     * @param accountID
      */
     public Folder_Delete(java.awt.Frame parent, boolean modal, int accountID) {
         super(parent, modal);
@@ -658,16 +668,18 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * loads the appropriate icons.
          */
         this.setIconImages(icons);
-
+        // setup variables
         this.accountID = accountID;
         getAccountDetails();
         this.key = accountPass;
         getAccountFolders();
     }
 
-    private String accountPass;
-
-    public void getAccountDetails() {
+    /**
+     * a method that will get the account details so the files can be decrypted
+     * when the folder is deleted
+     */
+    private void getAccountDetails() {
         /*
          * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
@@ -679,7 +691,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -694,11 +706,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             while (rs.next()) {
                 accountPass = rs.getString("account_Password");
             }
-          } catch (SQLException | ClassNotFoundException se) {
+        } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                     conn.close();
+                    conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -708,18 +720,16 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
     /**
      * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        button_Panel = new javax.swing.JPanel();
         cancel_Button = new javax.swing.JButton();
         accept_Button = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        method = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
+        folder_Panel = new javax.swing.JPanel();
+        folder_ComboBox = new javax.swing.JComboBox();
+        folder_Label = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
 
         setTitle("Proximity Suite | Delete Folder");
@@ -729,7 +739,7 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        button_Panel.setBackground(new java.awt.Color(255, 255, 255));
 
         cancel_Button.setText("Cancel");
         cancel_Button.setFocusPainted(false);
@@ -747,53 +757,52 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout button_PanelLayout = new javax.swing.GroupLayout(button_Panel);
+        button_Panel.setLayout(button_PanelLayout);
+        button_PanelLayout.setHorizontalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(accept_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancel_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        button_PanelLayout.setVerticalGroup(
+            button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_PanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(button_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancel_Button)
                     .addComponent(accept_Button))
                 .addGap(0, 0, 0))
         );
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
+        folder_Panel.setBackground(new java.awt.Color(255, 255, 255));
+        folder_Panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Folder Details"));
 
-        jLabel1.setText("Select Folder:");
+        folder_Label.setText("Select Folder:");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout folder_PanelLayout = new javax.swing.GroupLayout(folder_Panel);
+        folder_Panel.setLayout(folder_PanelLayout);
+        folder_PanelLayout.setHorizontalGroup(
+            folder_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, folder_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(6, 6, 6)
-                        .addComponent(method, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(folder_Label)
+                .addGap(6, 6, 6)
+                .addGroup(folder_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(folder_ComboBox, 0, 508, Short.MAX_VALUE))
                 .addGap(6, 6, 6))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        folder_PanelLayout.setVerticalGroup(
+            folder_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(folder_PanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(method, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(folder_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(folder_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(folder_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
@@ -806,17 +815,17 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(button_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(folder_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(folder_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(button_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -824,25 +833,30 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Closes the dialog
+     * a method that will close the form
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
-        dispose();
+        this.dispose();
     }//GEN-LAST:event_closeDialog
-
-    Task task;
-
+    /**
+     * a method that will return if folder is deleted
+     *
+     * @return
+     */
     public boolean isDidDelete() {
         return didDelete;
     }
 
+    /**
+     * a method to set if the folder was delete
+     *
+     * @param didDelete
+     */
     public void setDidDelete(boolean didDelete) {
         this.didDelete = didDelete;
     }
-    boolean didDelete = false;
+
     private void accept_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept_ButtonActionPerformed
-        // TODO add your handling code here:
 
         Object[] options = {"Yes",
             "Cancel"};
@@ -857,18 +871,18 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
         if (n == 0) {
 
-            if (method.getSelectedIndex() != 0) {
+            if (folder_ComboBox.getSelectedIndex() != 0) {
                 didDelete = true;
                 task = new Task();
-                task.setStatus("accept");
+                task.setBackground_Status("accept");
                 task.addPropertyChangeListener(this);
                 task.execute();
 
             } else {
                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                 JOptionPane.showMessageDialog(this,
-                        "you cannot delete your default folder. Please Try Again.",
-                        "Account Creation Error!",
+                        "You Cannot Delete Your Default Folder. Please Try Again.",
+                        "Folder Removal Error!",
                         JOptionPane.INFORMATION_MESSAGE,
                         crossIcon);
             }
@@ -877,7 +891,9 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
 
     }//GEN-LAST:event_accept_ButtonActionPerformed
-
+    /**
+     * a method that will get all the folders belong to the account
+     */
     private void getAccountFolders() {
 
         int folderID;
@@ -889,20 +905,18 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
          */
         Suite_Database d = new Suite_Database();
 
-        d.startDatabase();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-           Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT folder_Details_ID, folder_Name FROM Folder_Details "
                     + "WHERE account_Details_ID = " + accountID + ";";
 
@@ -914,11 +928,11 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
                 folderIDList.add(folderID);
                 folderNameList.add(folderName);
             }
-          } catch (SQLException | ClassNotFoundException se) {
+        } catch (SQLException | ClassNotFoundException se) {
         } finally {
             if (conn != null) {
                 try {
-                     conn.close();
+                    conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -928,31 +942,42 @@ public class Folder_Delete extends java.awt.Dialog implements ActionListener,
 
     private void updateFolderListGUI() {
 
-        method.removeAllItems();
+        folder_ComboBox.removeAllItems();
 
         for (int i = 0; i < folderIDList.size(); i++) {
             if (!folderIDList.isEmpty()) {
 
-                method.addItem(folderNameList.get(i));
+                folder_ComboBox.addItem(folderNameList.get(i));
             }
         }
 
     }
 
+    /**
+     * a method that will close the form
+     *
+     * @param evt
+     */
     private void cancel_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancel_ButtonActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_cancel_ButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton accept_Button;
+    private javax.swing.JPanel button_Panel;
     private javax.swing.JButton cancel_Button;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JComboBox method;
+    private javax.swing.JComboBox folder_ComboBox;
+    private javax.swing.JLabel folder_Label;
+    private javax.swing.JPanel folder_Panel;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
-  ArrayList<Integer> folderIDList = new ArrayList<>();
-    ArrayList<String> folderNameList = new ArrayList<>();
+    private final ArrayList<Integer> folderIDList = new ArrayList<>();
+    private final ArrayList<String> folderNameList = new ArrayList<>();
+    private DefaultListModel listModel;
+    private boolean didDelete = false;
+    private Task task;
+    private String accountPass;
+    private int accountID = 0;
+    private String key;
+
 }
