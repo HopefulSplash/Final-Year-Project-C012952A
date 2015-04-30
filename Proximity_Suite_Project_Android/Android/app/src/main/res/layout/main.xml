@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1"
+    android:background="#ffffffff">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place1"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place2"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place3"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_Logo"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/app_logo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place4"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place5"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <Button android:text="Enable Proximity Detection" android:id="@+id/btn_start_server" android:layout_height="wrap_content" android:layout_width="250dp"
+        android:textColor="#ff46629e"
+        android:layout_gravity="center_horizontal"></Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="place holder"
+        android:id="@+id/txt_Place6"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <Button android:text="Disable Proximity Detection" android:id="@+id/btn_stop_server" android:layout_height="wrap_content" android:layout_width="250dp" android:enabled="false"
+        android:textColor="#ff46629e"
+        android:layout_gravity="center_horizontal"></Button>
+
+</LinearLayout>

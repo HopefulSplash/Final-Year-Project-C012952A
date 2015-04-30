@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //defining a string to be used a the applications name.
+    <string name="app_name">Proximity Suite</string>
+</resources>

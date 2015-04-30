@@ -88,7 +88,7 @@ public class Login_Account extends javax.swing.JFrame {
         login_Button.requestFocus();
         //creates a random number between 1 and 5 to be used for security.
         Random rn = new Random();
-        randomCounter = rn.nextInt(5) + 1;
+        attempt_Randon_Counter = rn.nextInt(5) + 1;
     }
 
     //a swingwoker to do work in the background of the application.
@@ -115,7 +115,7 @@ public class Login_Account extends javax.swing.JFrame {
 
             //while loop to let progress complete.
             while (background_Counter != 1) {
-            //starts the database.
+                //starts the database.
                 if ("Setup".equals(background_Status)) {
                     Suite_Database d = new Suite_Database();
                     d.startDatabase();
@@ -131,9 +131,14 @@ public class Login_Account extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * this method will check if the application is in lockout mode
+     *
+     * @return
+     */
     private boolean checkTimeout() {
+// sets up variables;
         boolean timeout = false;
-
         Date databaseDate = null;
         /*
          * declares and new instance of the Suite_Database class and then checks if the
@@ -160,32 +165,28 @@ public class Login_Account extends javax.swing.JFrame {
             String sql = "SELECT program_Timeout_Date FROM program_Timeout;";
 
             ResultSet rs = stmt.executeQuery(sql);
+
+            //uses the results of the query.
             while (rs.next()) {
                 databaseDate = new Date(rs.getTimestamp("program_Timeout_Date").getTime());
             }
 
+            //creates a format for the data and gets the current date and time.
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
             Date d1 = new java.util.Date();
 
             try {
-
-                //in milliseconds
-                long diff = d1.getTime() - databaseDate.getTime();
-
-                long diffSeconds = diff / 1000 % 60;
-                long diffMinutes = diff / (60 * 1000) % 60;
-                long diffHours = diff / (60 * 60 * 1000) % 24;
-                long diffDays = diff / (24 * 60 * 60 * 1000);
-
-                if (diffMinutes >= 15 || diffHours != 0) {
+                //generates the time difference in different formats.
+                long time_Difference = d1.getTime() - databaseDate.getTime();
+                long difference_Minutes = time_Difference / (60 * 1000) % 60;
+                long difference_Hour = time_Difference / (60 * 60 * 1000) % 24;
+                //checks if the time difference is withn the lockout period.
+                if (difference_Minutes >= 15 || difference_Hour != 0) {
                     timeout = false;
                 } else {
                     timeout = true;
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
         } catch (SQLException se) {
@@ -197,26 +198,27 @@ public class Login_Account extends javax.swing.JFrame {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }// do nothing
-
+            }
         }
-
         return timeout;
     }
 
+    /**
+     * if the user fails to login several times this method will start the
+     * lockout period.
+     */
     private void startTimeout() {
+        //setup variables.
         Date databaseDate = null;
         /*
          * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-
         try {
             /*
              * Register JDBC driver.
@@ -230,6 +232,7 @@ public class Login_Account extends javax.swing.JFrame {
             Statement stmt = conn.createStatement();
             String createTimeout = "UPDATE program_Timeout SET program_Timeout_Date = NOW() ORDER BY program_Timeout_ID DESC LIMIT 1;";
             stmt.executeUpdate(createTimeout);
+
         } catch (SQLException se) {
         } catch (ClassNotFoundException | HeadlessException e) {
         } finally {
@@ -239,9 +242,34 @@ public class Login_Account extends javax.swing.JFrame {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }// do nothing
-
+            }
         }
+    }
+
+    /**
+     * a method that converts a user entered password into SHA1 so it can be
+     * stored in the database securely.
+     *
+     * @param input
+     * @return String
+     */
+    private String convertToSha1(String input) throws NoSuchAlgorithmException {
+        /*
+         * converts to string input into a SHA1 byte array.
+         */
+        MessageDigest m_Digest = MessageDigest.getInstance("SHA1");
+        byte[] result_String = m_Digest.digest(input.getBytes());
+        /*
+         * builds the new string so that it is in the correct format for storage.
+         */
+        StringBuilder string_Builder = new StringBuilder();
+        for (int i = 0; i < result_String.length; i++) {
+            string_Builder.append(Integer.toString((result_String[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        /*
+         * returns the string so it can be used.
+         */
+        return string_Builder.toString();
     }
 
     /**
@@ -459,7 +487,6 @@ public class Login_Account extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     /**
      * a method that when the user presses enter on on the Password_Field the
      * login button is pressed.
@@ -473,37 +500,6 @@ public class Login_Account extends javax.swing.JFrame {
         login_Button.doClick();
 
     }//GEN-LAST:event_password_FieldActionPerformed
-
-    /**
-     * a method that converts a user entered password into SHA1 so it can be
-     * stored in the database securely.
-     *
-     * @param input
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    private String convertToSha1(String input) throws NoSuchAlgorithmException {
-
-        /*
-         * converts to string input into a SHA1 byte array.
-         */
-        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-        byte[] result = mDigest.digest(input.getBytes());
-
-        /*
-         * builds the new string so that it is in the correct format for storage.
-         */
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < result.length; i++) {
-            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        /*
-         * returns the string so it can be used.
-         */
-        return sb.toString();
-    }
-
     /**
      * a method that when the user clicks the Login_Button it will check that
      * the details are correct, output the correct message if they are incorrect
@@ -562,21 +558,29 @@ public class Login_Account extends javax.swing.JFrame {
                      * if they are empty or not
                      */
                     if (!rs.isBeforeFirst()) {
-                        counter++;
+                        attempt_Counter++;
 
-                        /*
-                         * shows an error message due to the username or password being
-                         * incorrect or not existing.
-                         */
-                        Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-                        JOptionPane.showMessageDialog(this,
-                                "No Account With These Details Exists On This System. Please Try Again.",
-                                "Account Login Error",
-                                JOptionPane.INFORMATION_MESSAGE,
-                                crossIcon);
-
+                        if (attempt_Counter == attempt_Randon_Counter) {
+                            startTimeout();
+                            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                            JOptionPane.showMessageDialog(this,
+                                    "Login Failed, Application Lockout Enabled.",
+                                    "Account Login Error",
+                                    JOptionPane.INFORMATION_MESSAGE,
+                                    crossIcon);
+                        } else {
+                            /*
+                             * shows an error message due to the username or password being
+                             * incorrect or not existing.
+                             */
+                            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                            JOptionPane.showMessageDialog(this,
+                                    "No Account With These Details Exists On The System. Please Try Again.",
+                                    "Account Login Error",
+                                    JOptionPane.INFORMATION_MESSAGE,
+                                    crossIcon);
+                        }
                     } else {
-
                         /*
                          * saves the account_Details_ID into a variable and passes it into
                          * the main window and opens it while closing the old window.
@@ -586,10 +590,8 @@ public class Login_Account extends javax.swing.JFrame {
                             int account_ID = rs.getInt("account_Details_ID");
                             Suite_Window mWSameple = new Suite_Window(account_ID, "Account", null, -1, null);
                             mWSameple.setVisible(true);
-
                             this.dispose();
                         }
-
                     }
                 }
             } catch (SQLException se) {
@@ -602,32 +604,18 @@ public class Login_Account extends javax.swing.JFrame {
                     }
                 } catch (SQLException se) {
 
-                }// do nothing
-
+                }
             }
         } else {
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog(this,
-                    "Program Timeout Mode Enabled, Please Wait For It TO Expire",
+                    "Program Timeout Still In Effect, Please Wait For It Expire",
                     "Account Login Error",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         }
 
-        if (counter == randomCounter) {
-            startTimeout();
-            Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
-            JOptionPane.showMessageDialog(this,
-                    "TIMEOUT ENABLED",
-                    "Account Login Error",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    crossIcon);
-        }
     }//GEN-LAST:event_login_ButtonActionPerformed
-
-    private int counter = 0;
-    private int randomCounter;
-
     /**
      * a method that when a user presses enter on the Username_Field it will
      * advanced them to the Password_Field.
@@ -635,7 +623,6 @@ public class Login_Account extends javax.swing.JFrame {
      * @param evt
      */
     private void username_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_FieldActionPerformed
-
         password_Field.requestFocusInWindow();
     }//GEN-LAST:event_username_FieldActionPerformed
 
@@ -682,10 +669,6 @@ public class Login_Account extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* Set the Windows look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -708,7 +691,8 @@ public class Login_Account extends javax.swing.JFrame {
             }
         });
     }
-
+    private int attempt_Counter = 0;
+    private final int attempt_Randon_Counter;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton account_Creation_Button;
     private javax.swing.JButton account_Recover_Button;
