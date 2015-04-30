@@ -2,7 +2,6 @@
  * Defines to package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
 /**
  * Import all of the necessary libraries.
  */
@@ -19,7 +18,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-
 /**
  * The Support_About.Java Class implements an application that allows a users to
  * see various information aboutProximity Encryption Suite.

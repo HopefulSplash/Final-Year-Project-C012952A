@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,10 +15,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 /**
+ * The Encryption_Script.Java Class implements an method to encrypt files when the user
+ * changes there password.
  *
- * @author HopefulSplash
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Encryption_Script {
     

@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -21,7 +26,14 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
+/**
+ * The Device_Delete.Java Class implements an application that allows a users
+ * to delete a device from the account.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Device_Delete extends javax.swing.JDialog {
 
     class Task extends SwingWorker<Void, Void> {

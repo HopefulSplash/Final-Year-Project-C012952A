@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -33,10 +33,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
 /**
+ * The Folder_Delete.Java Class implements an application that allows a user
+ * to delete a folder on the system.
  *
- * @author HopefulSplash
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Folder_Delete extends java.awt.Dialog implements ActionListener,
         PropertyChangeListener {

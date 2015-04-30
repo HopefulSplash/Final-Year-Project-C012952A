@@ -1,15 +1,26 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
+/**
+ * The Encryption_AES.Java Class implements an method to encrypt files using the 
+ * encryption standard of AES.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Encryption_AES {
 
 

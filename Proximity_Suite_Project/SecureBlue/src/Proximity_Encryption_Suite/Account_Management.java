@@ -1,7 +1,11 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
-import java.awt.Frame;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
@@ -21,18 +25,16 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Account_Management.Java Class implements an application that allows a users
+ * to modify their account details such as username, password, email and security
+ * options.
  *
- * @author c012952a
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
-public class Acccount_Management extends javax.swing.JDialog {
+public class Account_Management extends javax.swing.JDialog {
 
     private final int accountID;
 
@@ -45,7 +47,7 @@ public class Acccount_Management extends javax.swing.JDialog {
      * @param AccountID
      * @param FolderName
      */
-    public Acccount_Management(java.awt.Frame parent, boolean modal, int AccountID) {
+    public Account_Management(java.awt.Frame parent, boolean modal, int AccountID) {
 
         this.getContentPane().setBackground(Color.WHITE);
         /**
@@ -823,7 +825,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
 
-           Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Username, account_Password, account_Email, account_Question, account_Answer FROM Account_Details "
                     + "WHERE account_Details_ID = '" + accountID + "';";
 
@@ -841,7 +843,7 @@ public class Acccount_Management extends javax.swing.JDialog {
         } finally {
             if (conn != null) {
                 try {
-                     conn.close();
+                    conn.close();
                 } catch (SQLException ex) {
                 }
             }
@@ -998,7 +1000,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
             /*
              * Register JDBC driver
@@ -1030,7 +1032,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             //finally block used to close resources
             try {
                 if (conn != null) {
-                     conn.close();
+                    conn.close();
                 }
             } catch (SQLException se) {
             }// do nothing
@@ -1063,7 +1065,7 @@ public class Acccount_Management extends javax.swing.JDialog {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
             /*
              * Register JDBC driver
@@ -1073,7 +1075,7 @@ public class Acccount_Management extends javax.swing.JDialog {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-             Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT account_Email FROM Account_Details";
 
             /*
@@ -1095,10 +1097,10 @@ public class Acccount_Management extends javax.swing.JDialog {
             try {
                 if (conn != null) {
                     conn.close();
-                 }
+                }
             } catch (SQLException se) {
             }// do nothing
-           
+
         }
 
         //returns isTaken value so it can be used.

@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Image;
@@ -23,10 +23,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
 /**
+ * The Folder_Current.Java Class implements an application that allows a user
+ * to view the details of the current folder.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Folder_Current extends javax.swing.JDialog {
 

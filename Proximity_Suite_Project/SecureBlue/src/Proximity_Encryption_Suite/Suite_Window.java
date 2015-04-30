@@ -1,10 +1,14 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -54,15 +58,14 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Suite_Window.Java Class implements an application that allows a users
+ * use all of the features that are currently implemented using the Proximity
+ * Encryption Suite.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Suite_Window extends javax.swing.JFrame {
 
@@ -224,7 +227,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -242,8 +245,8 @@ public class Suite_Window extends javax.swing.JFrame {
                     System.out.println(accountID);
 
                 }
- 
-             } catch (SQLException | ClassNotFoundException se) {
+
+            } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
@@ -267,7 +270,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -278,7 +281,6 @@ public class Suite_Window extends javax.swing.JFrame {
                 pStmt.setInt(1, accountID);
                 pStmt.executeUpdate();
 
- 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
@@ -312,7 +314,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -329,7 +331,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     fileIDList.add(fileID);
 
                 }
- 
+
                 for (int i = 0; i < fileIDList.size(); i++) {
 
                     if (getFileEncryptionStatus(fileIDList.get(i)).equals("AES Encryption")) {
@@ -373,7 +375,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -390,8 +392,6 @@ public class Suite_Window extends javax.swing.JFrame {
                     fileIDList.add(fileID);
 
                 }
-
-                 
 
                 for (int i = 0; i < fileIDList.size(); i++) {
 
@@ -569,7 +569,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -586,8 +586,6 @@ public class Suite_Window extends javax.swing.JFrame {
                     fileIDList.add(fileID);
 
                 }
-
-                
 
                 for (int i = 0; i < fileIDList.size(); i++) {
 
@@ -773,7 +771,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -790,9 +788,9 @@ public class Suite_Window extends javax.swing.JFrame {
                     pStmt = conn.prepareStatement(sql);
                     pStmt.setInt(1, fileid);
                     pStmt.executeUpdate();
-                    
+
                 } else {
-                     
+
                 }
 
             } catch (SQLException | ClassNotFoundException se) {
@@ -821,7 +819,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -837,8 +835,6 @@ public class Suite_Window extends javax.swing.JFrame {
                     file = rs.getInt("folder_Details_ID");
 
                 }
-
-                
 
                 if (file != 0) {
                     is = true;
@@ -874,7 +870,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -889,7 +885,6 @@ public class Suite_Window extends javax.swing.JFrame {
                 while (rs.next()) {
                     fileID = rs.getString("file_Directory");
                 }
-  
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -917,7 +912,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -932,8 +927,6 @@ public class Suite_Window extends javax.swing.JFrame {
                 while (rs.next()) {
                     fileID = rs.getString("file_EType");
                 }
-
-              
 
             } catch (SQLException | ClassNotFoundException se) {
             } finally {
@@ -958,7 +951,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -969,7 +962,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 pStmt.setInt(1, folderid);
                 pStmt.executeUpdate();
 
-             } catch (SQLException | ClassNotFoundException se) {
+            } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
@@ -991,7 +984,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
- 
+
             try {
                 /*
                  * Register JDBC driver
@@ -1025,7 +1018,6 @@ public class Suite_Window extends javax.swing.JFrame {
                     }
                 } catch (SQLException se) {
                 }// do nothing
-               
 
             }
 
@@ -1043,7 +1035,7 @@ public class Suite_Window extends javax.swing.JFrame {
              * declares the variables for use in connecting and checking the database.
              */
             Connection conn = null;
-             try {
+            try {
 
                 // Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
@@ -1054,13 +1046,12 @@ public class Suite_Window extends javax.swing.JFrame {
                 pStmt.setInt(1, deviceID);
                 pStmt.executeUpdate();
 
- 
                 sql = "DELETE FROM device_Details WHERE device_Details_ID = ?;";
                 pStmt = conn.prepareStatement(sql);
                 pStmt.setInt(1, deviceID);
                 pStmt.executeUpdate();
 
-             } catch (SQLException | ClassNotFoundException se) {
+            } catch (SQLException | ClassNotFoundException se) {
             } finally {
                 if (conn != null) {
                     try {
@@ -1207,7 +1198,7 @@ public class Suite_Window extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -1258,7 +1249,7 @@ public class Suite_Window extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
+
         try {
 
             // Register JDBC driver
@@ -1324,7 +1315,7 @@ public class Suite_Window extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -1383,7 +1374,7 @@ public class Suite_Window extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -1437,7 +1428,7 @@ public class Suite_Window extends javax.swing.JFrame {
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
-         try {
+        try {
 
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -1451,7 +1442,6 @@ public class Suite_Window extends javax.swing.JFrame {
             pStmt = conn.prepareStatement(sql);
             pStmt.setInt(1, fileID);
             pStmt.executeUpdate();
-           
 
         } catch (SQLException | ClassNotFoundException se) {
         } finally {
@@ -2872,7 +2862,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
 
-        Acccount_Management md = new Acccount_Management(this, true, accountID);
+        Account_Management md = new Account_Management(this, true, accountID);
         md.setVisible(true);
 
         folderIDList.clear();
@@ -3040,7 +3030,6 @@ public class Suite_Window extends javax.swing.JFrame {
                     icon);
         }
     }
-
 
     private TableModel model;
     TableRowSorter<TableModel> sorter;

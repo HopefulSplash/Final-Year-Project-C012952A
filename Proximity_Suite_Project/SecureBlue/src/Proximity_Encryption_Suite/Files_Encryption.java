@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -19,9 +24,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,15 +33,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Files_Encryption.Java Class implements an application that allows a user
+ * to encrypt the files on the system.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Files_Encryption extends javax.swing.JDialog implements ActionListener,
         PropertyChangeListener {

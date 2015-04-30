@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.util.Vector;
 import javax.bluetooth.DeviceClass;
 import javax.bluetooth.DiscoveryAgent;
@@ -7,7 +12,14 @@ import javax.bluetooth.DiscoveryListener;
 import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.ServiceRecord;
-
+/**
+ * The Device_Discovery.Java Class implements an method of searching for mobile
+ * devices using the BlueCove API.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Device_Discovery {
 
     /**

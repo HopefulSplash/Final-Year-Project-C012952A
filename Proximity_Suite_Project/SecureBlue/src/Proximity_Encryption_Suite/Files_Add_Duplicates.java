@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
@@ -15,10 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-
 /**
+ * The Files_Add_Duplicates.Java Class implements an application that notifies the 
+ * user if they are trying to add a file that is all ready in the folder they have
+ * chosen.
  *
- * @author HopefulSplash
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Files_Add_Duplicates extends javax.swing.JDialog {
 

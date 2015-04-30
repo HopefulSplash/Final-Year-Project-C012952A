@@ -1,12 +1,24 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.bluetooth.*;
-
+/**
+ * The Device_Service.Java Class implements an method to check what services the 
+ * mobile device can offer to determine if it can be used with the application.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Device_Service {
 
     /** 

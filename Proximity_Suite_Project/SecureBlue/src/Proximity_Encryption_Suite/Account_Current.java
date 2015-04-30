@@ -1,10 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Image;
@@ -20,10 +20,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-
 /**
+ * The Account_Current.Java Class implements an application that allows a users
+ * to view some details about the account they are logged into.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Account_Current extends javax.swing.JDialog {
 
@@ -298,7 +301,7 @@ public class Account_Current extends javax.swing.JDialog {
 
     private void modify_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modify_ButtonActionPerformed
         // TODO add your handling code here:
-        Acccount_Management j1 = new Acccount_Management((Frame) this.getParent(), true, accountID);
+        Account_Management j1 = new Account_Management((Frame) this.getParent(), true, accountID);
         this.dispose();
         j1.setVisible(true);
     }//GEN-LAST:event_modify_ButtonActionPerformed

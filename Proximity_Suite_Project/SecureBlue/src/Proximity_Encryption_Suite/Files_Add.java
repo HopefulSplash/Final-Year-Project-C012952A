@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import static Proximity_Encryption_Suite.Files_Add.addFilesList;
 import java.awt.Color;
 import java.awt.Component;
@@ -8,8 +13,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -29,21 +32,17 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Files_Add.Java Class implements an application that allows a user to add
+ * files to system, they can add files, folders, drives or external devices.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
-public class Files_Add extends javax.swing.JDialog implements ActionListener,
-        PropertyChangeListener {
+public class Files_Add extends javax.swing.JDialog implements ActionListener,PropertyChangeListener {
 
     private DefaultListModel listModel;
     private String Current_Folder;

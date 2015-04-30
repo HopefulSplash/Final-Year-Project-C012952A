@@ -1,10 +1,19 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
-//STEP 1. Import required packages
+/**
+ * Import all of the necessary libraries.
+ */
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+/**
+ * The Suite_Database.Java Class implements the database features such as implementing
+ * the database if it has not been created, storing the connection details.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Suite_Database {
 
     // JDBC driver name and database URL

@@ -1,8 +1,7 @@
 /**
- * Defines to package to class belongs to.
+ * Defines the package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
 /**
  * Import all of the necessary libraries.
  */
@@ -26,7 +25,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-
 /**
  * The Login_Account_Create.Java Class implements an application that allows a
  * users to create an account so why can be given access to the Proximity

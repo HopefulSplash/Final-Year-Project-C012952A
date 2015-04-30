@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
@@ -17,14 +22,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Folder_Create.Java Class implements an application that allows a user
+ * to create different folders on the system to store different files.
  *
- * @author c012952a
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Folder_Create extends javax.swing.JDialog {
 

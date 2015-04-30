@@ -2,7 +2,6 @@
  * Defines to package to class belongs to.
  */
 package Proximity_Encryption_Suite;
-
 /**
  * Import all of the necessary libraries.
  */
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-
 /**
  * The Login_Account_Recover_Password.Java Class implements an application that
  * allows a users chose the new password for their account so why can be given

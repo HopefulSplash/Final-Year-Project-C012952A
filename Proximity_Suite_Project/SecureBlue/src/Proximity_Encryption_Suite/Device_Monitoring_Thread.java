@@ -1,20 +1,23 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.io.*;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.bluetooth.*;
 import javax.microedition.io.*;
-
 /**
- * Class responsible for the configuration/usage of bluetooth.
+ * The Device_Monitoring_Thread.Java Class implements an method of checking the
+ * status of a connection between a mobile device and the application.
  *
- * As a client it will try to connect to all devices with the name prefix "BT_"
- * and send "Hello world" to them.
- *
- * @author Fernando Alexandre
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Device_Monitoring_Thread extends Thread implements DiscoveryListener {
 

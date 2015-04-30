@@ -1,5 +1,11 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
 
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.HeadlessException;
@@ -33,126 +39,19 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
-/*
- * To change this licefsdfsddfsdsfsdfdsfsdfnse header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The Login_Device.Java Class implements an application that allows a users
+ * select their device and enter a password so why can be given access to the
+ * Proximity Encryption Suite.
  *
- * @author TheThoetha
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class Login_Device extends javax.swing.JFrame {
 
-    private Map<Integer, List<String>> mapDevicePosition = new HashMap<Integer, List<String>>();
-
-    class Task extends SwingWorker<Void, Void> {
-
-        private Map<String, List<String>> mapReturnResult = new HashMap<String, List<String>>();
-        int counter = 0;
-        String status;
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        @Override
-        public Void doInBackground() {
-            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            counter = 0;
-
-            //Initialize progress property.
-            setProgress(0);
-
-            while (counter != 1) {
-
-                if ("Setup".equals(status)) {
-                    Suite_Database d = new Suite_Database();
-                    d.startDatabase();
-                    counter++;
-
-                } else if ("Scan".equals(status)) {
-
-                    jComboBox1.setEnabled(false);
-
-                    int intDevicePosition = 0;
-
-                    /* Create an object of Device_Service */
-                    Device_Service ss = new Device_Service();
-                    /* Get bluetooth device details */
-                    mapReturnResult = ss.getBluetoothDevices();
-
-
-                    /* Add devices in JList */
-                    for (Map.Entry<String, List<String>> entry : mapReturnResult.entrySet()) {
-                        jComboBox1.addItem(entry.getValue().get(0));
-                        mapDevicePosition.put(intDevicePosition, entry.getValue());
-                        intDevicePosition++;
-                    }
-
-                    counter++;
-                }
-            }
-
-            return null;
-        }
-
-        /*
-         * Executed in event dispatching thread
-         */
-        @Override
-        public void done() {
-            setCursor(null); //turn off the wait cursor
-
-            if ("Scan".equals(status)) {
-                jComboBox1.removeItemAt(0);
-                jComboBox1.setEnabled(true);
-                passwordField.setEnabled(true);
-                login_Button.setEnabled(true);
-                account_Recover_Button1.setEnabled(true);
-                jButton1.setEnabled(true);
-                account_Creation_Button1.setEnabled(true);
-                login_Button.requestFocus();
-            }
-        }
-
-        /**
-         * a method that converts a user entered password into SHA1 so it can be
-         * stored in the database securely.
-         *
-         * @param input
-         * @return String
-         */
-        private String convertToSha1(String input) throws NoSuchAlgorithmException {
-
-            /*
-             * converts to string input into a SHA1 byte array.
-             */
-            MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-            byte[] result = mDigest.digest(input.getBytes());
-
-            /*
-             * builds the new string so that it is in the correct format for storage.
-             */
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < result.length; i++) {
-                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-            }
-
-            /*
-             * returns the string so it can be used.
-             */
-            return sb.toString();
-        }
-
-    }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-
-    }
-
     /**
-     * Creates new form TestLogin
+     * Creates new Login_Device.
      */
     public Login_Device() {
         this.getContentPane().setBackground(Color.WHITE);
@@ -192,24 +91,96 @@ public class Login_Device extends javax.swing.JFrame {
          */
         this.setIconImages(icons);
 
+        //creates a new task and sets the status to Setup then executes it 
         Task task = new Task();
-        task.setStatus("Setup");
+        task.set_Background_Status("Setup");
         task.execute();
 
-        jComboBox1.setEnabled(false);
+        //setup for the GUI
+        device_ComboBox.setEnabled(false);
         login_Button.requestFocus();
 
-        Random rn = new Random();
-        randomCounter = rn.nextInt(5) + 1;
+        //creates a random number between 1 and 5 to be used for security.
+        Random random_Number = new Random();
+        attempt_Random_Counter = random_Number.nextInt(5) + 1;
     }
 
-    private int counter = 0;
-    private int randomCounter;
+    //a swingwoker to do work in the background of the application.
+    class Task extends SwingWorker<Void, Void> {
+
+        //defining variables for use.
+        private Map<String, List<String>> map_Return_Result = new HashMap<>();
+        private int background_Counter;
+        private String background_Status;
+
+        /**
+         * a setter for the background_Status status.
+         *
+         * @param status
+         */
+        public void set_Background_Status(String status) {
+            this.background_Status = status;
+        }
+
+        @Override
+        public Void doInBackground() {
+            // changes to cursor to the wating system.
+            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            // setting the counter to 0;
+            background_Counter = 0;
+
+            //a while loop that will continue untill the processes are finished.
+            while (background_Counter != 1) {
+
+                if ("Setup".equals(background_Status)) {
+                    //creates a the database if it hasnt been created already.
+                    Suite_Database d = new Suite_Database();
+                    d.startDatabase();
+                    background_Counter++;
+
+                } else if ("Scan".equals(background_Status)) {
+                    // reset the device_Position to 0.
+                    int device_Position = 0;
+                    /* Create an object of Device_Service. */
+                    Device_Service ss = new Device_Service();
+                    /* Get bluetooth device details. */
+                    map_Return_Result = ss.getBluetoothDevices();
+                    /* Add devices in JList */
+                    for (Map.Entry<String, List<String>> entry : map_Return_Result.entrySet()) {
+                        device_ComboBox.addItem(entry.getValue().get(0));
+                        map_Device_Position.put(device_Position, entry.getValue());
+                        device_Position++;
+                    }
+                    //completes all the processes so ends to background task.
+                    background_Counter++;
+                }
+            }
+            return null;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+            setCursor(null); //turn off the wait cursor
+
+            if ("Scan".equals(background_Status)) {
+                //setting the relvant feilds to enabled when the search is completed.
+                device_ComboBox.removeItemAt(0);
+                device_ComboBox.setEnabled(true);
+                password_Field.setEnabled(true);
+                login_Button.setEnabled(true);
+                account_Recover_Button1.setEnabled(true);
+                device_Scan_Button.setEnabled(true);
+                account_Creation_Button1.setEnabled(true);
+                login_Button.requestFocus();
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialise the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -218,11 +189,11 @@ public class Login_Device extends javax.swing.JFrame {
         loginDetailsPanel = new javax.swing.JPanel();
         usernameLabel = new javax.swing.JLabel();
         passwordLabel = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
+        password_Field = new javax.swing.JPasswordField();
         changeLoginLabel = new javax.swing.JLabel();
         login_Button = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        device_ComboBox = new javax.swing.JComboBox();
+        device_Scan_Button = new javax.swing.JButton();
         login_Logo_Panel3 = new javax.swing.JPanel();
         login_Logo_Image3 = new javax.swing.JLabel();
         creation_Recovery_Panel1 = new javax.swing.JPanel();
@@ -246,14 +217,14 @@ public class Login_Device extends javax.swing.JFrame {
 
         passwordLabel.setText("Passcode:");
 
-        passwordField.setToolTipText("");
-        passwordField.setEnabled(false);
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
+        password_Field.setToolTipText("");
+        password_Field.setEnabled(false);
+        password_Field.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
+                password_FieldActionPerformed(evt);
             }
         });
-        PlainDocument document = (PlainDocument) passwordField.getDocument();
+        PlainDocument document = (PlainDocument) password_Field.getDocument();
         document.setDocumentFilter(new DocumentFilter() {
 
             @Override
@@ -287,15 +258,15 @@ public class Login_Device extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setMaximumRowCount(20);
-        jComboBox1.setLightWeightPopupEnabled(false);
-        jComboBox1.setName(""); // NOI18N
+        device_ComboBox.setMaximumRowCount(20);
+        device_ComboBox.setLightWeightPopupEnabled(false);
+        device_ComboBox.setName(""); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Refresh.png"))); // NOI18N
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        device_Scan_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Refresh.png"))); // NOI18N
+        device_Scan_Button.setFocusPainted(false);
+        device_Scan_Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                device_Scan_ButtonActionPerformed(evt);
             }
         });
 
@@ -312,11 +283,11 @@ public class Login_Device extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(loginDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(device_ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(device_Scan_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(login_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(password_Field, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(6, 6, 6))
         );
         loginDetailsPanelLayout.setVerticalGroup(
@@ -324,14 +295,14 @@ public class Login_Device extends javax.swing.JFrame {
             .addGroup(loginDetailsPanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(device_Scan_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(device_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(6, 6, 6)
                 .addGroup(loginDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordLabel)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(password_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(login_Button)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -437,81 +408,85 @@ public class Login_Device extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    /**
+     * when a user preforms an action the password field it will attempt to
+     * login.
+     *
+     * @param evt
+     */
+    private void password_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_FieldActionPerformed
         // TODO add your handling code here:
-        passwordField.setFocusable(false);
-        passwordField.setFocusable(true);
+        password_Field.setFocusable(false);
+        password_Field.setFocusable(true);
         login_Button.doClick();
 
-    }//GEN-LAST:event_passwordFieldActionPerformed
-
+    }//GEN-LAST:event_password_FieldActionPerformed
+    /**
+     * when the user wants to change login type the new window is opened and the
+     * old one is closed.
+     *
+     * @param evt
+     */
     private void changeLoginLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeLoginLabelMouseClicked
-        // TODO add your handling code here:
         Login_Account dLSameple = new Login_Account();
         dLSameple.setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_changeLoginLabelMouseClicked
-
+    /**
+     * when a user wants to create an account this will open the right form.
+     *
+     * @param evt
+     */
     private void account_Creation_Button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_Creation_Button1ActionPerformed
         Login_Account_Create cASameple = new Login_Account_Create("Login");
         cASameple.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_account_Creation_Button1ActionPerformed
-
+    /**
+     * when a user wants to recover an account this will open the right form.
+     *
+     * @param evt
+     */
     private void account_Recover_Button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_Recover_Button1ActionPerformed
         // TODO add your handling code here:
         Login_Account_Recover rASameple = new Login_Account_Recover();
         rASameple.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_account_Recover_Button1ActionPerformed
+    /**
+     * when the user clicks the scan button it will start the process.
+     *
+     * @param evt
+     */
+    private void device_Scan_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_Scan_ButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        mapDevicePosition.clear();
-        jComboBox1.removeAllItems();
-        jComboBox1.addItem("Scanning...");
-
-        passwordField.setText("");
-        // Variables declaration - do not modify                     
-
-        passwordField.setEnabled(false);
+        //clears and setups the process of scanning for devices.
+        map_Device_Position.clear();
+        device_ComboBox.removeAllItems();
+        device_ComboBox.addItem("Scanning...");
+        password_Field.setText("");
+        password_Field.setEnabled(false);
         login_Button.setEnabled(false);
         account_Recover_Button1.setEnabled(false);
-        jButton1.setEnabled(false);
+        device_Scan_Button.setEnabled(false);
         account_Creation_Button1.setEnabled(false);
+        device_ComboBox.setEnabled(false);
+
+        //starts a new task so that it can scan for devices in the background of the application.
         Task task = new Task();
-        task.setStatus("Scan");
+        task.set_Background_Status("Scan");
         task.execute();
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private String convertToSha1(String input) throws NoSuchAlgorithmException {
-
-        /*
-         * converts to string input into a SHA1 byte array.
-         */
-        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-        byte[] result = mDigest.digest(input.getBytes());
-
-        /*
-         * builds the new string so that it is in the correct format for storage.
-         */
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < result.length; i++) {
-            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        /*
-         * returns the string so it can be used.
-         */
-        return sb.toString();
-    }
-
+    }//GEN-LAST:event_device_Scan_ButtonActionPerformed
+    /**
+     * this method will check if the application is in lockout mode
+     *
+     * @return
+     */
     private boolean checkTimeout() {
+// sets up variables;
         boolean timeout = false;
-
         Date databaseDate = null;
         /*
          * declares and new instance of the Suite_Database class and then checks if the
@@ -534,38 +509,32 @@ public class Login_Device extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-           Statement stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String sql = "SELECT program_Timeout_Date FROM program_Timeout;";
 
             ResultSet rs = stmt.executeQuery(sql);
+
+            //uses the results of the query.
             while (rs.next()) {
                 databaseDate = new Date(rs.getTimestamp("program_Timeout_Date").getTime());
             }
 
+            //creates a format for the data and gets the current date and time.
             SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
             Date d1 = new java.util.Date();
 
             try {
-
-                //in milliseconds
-                long diff = d1.getTime() - databaseDate.getTime();
-
-                long diffSeconds = diff / 1000 % 60;
-                long diffMinutes = diff / (60 * 1000) % 60;
-                long diffHours = diff / (60 * 60 * 1000) % 24;
-                long diffDays = diff / (24 * 60 * 60 * 1000);
-
-                if (diffMinutes >= 15 || diffHours != 0) {
+                //generates the time difference in different formats.
+                long time_Difference = d1.getTime() - databaseDate.getTime();
+                long difference_Minutes = time_Difference / (60 * 1000) % 60;
+                long difference_Hour = time_Difference / (60 * 60 * 1000) % 24;
+                //checks if the time difference is withn the lockout period.
+                if (difference_Minutes >= 15 || difference_Hour != 0) {
                     timeout = false;
-
                 } else {
-
                     timeout = true;
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
             }
 
         } catch (SQLException se) {
@@ -577,26 +546,27 @@ public class Login_Device extends javax.swing.JFrame {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }// do nothing
-            
+            }
         }
-
         return timeout;
     }
 
+    /**
+     * if the user fails to login several times this method will start the
+     * lockout period.
+     */
     private void startTimeout() {
+        //setup variables.
         Date databaseDate = null;
         /*
          * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
- 
         try {
             /*
              * Register JDBC driver.
@@ -620,61 +590,85 @@ public class Login_Device extends javax.swing.JFrame {
                     conn.close();
                 }
             } catch (SQLException se) {
-            }// do nothing
-             
+            }
         }
-
     }
 
-    private void login_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_ButtonActionPerformed
+    /**
+     * a method that converts a user entered password into SHA1 so it can be
+     * stored in the database securely.
+     *
+     * @param input
+     * @return String
+     */
+    private String convertToSha1(String input) throws NoSuchAlgorithmException {
+        /*
+         * converts to string input into a SHA1 byte array.
+         */
+        MessageDigest m_Digest = MessageDigest.getInstance("SHA1");
+        byte[] result_String = m_Digest.digest(input.getBytes());
+        /*
+         * builds the new string so that it is in the correct format for storage.
+         */
+        StringBuilder string_Builder = new StringBuilder();
+        for (int i = 0; i < result_String.length; i++) {
+            string_Builder.append(Integer.toString((result_String[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        /*
+         * returns the string so it can be used.
+         */
+        return string_Builder.toString();
+    }
 
+    /**
+     * performs the login function when the login button is pressed.
+     *
+     * @param evt
+     */
+    private void login_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_ButtonActionPerformed
+//checks if the tineout period is still active.
         if (checkTimeout() == false) {
 
-            if (!mapDevicePosition.isEmpty()) {
-                List<String> tmpDeviceDetails = mapDevicePosition.get(jComboBox1.getSelectedIndex());
+            if (!map_Device_Position.isEmpty()) {
+                List<String> tmpDeviceDetails = map_Device_Position.get(device_ComboBox.getSelectedIndex());
                 /* Set bluetooth device name */
 
                 /* Set bluetooth device Address */
-                String address = tmpDeviceDetails.get(1);
-
+                String device_Address = tmpDeviceDetails.get(1);
                 /*
                  * declares and new instance of the Suite_Database class and then checks if the
                  * the database exists and if is does not then creates it for the system.
                  */
                 Suite_Database d = new Suite_Database();
                 d.startDatabase();
-
                 /*
                  * declares the variables for use in connecting and checking the database.
                  */
                 Connection conn = null;
                 String passwordSha1 = null;
-
                 /*
                  * creates the SHA1 hash of the password the user has entered.
                  */
                 try {
-                    String strPassword = new String(passwordField.getPassword());
+                    String strPassword = new String(password_Field.getPassword());
                     passwordSha1 = convertToSha1(strPassword);
 
                 } catch (NoSuchAlgorithmException ex) {
                     Logger.getLogger(Login_Account_Create.class
                             .getName()).log(Level.SEVERE, null, ex);
                 }
-
                 try {
                     /*
                      * Register JDBC driver.
                      */
                     Class.forName("com.mysql.jdbc.Driver");
                     conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
                     /*
                      * creates and executes an SQL statement to be run against the database.
                      */
                     Statement stmt = conn.createStatement();
                     String sql = "SELECT device_Details_ID FROM device_Details "
-                            + "WHERE device_Address = '" + address
+                            + "WHERE device_Address = '" + device_Address
                             + "' AND device_Password = '" + passwordSha1 + "';";
                     /*
                      * extracts the data from the results of the SQL statment and checks
@@ -686,33 +680,30 @@ public class Login_Device extends javax.swing.JFrame {
                          * if they are empty or not
                          */
                         if (!rs.isBeforeFirst()) {
-                            counter++;
+                            //increments the counter
+                            attempt_Counter++;
                             /*
                              * shows an error message due to the username or password being
                              * incorrect or not existing.
                              */
                             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                             JOptionPane.showMessageDialog(this,
-                                    "No Account With These Details Exists On This System. Please Try Again.",
-                                    "Account Login Error",
+                                    "No Device With These Details Exists On The System. Please Try Again.",
+                                    "Deivce Login Error",
                                     JOptionPane.INFORMATION_MESSAGE,
                                     crossIcon);
-
                         } else {
-
                             /*
                              * saves the account_Details_ID into a variable and passes it into
                              * the main window and opens it while closing the old window.
                              */
                             while (rs.next()) {
-                                getDeviceID(address);
+                                get_Device_ID(device_Address);
                                 //retrieves the information and puts it into a variable
-                                Suite_Window mWSameple = new Suite_Window(-1, "Device", address, dID, dName);
+                                Suite_Window mWSameple = new Suite_Window(-1, "Device", device_Address, device_ID, device_Name);
                                 mWSameple.setVisible(true);
-
                                 this.dispose();
                             }
-
                         }
                     }
                 } catch (SQLException se) {
@@ -724,77 +715,72 @@ public class Login_Device extends javax.swing.JFrame {
                             conn.close();
                         }
                     } catch (SQLException se) {
-                    }// do nothing
-                     
+                    }
                 }
             } else {
-                counter++;
-
-                if (counter == randomCounter) {
+                //increments the login counter.
+                attempt_Counter++;
+                //checks if the max attempts have been reached.
+                if (attempt_Counter == attempt_Random_Counter) {
+                    //starts the timeout period.
                     startTimeout();
                     Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                     JOptionPane.showMessageDialog(this,
-                            "TIMEOUT ENABLED",
-                            "Account Login Error",
+                            "Login Failed, Application Lockout Enabled.",
+                            "Device Login Error",
                             JOptionPane.INFORMATION_MESSAGE,
                             crossIcon);
                 } else {
                     Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
                     JOptionPane.showMessageDialog(this,
-                            "Select A Device",
-                            "Account Login Error",
+                            "No Device Selected, Please Try Again.",
+                            "Device Login Error",
                             JOptionPane.INFORMATION_MESSAGE,
                             crossIcon);
                 }
-
             }
         } else {
             Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
             JOptionPane.showMessageDialog(this,
-                    "Program Timeout Mode Enabled, Please Wait For It TO Expire",
-                    "Account Login Error",
+                    "Program Timeout Still In Effect, Please Wait For It Expire",
+                    "Device Login Error",
                     JOptionPane.INFORMATION_MESSAGE,
                     crossIcon);
         }
-
-
     }//GEN-LAST:event_login_ButtonActionPerformed
-    String dName;
-    int dID = -1;
 
-    private void getDeviceID(String deviceAddress) {
-
+    /**
+     * gets the devices ID relating the the MAC address of the mobile device.
+     *
+     * @param deviceAddress
+     */
+    private void get_Device_ID(String deviceAddress) {
         /*
          * declares and new instance of the Suite_Database class and then checks if the
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-
         /*
          * declares the variables for use in connecting and checking the database.
          */
         Connection conn = null;
         try {
-
             // Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(d.getCONNECT_DB_URL(), d.getUSER(), d.getPASS());
-
+            // executes the statement
             String sql = "SELECT device_Details_ID, device_Name FROM device_Details WHERE device_Address = ?;";
             PreparedStatement pStmt = conn.prepareStatement(sql);
             pStmt.setString(1, deviceAddress);
-
             ResultSet rs = pStmt.executeQuery();
-
+            //uses the device information and stores it in variables.
             while (rs.next()) {
-                dID = rs.getInt("device_Details_ID");
-
-                dName = rs.getString("device_Name");
-
+                device_ID = rs.getInt("device_Details_ID");
+                device_Name = rs.getString("device_Name");
             }
-
-         } catch (SQLException | ClassNotFoundException se) {
+        } catch (SQLException | ClassNotFoundException se) {
         } finally {
+            //closes the connection
             if (conn != null) {
                 try {
                     conn.close();
@@ -806,14 +792,12 @@ public class Login_Device extends javax.swing.JFrame {
     }
 
     /**
+     * the main function that will create the form so the user can see it.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        /* Set the Windows look and feel */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -821,13 +805,7 @@ public class Login_Device extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login_Account.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login_Account.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login_Account.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login_Account.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -845,15 +823,19 @@ public class Login_Device extends javax.swing.JFrame {
     private javax.swing.JButton account_Recover_Button1;
     private javax.swing.JLabel changeLoginLabel;
     private javax.swing.JPanel creation_Recovery_Panel1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox device_ComboBox;
+    private javax.swing.JButton device_Scan_Button;
     private javax.swing.JPanel loginDetailsPanel;
     private javax.swing.JButton login_Button;
     private javax.swing.JLabel login_Logo_Image3;
     private javax.swing.JPanel login_Logo_Panel3;
-    private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
+    private javax.swing.JPasswordField password_Field;
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
-
+    private String device_Name;
+    private int device_ID = -1;
+    private int attempt_Counter = 0;
+    private final int attempt_Random_Counter;
+    private final Map<Integer, List<String>> map_Device_Position = new HashMap<>();
 }

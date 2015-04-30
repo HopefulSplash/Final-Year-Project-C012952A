@@ -93,12 +93,12 @@
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jComboBox1" max="32767" attributes="0"/>
+                          <Component id="device_ComboBox" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="49" max="-2" attributes="0"/>
+                          <Component id="device_Scan_Button" min="-2" pref="49" max="-2" attributes="0"/>
                       </Group>
                       <Component id="login_Button" max="32767" attributes="0"/>
-                      <Component id="passwordField" alignment="1" max="32767" attributes="0"/>
+                      <Component id="password_Field" alignment="1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               </Group>
@@ -109,16 +109,16 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jButton1" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="device_Scan_Button" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="usernameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBox1" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="device_ComboBox" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="passwordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="passwordField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="password_Field" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="login_Button" min="-2" max="-2" attributes="0"/>
@@ -143,16 +143,16 @@
             <Property name="text" type="java.lang.String" value="Passcode:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="passwordField">
+        <Component class="javax.swing.JPasswordField" name="password_Field">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordFieldActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="password_FieldActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="PlainDocument document = (PlainDocument) passwordField.getDocument();&#xa;        document.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
+            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="PlainDocument document = (PlainDocument) password_Field.getDocument();&#xa;        document.setDocumentFilter(new DocumentFilter() {&#xa;&#xa;            @Override&#xa;            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {&#xa;                String string = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;&#xa;&#xa;                if (string.length() &lt;= 6) {&#xa;                    super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.&#xa;                }&#xa;            }&#xa;&#xa;        });"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="changeLoginLabel">
@@ -182,7 +182,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="login_ButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="device_ComboBox">
           <Properties>
             <Property name="maximumRowCount" type="int" value="20"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -192,7 +192,7 @@
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="device_Scan_Button">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Proximity/graphic_Device/device_Refresh.png"/>
@@ -200,7 +200,7 @@
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="device_Scan_ButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

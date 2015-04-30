@@ -1,15 +1,20 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.io.File;
 import java.util.ArrayList;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
+ * The File_Loading_Thread.Java Class implements an method to gather the related
+ * files a user whats to add or view on the system and gets there details for each
+ * in the background.
  *
- * @author c012952a
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
  */
 public class File_Loading_Thread implements Runnable {
     

@@ -1,5 +1,10 @@
+/**
+ * Defines the package to class belongs to.
+ */
 package Proximity_Encryption_Suite;
-
+/**
+ * Import all of the necessary libraries.
+ */
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -29,7 +34,14 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
-
+/**
+ * The Device_Management.Java Class implements an application that allows a user to
+ * alter a devices details such as the pin that is connected to the device.
+ *
+ * @author Harry Clewlow (C012952A)
+ * @version 1.0
+ * @since 18-01-2014
+ */
 public class Device_Management extends javax.swing.JDialog {
 
     class Task extends SwingWorker<Void, Void> {

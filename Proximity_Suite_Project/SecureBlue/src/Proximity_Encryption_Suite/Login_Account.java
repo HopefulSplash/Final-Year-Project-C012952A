@@ -46,19 +46,16 @@ public class Login_Account extends javax.swing.JFrame {
      * Creates new Login_Account.
      */
     public Login_Account() {
-
         this.getContentPane().setBackground(Color.WHITE);
         /**
          * Declares the icons used for the windows icon and the frames icon.
          */
         URL icon16URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Small.png");
         URL icon32URL = getClass().getResource("/Proximity/graphic_Logos/Logo_Large.png");
-
         /**
          * Image list to store the icons in.
          */
         final List<Image> icons = new ArrayList<>();
-
         /**
          * loads the icons into the image list.
          */
@@ -74,7 +71,6 @@ public class Login_Account extends javax.swing.JFrame {
         }
 
         initComponents();
-
         /**
          * sets the location of the application to the middle of the screen.
          */
@@ -84,55 +80,55 @@ public class Login_Account extends javax.swing.JFrame {
          */
         this.setIconImages(icons);
 
+        //creates a new task to setup the database.
         Task task = new Task();
-        task.setStatus("Setup");
+        task.set_Background_Status("Setup");
         task.execute();
-
+        //setup for the GUI
         login_Button.requestFocus();
-
+        //creates a random number between 1 and 5 to be used for security.
         Random rn = new Random();
         randomCounter = rn.nextInt(5) + 1;
     }
 
+    //a swingwoker to do work in the background of the application.
     class Task extends SwingWorker<Void, Void> {
 
-        int counter = 0;
-        String status;
+        //defining variables for use.
+        int background_Counter = 0;
+        String background_Status;
 
-        public void setStatus(String status) {
-            this.status = status;
+        /**
+         * setter for the background_Status.
+         *
+         * @param status
+         */
+        public void set_Background_Status(String status) {
+            this.background_Status = status;
         }
 
         @Override
         public Void doInBackground() {
+            //GUI setup
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            counter = 0;
+            background_Counter = 0;
 
-            //Initialize progress property.
-            setProgress(0);
-
-            while (counter != 1) {
-
-                if ("Setup".equals(status)) {
+            //while loop to let progress complete.
+            while (background_Counter != 1) {
+            //starts the database.
+                if ("Setup".equals(background_Status)) {
                     Suite_Database d = new Suite_Database();
                     d.startDatabase();
-                    counter++;
-
+                    background_Counter++;
                 }
             }
-
             return null;
         }
 
-        /*
-         * Executed in event dispatching thread
-         */
         @Override
         public void done() {
             setCursor(null); //turn off the wait cursor
-
         }
-
     }
 
     private boolean checkTimeout() {
@@ -231,7 +227,7 @@ public class Login_Account extends javax.swing.JFrame {
             /*
              * creates and executes an SQL statement to be run against the database.
              */
-           Statement  stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             String createTimeout = "UPDATE program_Timeout SET program_Timeout_Date = NOW() ORDER BY program_Timeout_ID DESC LIMIT 1;";
             stmt.executeUpdate(createTimeout);
         } catch (SQLException se) {
@@ -579,7 +575,6 @@ public class Login_Account extends javax.swing.JFrame {
                                 JOptionPane.INFORMATION_MESSAGE,
                                 crossIcon);
 
-
                     } else {
 
                         /*
@@ -596,7 +591,7 @@ public class Login_Account extends javax.swing.JFrame {
                         }
 
                     }
-                 }
+                }
             } catch (SQLException se) {
             } catch (ClassNotFoundException | HeadlessException e) {
             } finally {
