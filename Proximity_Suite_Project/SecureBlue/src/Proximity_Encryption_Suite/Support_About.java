@@ -68,7 +68,7 @@ public class Support_About extends javax.swing.JDialog {
         /**
          * sets the location of the application to the middle of the screen.
          */
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(this.getParent());
         /**
          *  setups up all the GUI components 
          */

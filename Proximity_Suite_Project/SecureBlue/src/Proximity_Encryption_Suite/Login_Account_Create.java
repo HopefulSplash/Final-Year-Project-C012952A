@@ -36,14 +36,14 @@ import javax.swing.JOptionPane;
  * @version 1.0
  * @since 18-01-2014
  */
-public class Login_Account_Create extends javax.swing.JFrame {
+public class Login_Account_Create extends javax.swing.JDialog {
 
     /**
      * Creates new form Login_Account_Create
      *
      * @param Parent
      */
-    public Login_Account_Create(String Parent) {
+    public Login_Account_Create(java.awt.Frame parent, boolean modal, String Parent) {
 
         this.getContentPane().setBackground(Color.WHITE);
         /**

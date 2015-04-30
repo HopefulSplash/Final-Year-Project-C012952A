@@ -438,7 +438,7 @@ public class Login_Device extends javax.swing.JFrame {
      * @param evt
      */
     private void account_Creation_Button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_Creation_Button1ActionPerformed
-        Login_Account_Create cASameple = new Login_Account_Create("Login");
+        Login_Account_Create cASameple = new Login_Account_Create(this, true, "Login");
         cASameple.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_account_Creation_Button1ActionPerformed

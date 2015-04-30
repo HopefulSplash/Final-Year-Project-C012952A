@@ -165,10 +165,7 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
         //ends the program when stream is cancelled 
         didConnect = 1;
         connected = false;
-        try {
-            conn.close();
-        } catch (IOException ex) {
-        }
+      
     }
     /**
      * a method to get is the connection is still active

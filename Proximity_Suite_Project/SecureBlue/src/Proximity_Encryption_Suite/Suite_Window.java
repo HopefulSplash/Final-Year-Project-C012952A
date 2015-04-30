@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dialog;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -71,53 +72,76 @@ import javax.swing.table.TableRowSorter;
  */
 public class Suite_Window extends javax.swing.JFrame {
 
+    //a swingwoker to do work in the background of the application.
     class Task extends SwingWorker<Void, Void> {
 
-        int counter = 0;
-        JFrame background_Frame;
+        private int background_Counter = 0;
+        private JFrame background_Frame;
+        private String background_Status;
 
+        /**
+         * a method get the background object
+         *
+         * @return
+         */
         public Object getO1() {
             return background_Frame;
         }
 
+        /**
+         * a method to set the background frame
+         *
+         * @param background_Frame
+         */
         public void setBackground_Frame(JFrame background_Frame) {
             this.background_Frame = background_Frame;
         }
 
-        String status;
-
+        /**
+         * a method the set the status
+         *
+         * @param status
+         */
         public void setStatus(String status) {
-            this.status = status;
+            this.background_Status = status;
         }
 
-        public int getCounter() {
-            return counter;
+        /**
+         * a method the get the counter
+         */
+        public int getBackground_Counter() {
+            return background_Counter;
         }
 
-        public void setCounter(int counter) {
-            this.counter = counter;
+        /**
+         * a method to set the counter
+         *
+         * @param background_Counter
+         */
+        public void setBackground_Counter(int background_Counter) {
+            this.background_Counter = background_Counter;
         }
 
         @Override
         public Void doInBackground() {
             setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            counter = 0;
+            background_Counter = 0;
             progressBar.setValue(0);
 
             //Initialize progress property.
             setProgress(0);
 
-            while (counter != 1) {
+            while (background_Counter != 1) {
                 //setup GUI
                 progressBar.setIndeterminate(true);
 
-                if ("Login".equals(status)) {
+                if ("Login".equals(background_Status)) {
 
                     switch (loginType) {
                         case "Account":
                             //load the account details
                             getAccountDetails();
-                            counter++;
+                            background_Counter++;
                             break;
                         case "Device":
                             //start the monitoring thread.
@@ -157,7 +181,7 @@ public class Suite_Window extends javax.swing.JFrame {
                                 }
 
                                 System.out.println(bt.isConnected());
-                                counter++;
+                                background_Counter++;
 
                             } else {
                                 Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
@@ -167,14 +191,14 @@ public class Suite_Window extends javax.swing.JFrame {
                                         JOptionPane.INFORMATION_MESSAGE,
                                         crossIcon);
 
-                                counter++;
+                                background_Counter++;
                             }
                     }
 
-                } else if ("Exit".equals(status)) {
+                } else if ("Exit".equals(background_Status)) {
                     switch (loginType) {
                         case "Account":
-                            counter++;
+                            background_Counter++;
                             break;
                         case "Device":
                             //encrypt all files that need to be before logging out 
@@ -183,15 +207,15 @@ public class Suite_Window extends javax.swing.JFrame {
                                     encryptAllFiles(folderIDList.get(i));
                                 }
                             }
-                            counter++;
+                            background_Counter++;
                             break;
                     }
-                } else if ("Logout".equals(status)) {
+                } else if ("Logout".equals(background_Status)) {
 
                     switch (loginType) {
                         case "Account":
                             // do nothing
-                            counter++;
+                            background_Counter++;
                             break;
                         case "Device":
                             //encrypt all files that need to be before logging out 
@@ -200,11 +224,11 @@ public class Suite_Window extends javax.swing.JFrame {
                                     encryptAllFiles(folderIDList.get(i));
                                 }
                             }
-                            counter++;
+                            background_Counter++;
                             break;
                     }
 
-                } else if ("Delete".equals(status)) {
+                } else if ("Delete".equals(background_Status)) {
                     getAccountDevices();
                     //remove all devices
                     for (int i = 0; i < deviceIDList.size(); i++) {
@@ -216,7 +240,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     }
                     //delete an account
                     deleteAcccount();
-                    counter++;
+                    background_Counter++;
                 }
             }
 
@@ -324,7 +348,6 @@ public class Suite_Window extends javax.swing.JFrame {
              * the database exists and if is does not then creates it for the system.
              */
             Suite_Database d = new Suite_Database();
-            d.startDatabase();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -606,7 +629,6 @@ public class Suite_Window extends javax.swing.JFrame {
              * the database exists and if is does not then creates it for the system.
              */
             Suite_Database d = new Suite_Database();
-            d.startDatabase();
 
             /*
              * declares the variables for use in connecting and checking the database.
@@ -1176,18 +1198,18 @@ public class Suite_Window extends javax.swing.JFrame {
             progressBar.setIndeterminate(false);
             progressBar.setValue(0);
 
-            if ("Delete".equals(status)) {
+            if ("Delete".equals(background_Status)) {
                 //opens the login menu
                 Login_Account als = new Login_Account();
                 als.setVisible(true);
-            } else if ("Logout".equals(status)) {
+            } else if ("Logout".equals(background_Status)) {
                 //opens the login menu 
                 Login_Account als = new Login_Account();
                 als.setVisible(true);
                 //exits the system  
-            } else if ("Exit".equals(status)) {
+            } else if ("Exit".equals(background_Status)) {
                 System.exit(0);
-            } else if ("Login".equals(status)) {
+            } else if ("Login".equals(background_Status)) {
                 //logout the system
                 if ("Device".equals(loginType)) {
                     home_Logout.doClick();
@@ -1266,21 +1288,24 @@ public class Suite_Window extends javax.swing.JFrame {
             task.execute();
         } else if (loginType.equals("Device")) {
             //setup GUI
-            table_Add_Button.setEnabled(false);
             table_Remove_Button.setEnabled(false);
-            table_Select_Button.setEnabled(false);
-            table_Deselect_Button.setEnabled(false);
             table_Encrypt_Button.setEnabled(false);
             table_Decrypt_Button.setEnabled(false);
-            menu_Device.setEnabled(false);
 
-            menu_Home.setEnabled(false);
-            menu_Folder.setEnabled(false);
-            menu_Account.setEnabled(false);
+            device_Add.setEnabled(false);
+            device_Delete.setEnabled(false);
+            device_Manage.setEnabled(false);
+
+            account_Delete.setEnabled(false);
+            account_Modify.setEnabled(false);
+
             //setup variables
+           
             this.deviceAddress = DeviceAdddress;
             this.deviceID = deviceIsD;
             this.deviceName = dName;
+             device_Current.setText(deviceName);
+            status_Device_Label.setText(status_Device_Label.getText() + " " + deviceName);
             //start login task
             Task task = new Task();
             task.setStatus("Login");
@@ -1300,7 +1325,6 @@ public class Suite_Window extends javax.swing.JFrame {
          * the database exists and if is does not then creates it for the system.
          */
         Suite_Database d = new Suite_Database();
-        d.startDatabase();
 
         /*
          * declares the variables for use in connecting and checking the database.
@@ -1609,11 +1633,11 @@ public class Suite_Window extends javax.swing.JFrame {
                 Thread t = new Thread(myRunnable);
                 t.start();
                 while (t.isAlive()) {
-                    task.setCounter(0);
+                    task.setBackground_Counter(0);
                 }
 
             }
-            task.setCounter(1);
+            task.setBackground_Counter(1);
 
             DefaultTableModel dw = (DefaultTableModel) table_View.getModel();
 
@@ -1719,7 +1743,7 @@ public class Suite_Window extends javax.swing.JFrame {
         device_Current = new javax.swing.JMenuItem();
         device_Separator3 = new javax.swing.JPopupMenu.Separator();
         device_Add = new javax.swing.JMenuItem();
-        device_Disconnect = new javax.swing.JMenuItem();
+        device_Delete = new javax.swing.JMenuItem();
         device_Separator2 = new javax.swing.JPopupMenu.Separator();
         device_Manage = new javax.swing.JMenuItem();
         menu_Folder = new javax.swing.JMenu();
@@ -2225,14 +2249,14 @@ public class Suite_Window extends javax.swing.JFrame {
         });
         menu_Device.add(device_Add);
 
-        device_Disconnect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Disconnect.png"))); // NOI18N
-        device_Disconnect.setText("Delete Device");
-        device_Disconnect.addActionListener(new java.awt.event.ActionListener() {
+        device_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Disconnect.png"))); // NOI18N
+        device_Delete.setText("Delete Device");
+        device_Delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                device_DisconnectActionPerformed(evt);
+                device_DeleteActionPerformed(evt);
             }
         });
-        menu_Device.add(device_Disconnect);
+        menu_Device.add(device_Delete);
         menu_Device.add(device_Separator2);
 
         device_Manage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Device/device_Manage.png"))); // NOI18N
@@ -2533,7 +2557,9 @@ public class Suite_Window extends javax.swing.JFrame {
      */
     private void support_AboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_support_AboutActionPerformed
         JDialog support = new Support_About(this, true);
+        support.setLocationRelativeTo(this);
         support.setVisible(true);
+
     }//GEN-LAST:event_support_AboutActionPerformed
     /**
      * a method that will logout of the system.
@@ -2701,10 +2727,10 @@ public class Suite_Window extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void device_DisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DisconnectActionPerformed
+    private void device_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_device_DeleteActionPerformed
         Device_Delete j1 = new Device_Delete(this, true, accountID, deviceID);
         j1.setVisible(true);
-    }//GEN-LAST:event_device_DisconnectActionPerformed
+    }//GEN-LAST:event_device_DeleteActionPerformed
     /**
      * a method that will open the device management form
      *
@@ -2878,7 +2904,7 @@ public class Suite_Window extends javax.swing.JFrame {
         String fname;
         int pos;
 
-        // gets all the files status and adds then to the relevant list
+        // gets all the files background_Status and adds then to the relevant list
         for (int i = 0; i < filelists.size(); i++) {
 
             fname = filelists.get(i).getName();
@@ -3059,7 +3085,7 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param evt
      */
     private void account_CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_account_CreateActionPerformed
-        new Login_Account_Create("Main").setVisible(true);
+        Login_Account_Create aw = new Login_Account_Create(this, true, "Main");
     }//GEN-LAST:event_account_CreateActionPerformed
     /**
      * a method that will ask the user if they want to delete their account.
@@ -3262,7 +3288,7 @@ public class Suite_Window extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator account_Separator2;
     private javax.swing.JMenuItem device_Add;
     private javax.swing.JMenuItem device_Current;
-    private javax.swing.JMenuItem device_Disconnect;
+    private javax.swing.JMenuItem device_Delete;
     private javax.swing.JMenuItem device_Manage;
     private javax.swing.JPopupMenu.Separator device_Separator2;
     private javax.swing.JPopupMenu.Separator device_Separator3;
