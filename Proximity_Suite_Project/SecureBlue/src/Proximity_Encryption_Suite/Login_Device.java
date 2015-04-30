@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.text.AttributeSet;
@@ -91,7 +92,7 @@ public class Login_Device extends javax.swing.JFrame {
         this.setIconImages(icons);
 
         //creates a new task and sets the status to Setup then executes it 
-        Task task = new Task();
+        Task task = new Task(this);
         task.set_Background_Status("Setup");
         task.execute();
 
@@ -111,8 +112,21 @@ public class Login_Device extends javax.swing.JFrame {
         private Map<String, List<String>> map_Return_Result = new HashMap<>();
         private int background_Counter;
         private String background_Status;
+        JFrame background_Frame;
 
         /**
+         * constructor to allocate dispose.
+         *
+         * @param aThis
+         */
+        private Task(Login_Device aThis) {
+            this.background_Frame = aThis;
+        }
+
+        /**
+         *
+         *
+         * /**
          * a setter for the background_Status status.
          *
          * @param status
@@ -142,16 +156,23 @@ public class Login_Device extends javax.swing.JFrame {
                     int device_Position = 0;
                     /* Create an object of Device_Service. */
                     Device_Service ss = new Device_Service();
-                    /* Get bluetooth device details. */
-                    map_Return_Result = ss.getBluetoothDevices();
-                    /* Add devices in JList */
-                    for (Map.Entry<String, List<String>> entry : map_Return_Result.entrySet()) {
-                        device_ComboBox.addItem(entry.getValue().get(0));
-                        map_Device_Position.put(device_Position, entry.getValue());
-                        device_Position++;
+
+                    if (ss.getBluetoothDevices().isEmpty()) {
+
+                        background_Counter++;
+                    } else {
+                        /* Get bluetooth device details. */
+                        map_Return_Result = ss.getBluetoothDevices();
+                        /* Add devices in JList */
+                        for (Map.Entry<String, List<String>> entry : map_Return_Result.entrySet()) {
+                            device_ComboBox.addItem(entry.getValue().get(0));
+                            map_Device_Position.put(device_Position, entry.getValue());
+                            device_Position++;
+                        }
+
+                        //completes all the processes so ends to background task.
+                        background_Counter++;
                     }
-                    //completes all the processes so ends to background task.
-                    background_Counter++;
                 }
             }
             return null;
@@ -165,15 +186,36 @@ public class Login_Device extends javax.swing.JFrame {
             setCursor(null); //turn off the wait cursor
 
             if ("Scan".equals(background_Status)) {
-                //setting the relvant feilds to enabled when the search is completed.
-                device_ComboBox.removeItemAt(0);
-                device_ComboBox.setEnabled(true);
-                password_Field.setEnabled(true);
-                login_Button.setEnabled(true);
-                account_Recover_Button1.setEnabled(true);
-                device_Scan_Button.setEnabled(true);
-                account_Creation_Button1.setEnabled(true);
-                login_Button.requestFocus();
+
+                if (map_Return_Result.isEmpty()) {
+                    Icon crossIcon = new javax.swing.ImageIcon(getClass().getResource("/Proximity/graphic_Login/graphic_Cross_Icon.png"));
+                    JOptionPane.showMessageDialog(background_Frame,
+                            "Failed To Detect Any Devices. Please Try Again.",
+                            "Device Connection Error!",
+                            JOptionPane.INFORMATION_MESSAGE,
+                            crossIcon);
+
+                    //setting the relvant feilds to enabled when the search is completed.
+                    device_ComboBox.removeItemAt(0);
+                    device_ComboBox.setEnabled(true);
+                    password_Field.setEnabled(true);
+                    login_Button.setEnabled(true);
+                    account_Recover_Button1.setEnabled(true);
+                    device_Scan_Button.setEnabled(true);
+                    account_Creation_Button1.setEnabled(true);
+                    device_ComboBox.addItem("Scanning...");
+                    login_Button.requestFocus();
+                } else {
+                    //setting the relvant feilds to enabled when the search is completed.
+                    device_ComboBox.removeItemAt(0);
+                    device_ComboBox.setEnabled(true);
+                    password_Field.setEnabled(true);
+                    login_Button.setEnabled(true);
+                    account_Recover_Button1.setEnabled(true);
+                    device_Scan_Button.setEnabled(true);
+                    account_Creation_Button1.setEnabled(true);
+                    login_Button.requestFocus();
+                }
             }
         }
     }
@@ -473,7 +515,7 @@ public class Login_Device extends javax.swing.JFrame {
         device_ComboBox.setEnabled(false);
 
         //starts a new task so that it can scan for devices in the background of the application.
-        Task task = new Task();
+        Task task = new Task(this);
         task.set_Background_Status("Scan");
         task.execute();
 

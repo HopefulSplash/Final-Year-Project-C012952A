@@ -103,6 +103,7 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
         } catch (BluetoothStateException e) {
         }
     }
+
     /**
      * a method that will receive signals from a mobile device.
      */
@@ -114,6 +115,12 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
             conn = null;
             try {
                 conn = (StreamConnection) Connector.open(url);
+
+                if (conn == null) {
+                    didConnect = 1;
+                    connected = false;
+                    conn.close();
+                }
                 String buffer;
                 //opening inputstream 
                 DataInputStream in = new DataInputStream(conn.openDataInputStream());
@@ -153,11 +160,7 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
                 //ends the program when stream is cancelled 
                 didConnect = 1;
                 connected = false;
-                try {
-                    conn.close();
-                } catch (IOException ex) {
-                    break;
-                }
+
                 break;
             }
 
@@ -165,45 +168,61 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
         //ends the program when stream is cancelled 
         didConnect = 1;
         connected = false;
-      
+
     }
+
+    public void closeConn() {
+        didConnect = 1;
+        connected = false;
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (IOException ex) {
+        }
+    }
+
     /**
      * a method to get is the connection is still active
-     * 
-     * @return 
+     *
+     * @return
      */
     public boolean isConnected() {
 
         return connected;
     }
+
     /**
      * a method to set the connection status
-     * 
-     * @param connected 
+     *
+     * @param connected
      */
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
+
     /**
      * a method to get if the device did connect
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getDidConnect() {
         return didConnect;
     }
+
     /**
      * a method to set the status if the device was connected to
-     * 
-     * @param didConnect 
+     *
+     * @param didConnect
      */
     public void setDidConnect(int didConnect) {
         this.didConnect = didConnect;
     }
+
     /**
      * a method the set the device address
-     * 
-     * @param deviceAddress 
+     *
+     * @param deviceAddress
      */
     public void setDeviceAddress(String deviceAddress) {
         this.deviceAddress = deviceAddress;
@@ -241,6 +260,8 @@ public class Device_Monitoring_Thread extends Thread implements DiscoveryListene
     public void serviceSearchCompleted(int arg0, int arg1) {
 
         broadcastCommand();
+        connected = false;
+        didConnect = 1;
     }
 
     @Override

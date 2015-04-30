@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Dialog;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -76,25 +75,17 @@ public class Suite_Window extends javax.swing.JFrame {
     class Task extends SwingWorker<Void, Void> {
 
         private int background_Counter = 0;
-        private JFrame background_Frame;
+        JFrame background_Frame;
         private String background_Status;
+        private Device_Monitoring_Thread bt;
 
         /**
-         * a method get the background object
+         * constructor to allocate dispose.
          *
-         * @return
+         * @param aThis
          */
-        public Object getO1() {
-            return background_Frame;
-        }
-
-        /**
-         * a method to set the background frame
-         *
-         * @param background_Frame
-         */
-        public void setBackground_Frame(JFrame background_Frame) {
-            this.background_Frame = background_Frame;
+        private Task(Suite_Window aThis) {
+            this.background_Frame = aThis;
         }
 
         /**
@@ -145,7 +136,7 @@ public class Suite_Window extends javax.swing.JFrame {
                             break;
                         case "Device":
                             //start the monitoring thread.
-                            Device_Monitoring_Thread bt = new Device_Monitoring_Thread();
+                            bt = new Device_Monitoring_Thread();
                             bt.setDeviceAddress(deviceAddress);
                             bt.start();
 
@@ -155,9 +146,6 @@ public class Suite_Window extends javax.swing.JFrame {
                                     break;
                                 }
                             }
-                            System.out.println(bt.getDidConnect());
-
-                            System.out.println(bt.getDidConnect());
 
                             //if the device did connect 
                             if (bt.getDidConnect() == 0) {
@@ -173,14 +161,15 @@ public class Suite_Window extends javax.swing.JFrame {
                                 didDecrypt = true;
                                 bt.setConnected(true);
 
-                                System.out.println(bt.isConnected());
-                                System.out.println(bt.isConnected());
                                 //loops untill it device disconnected
-                                while (bt.isConnected()) {
-
+                                while (true) {
+                                    if (bt.isConnected() != true) {
+                                        break;
+                                    }
                                 }
-
                                 System.out.println(bt.isConnected());
+                                bt.closeConn();
+
                                 background_Counter++;
 
                             } else {
@@ -201,12 +190,10 @@ public class Suite_Window extends javax.swing.JFrame {
                             background_Counter++;
                             break;
                         case "Device":
-                            //encrypt all files that need to be before logging out 
-                            if (didDecrypt == true) {
-                                for (int i = 0; i < folderIDList.size(); i++) {
-                                    encryptAllFiles(folderIDList.get(i));
-                                }
-                            }
+
+                            bt.setConnected(false);
+                            bt.closeConn();
+
                             background_Counter++;
                             break;
                     }
@@ -218,12 +205,9 @@ public class Suite_Window extends javax.swing.JFrame {
                             background_Counter++;
                             break;
                         case "Device":
-                            //encrypt all files that need to be before logging out 
-                            if (didDecrypt == true) {
-                                for (int i = 0; i < folderIDList.size(); i++) {
-                                    encryptAllFiles(folderIDList.get(i));
-                                }
-                            }
+
+                            bt.setConnected(false);
+                            bt.closeConn();
                             background_Counter++;
                             break;
                     }
@@ -274,9 +258,7 @@ public class Suite_Window extends javax.swing.JFrame {
                 ResultSet rs = pStmt.executeQuery();
 
                 while (rs.next()) {
-                    System.out.println(accountID);
                     accountID = rs.getInt("account_Details_ID");
-                    System.out.println(accountID);
 
                 }
 
@@ -1200,19 +1182,60 @@ public class Suite_Window extends javax.swing.JFrame {
 
             if ("Delete".equals(background_Status)) {
                 //opens the login menu
-                Login_Account als = new Login_Account();
-                als.setVisible(true);
+                if ("Account".equals(loginType)) {
+                    Login_Account als = new Login_Account();
+                    als.setVisible(true);
+                    background_Frame.dispose();
+                }
+
             } else if ("Logout".equals(background_Status)) {
                 //opens the login menu 
-                Login_Account als = new Login_Account();
-                als.setVisible(true);
+                if ("Account".equals(loginType)) {
+                    Login_Account als = new Login_Account();
+                    als.setVisible(true);
+                    background_Frame.dispose();
+
+                } else {
+                    //encrypt all files that need to be before logging out 
+                    if (didDecrypt == true) {
+                        for (int i = 0; i < folderIDList.size(); i++) {
+                            encryptAllFiles(folderIDList.get(i));
+                        }
+                    }
+
+                    Login_Account als = new Login_Account();
+                    als.setVisible(true);
+                    background_Frame.dispose();
+
+                }
                 //exits the system  
             } else if ("Exit".equals(background_Status)) {
-                System.exit(0);
+                if ("Account".equals(loginType)) {
+                    System.exit(0);
+                } else {
+                    //encrypt all files that need to be before logging out 
+                    if (didDecrypt == true) {
+                        for (int i = 0; i < folderIDList.size(); i++) {
+                            encryptAllFiles(folderIDList.get(i));
+                        }
+                    }
+                    System.exit(0);
+
+                }
             } else if ("Login".equals(background_Status)) {
                 //logout the system
                 if ("Device".equals(loginType)) {
-                    home_Logout.doClick();
+                    //encrypt all files that need to be before logging out 
+                    if (didDecrypt == true) {
+                        for (int i = 0; i < folderIDList.size(); i++) {
+                            encryptAllFiles(folderIDList.get(i));
+                        }
+                    }
+
+                    Login_Account als = new Login_Account();
+                    als.setVisible(true);
+                    background_Frame.dispose();
+
                 }
 
             }
@@ -1281,9 +1304,8 @@ public class Suite_Window extends javax.swing.JFrame {
             this.accountID = account_ID;
             this.deviceID = deviceIsD;
             //start login task
-            Task task = new Task();
+            Task task = new Task(this);
             task.setStatus("Login");
-            task.setBackground_Frame(this);
             this.loginType = "Account";
             task.execute();
         } else if (loginType.equals("Device")) {
@@ -1300,16 +1322,15 @@ public class Suite_Window extends javax.swing.JFrame {
             account_Modify.setEnabled(false);
 
             //setup variables
-           
             this.deviceAddress = DeviceAdddress;
             this.deviceID = deviceIsD;
             this.deviceName = dName;
-             device_Current.setText(deviceName);
+            device_Current.setText(deviceName);
             status_Device_Label.setText(status_Device_Label.getText() + " " + deviceName);
             //start login task
-            Task task = new Task();
+            Task task = new Task(this);
             task.setStatus("Login");
-            task.setBackground_Frame(this);
+
             this.loginType = "Device";
             task.execute();
         }
@@ -1623,7 +1644,7 @@ public class Suite_Window extends javax.swing.JFrame {
         String status;
 
         if (!fileDirList.isEmpty()) {
-            Task task = new Task();
+            Task task = new Task(this);
             task.execute();
             //start the thread to search for all the files on the system.
             for (String fileDirList1 : fileDirList) {
@@ -2567,10 +2588,9 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param evt
      */
     private void home_LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LogoutActionPerformed
-        Task task = new Task();
+        Task task = new Task(this);
         task.setStatus("Logout");
         task.execute();
-        this.dispose();
     }//GEN-LAST:event_home_LogoutActionPerformed
     /**
      * a method that will exit the system
@@ -2578,10 +2598,9 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param evt
      */
     private void home_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_ExitActionPerformed
-        Task task = new Task();
+        Task task = new Task(this);
         task.setStatus("Exit");
         task.execute();
-        this.dispose();
 
     }//GEN-LAST:event_home_ExitActionPerformed
 
@@ -2764,10 +2783,9 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param evt
      */
     private void home_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_home_LoginActionPerformed
-        Task task = new Task();
+        Task task = new Task(this);
         task.setStatus("Logout");
         task.execute();
-        this.dispose();
     }//GEN-LAST:event_home_LoginActionPerformed
 
     /**
@@ -3105,9 +3123,8 @@ public class Suite_Window extends javax.swing.JFrame {
         // if the user has clicked confirm.
         if (n == 0) {
 
-            Task task = new Task();
+            Task task = new Task(this);
             task.setStatus("Delete");
-            task.setBackground_Frame(this);
             task.execute();
             this.dispose();
 
@@ -3146,10 +3163,9 @@ public class Suite_Window extends javax.swing.JFrame {
      * @param evt
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Task task = new Task();
+        Task task = new Task(this);
         task.setStatus("Exit");
         task.execute();
-        this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
     /**
