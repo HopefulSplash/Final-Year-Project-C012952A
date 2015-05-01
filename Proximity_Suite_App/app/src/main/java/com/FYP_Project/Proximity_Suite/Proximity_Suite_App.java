@@ -58,6 +58,8 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
             Log.e(TAG, "No Bluetooth Adapter available. Exiting...");
             this.finish();
         }
+
+        mBluetoothAdapter.setName("Harry's Phone");
         setHandlers();
     }
 
