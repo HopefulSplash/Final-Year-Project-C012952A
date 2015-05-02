@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Files_Add">
+  <ClassDiagramComponents>
+    <Class name="Files_Add" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="add_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="buttonGroup1" type="javax.swing.ButtonGroup" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="clear_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="create_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="file_List" type="javax.swing.JList" visibility="private"/>
+        <Field name="file_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="files_Adding_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="files_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="folder_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="folder_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="folder_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="remove_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="select_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="type_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="listModel" type="DefaultListModel" visibility="private" isFinal="true"/>
+        <Field name="Current_Folder" type="String" visibility="private"/>
+        <Field name="Account_ID" type="int" visibility="private" isFinal="true"/>
+        <Field name="temp" type="int" visibility="private"/>
+        <Field name="didAdd" type="boolean" visibility="private"/>
+        <Field name="addFilesList" type="ArrayList&lt;File&gt;" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="filelist" type="ArrayList&lt;File&gt;" visibility="private" isFinal="true"/>
+        <Field name="folderNameList" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+        <Field name="task" type="Task" visibility="private"/>
+        <Field name="Current_Folder_ID" type="int" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="Account_ID"/>
+          <Argument type="String" name="Current_Folder"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="propertyChange" returnType="void" visibility="public">
+          <Argument type="PropertyChangeEvent" name="evt"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="isDidAdd" returnType="boolean" visibility="public"/>
+        <Method name="setDidAdd" returnType="void" visibility="public">
+          <Argument type="boolean" name="didAdd"/>
+        </Method>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="add_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="clear_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="remove_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="getSelectedFolder" returnType="int" visibility="public">
+          <Argument type="String" name="folder_Name"/>
+        </Method>
+        <Method name="folder_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="create_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="getCurrent_Folder" returnType="String" visibility="public"/>
+        <Method name="formWindowClosing" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="getAccountFolders" returnType="void" visibility="private"/>
+        <Method name="updateFolderListGUI" returnType="void" visibility="private"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

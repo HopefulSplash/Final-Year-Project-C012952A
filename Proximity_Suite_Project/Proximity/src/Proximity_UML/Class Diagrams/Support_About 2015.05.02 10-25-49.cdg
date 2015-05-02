@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Support_About">
+  <ClassDiagramComponents>
+    <Class name="Support_About" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="aboutJava" type="String" visibility="private"/>
+        <Field name="aboutRuntime" type="String" visibility="private"/>
+        <Field name="aboutSystem" type="String" visibility="private"/>
+        <Field name="aboutUser" type="String" visibility="private"/>
+        <Field name="aboutCache" type="String" visibility="private"/>
+        <Field name="about_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="about_Logo_Image" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="about_Logo_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="close_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="details_Project__Scroll_Pane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="details_System_Scroll_Pane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="details_Text_Pane1" type="javax.swing.JTextPane" visibility="private"/>
+        <Field name="details_Text_Pane2" type="javax.swing.JTextPane" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="close_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="setupTextArea" returnType="void" visibility="private"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

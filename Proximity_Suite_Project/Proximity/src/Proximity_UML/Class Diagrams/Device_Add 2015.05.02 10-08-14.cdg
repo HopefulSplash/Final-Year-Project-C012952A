@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Device_Add">
+  <ClassDiagramComponents>
+    <Class name="Device_Add" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="address_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="address_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="bluetooth_Device_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="bluetooth_Devices_List" type="javax.swing.JList" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="confirm_Pin_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="confirm_Pin_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="device_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_Info_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_ProgressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="device_Scan_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="name_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="name_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="pin_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="pin_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="services_Area" type="javax.swing.JTextArea" visibility="private"/>
+        <Field name="services_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="services_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="strength_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="darkGreen" type="Color" visibility="private" isFinal="true"/>
+        <Field name="darkRed" type="Color" visibility="private" isFinal="true"/>
+        <Field name="default_Model" type="DefaultListModel" visibility="private" isFinal="true"/>
+        <Field name="map_Return_Result" type="Map&lt;String, List&lt;String&gt;&gt;" visibility="private"/>
+        <Field name="map_Device_Position" type="Map&lt;Integer, List&lt;String&gt;&gt;" visibility="private" isFinal="true"/>
+        <Field name="accountID" type="int" visibility="private" isFinal="true"/>
+        <Field name="validPass" type="boolean" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="account_ID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="formWindowOpened" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_Scan_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="pin_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="confirm_Pin_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Files_Add_Duplicates">
+  <ClassDiagramComponents>
+    <Class name="Files_Add_Duplicates" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="file_List" type="javax.swing.JList" visibility="private"/>
+        <Field name="file_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="file_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="info_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="ok_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="status_Label" type="javax.swing.JLabel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="ArrayList" name="files"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="ok_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

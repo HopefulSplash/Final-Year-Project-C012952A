@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Account_Current">
+  <ClassDiagramComponents>
+    <Class name="Account_Current" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accountID" type="int" visibility="package"/>
+        <Field name="account_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="email_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="email_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="email_Label1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="modify_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="ok_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="question_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="username_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="username_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="tempUser" type="String" visibility="private"/>
+        <Field name="tempEmail" type="String" visibility="private"/>
+        <Field name="tempQuestion" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="account_ID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getAccountDetails" returnType="void" visibility="private">
+          <Argument type="int" name="accountID"/>
+        </Method>
+        <Method name="updateGUI" returnType="void" visibility="private">
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="email"/>
+          <Argument type="String" name="question"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="modify_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="ok_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

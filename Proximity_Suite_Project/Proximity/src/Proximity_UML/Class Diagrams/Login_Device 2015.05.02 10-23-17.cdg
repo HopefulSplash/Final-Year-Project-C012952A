@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Login_Device">
+  <ClassDiagramComponents>
+    <Class name="Login_Device" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="account_Creation_Button1" type="javax.swing.JButton" visibility="private"/>
+        <Field name="account_Recover_Button1" type="javax.swing.JButton" visibility="private"/>
+        <Field name="changeLoginLabel" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="creation_Recovery_Panel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="device_Scan_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="loginDetailsPanel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="login_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="login_Logo_Image3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="login_Logo_Panel3" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="passwordLabel" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="password_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="usernameLabel" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="device_Name" type="String" visibility="private"/>
+        <Field name="device_ID" type="int" visibility="private"/>
+        <Field name="attempt_Counter" type="int" visibility="private"/>
+        <Field name="attempt_Random_Counter" type="int" visibility="private" isFinal="true"/>
+        <Field name="map_Device_Position" type="Map&lt;Integer, List&lt;String&gt;&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="password_FieldActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="changeLoginLabelMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="account_Creation_Button1ActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="account_Recover_Button1ActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_Scan_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="checkTimeout" returnType="boolean" visibility="private"/>
+        <Method name="startTimeout" returnType="void" visibility="private"/>
+        <Method name="convertToSha1" returnType="String" visibility="private">
+          <Argument type="String" name="input"/>
+        </Method>
+        <Method name="login_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="get_Device_ID" returnType="void" visibility="private">
+          <Argument type="String" name="deviceAddress"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

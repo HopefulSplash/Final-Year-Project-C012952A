@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Encryption_Script">
+  <ClassDiagramComponents>
+    <Class name="Encryption_Script" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="key" type="String" visibility="private" isFinal="true"/>
+        <Field name="function" type="String" visibility="private" isFinal="true"/>
+        <Field name="account_ID" type="int" visibility="private" isFinal="true"/>
+        <Field name="fileDirList" type="ArrayList&lt;String&gt;" visibility="package"/>
+        <Field name="fileStatusList" type="ArrayList&lt;Boolean&gt;" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="key"/>
+          <Argument type="String" name="function"/>
+          <Argument type="int" name="account_ID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="get_Account_Files" returnType="ArrayList&lt;File&gt;" visibility="private"/>
+        <Method name="get_Folder_Files" returnType="void" visibility="private"/>
+        <Method name="get_File_Details" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;Integer&gt;" name="fileIDList"/>
+        </Method>
+        <Method name="changeKey" returnType="void" visibility="private">
+          <Argument type="ArrayList&lt;File&gt;" name="filelist"/>
+        </Method>
+        <Method name="encryptFiles" returnType="void" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="encryptAES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="encryptDES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="encryptTripleDES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="decryptFiles" returnType="void" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="generateKey" returnType="String" visibility="private">
+          <Argument type="String" name="key"/>
+        </Method>
+        <Method name="decryptAES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="decryptDES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="decryptTripleDES" returnType="boolean" visibility="private">
+          <Argument type="File" name="file"/>
+        </Method>
+        <Method name="get_File_Encryption_Status" returnType="String" visibility="public">
+          <Argument type="String" name="file_Path"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

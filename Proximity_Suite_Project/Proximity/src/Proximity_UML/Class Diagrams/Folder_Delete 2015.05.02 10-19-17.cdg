@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Folder_Delete">
+  <ClassDiagramComponents>
+    <Class name="Folder_Delete" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="folder_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="folder_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="folder_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="folderIDList" type="ArrayList&lt;Integer&gt;" visibility="private" isFinal="true"/>
+        <Field name="folderNameList" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+        <Field name="listModel" type="DefaultListModel" visibility="private"/>
+        <Field name="didDelete" type="boolean" visibility="private"/>
+        <Field name="task" type="Task" visibility="private"/>
+        <Field name="accountPass" type="String" visibility="private"/>
+        <Field name="accountID" type="int" visibility="private"/>
+        <Field name="key" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="accountID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="propertyChange" returnType="void" visibility="public">
+          <Argument type="PropertyChangeEvent" name="evt"/>
+        </Method>
+        <Method name="getFileID" returnType="String" visibility="public">
+          <Argument type="int" name="file_Path"/>
+        </Method>
+        <Method name="getAccountDetails" returnType="void" visibility="private"/>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="closeDialog" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="isDidDelete" returnType="boolean" visibility="public"/>
+        <Method name="setDidDelete" returnType="void" visibility="public">
+          <Argument type="boolean" name="didDelete"/>
+        </Method>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="getAccountFolders" returnType="void" visibility="private"/>
+        <Method name="updateFolderListGUI" returnType="void" visibility="private"/>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

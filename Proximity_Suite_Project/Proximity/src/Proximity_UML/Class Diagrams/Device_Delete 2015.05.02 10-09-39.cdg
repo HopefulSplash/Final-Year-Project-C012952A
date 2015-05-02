@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Device_Delete">
+  <ClassDiagramComponents>
+    <Class name="Device_Delete" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="address_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="address_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="created_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="created_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="device_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="device_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="device_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_Select_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="name_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="name_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="darkGreen" type="Color" visibility="private" isFinal="true"/>
+        <Field name="darkRed" type="Color" visibility="private" isFinal="true"/>
+        <Field name="accountID" type="int" visibility="private" isFinal="true"/>
+        <Field name="deviceID" type="int" visibility="private" isFinal="true"/>
+        <Field name="device_ID_List" type="ArrayList&lt;Integer&gt;" visibility="private" isFinal="true"/>
+        <Field name="device_Name" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+        <Field name="device_Address" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+        <Field name="device_Created" type="ArrayList&lt;String&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="account_ID"/>
+          <Argument type="int" name="deviceID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

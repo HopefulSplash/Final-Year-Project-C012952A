@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Login_Account">
+  <ClassDiagramComponents>
+    <Class name="Login_Account" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="attempt_Counter" type="int" visibility="private"/>
+        <Field name="attempt_Randon_Counter" type="int" visibility="private" isFinal="true"/>
+        <Field name="account_Creation_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="account_Recover_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="creation_Recovery_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="device_Login_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="login_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="login_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="login_Logo_Image" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="login_Logo_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="password_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="password_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="username_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="username_Label" type="javax.swing.JLabel" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="checkTimeout" returnType="boolean" visibility="private"/>
+        <Method name="startTimeout" returnType="void" visibility="private"/>
+        <Method name="convertToSha1" returnType="String" visibility="private">
+          <Argument type="String" name="input"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="password_FieldActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="login_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="username_FieldActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="account_Creation_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_Login_LabelMouseClicked" returnType="void" visibility="private">
+          <Argument type="java.awt.event.MouseEvent" name="evt"/>
+        </Method>
+        <Method name="account_Recover_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

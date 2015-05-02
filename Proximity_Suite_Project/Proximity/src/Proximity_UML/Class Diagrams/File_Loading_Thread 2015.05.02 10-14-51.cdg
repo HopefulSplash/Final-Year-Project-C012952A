@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="File_Loading_Thread">
+  <ClassDiagramComponents>
+    <Class name="File_Loading_Thread" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="mainGUI" type="Object" visibility="private"/>
+        <Field name="speficDir" type="File" visibility="private"/>
+        <Field name="resultFiles" type="ArrayList&lt;File&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Suite_Window" name="mainGUI"/>
+          <Argument type="File" name="speficDir"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getSpeficDir" returnType="File" visibility="public"/>
+        <Method name="setSpeficDir" returnType="void" visibility="public">
+          <Argument type="File" name="speficDir"/>
+        </Method>
+        <Method name="setResultFiles" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;File&gt;" name="resultFiles"/>
+        </Method>
+        <Method name="run" returnType="void" visibility="public"/>
+        <Method name="Search" returnType="void" visibility="public">
+          <Argument type="File" name="file"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>
