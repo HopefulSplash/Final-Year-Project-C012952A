@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Files_Encryption">
+  <ClassDiagramComponents>
+    <Class name="Files_Encryption" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="buttonGroup1" type="javax.swing.ButtonGroup" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="encrypt_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="file_List" type="javax.swing.JList" visibility="private"/>
+        <Field name="file_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="file_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="select_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="select_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="listModel" type="DefaultListModel" visibility="private" isFinal="true"/>
+        <Field name="Account_ID" type="int" visibility="private" isFinal="true"/>
+        <Field name="key" type="String" visibility="private" isFinal="true"/>
+        <Field name="didEncrypt" type="boolean" visibility="package"/>
+        <Field name="task" type="Task" visibility="private"/>
+        <Field name="filelist" type="ArrayList&lt;File&gt;" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="Account_ID"/>
+          <Argument type="ArrayList&lt;File&gt;" name="Files_Encryption"/>
+          <Argument type="String" name="key"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="propertyChange" returnType="void" visibility="public">
+          <Argument type="PropertyChangeEvent" name="evt"/>
+        </Method>
+        <Method name="isDidEncrypt" returnType="boolean" visibility="public"/>
+        <Method name="setDidEncrypt" returnType="void" visibility="public">
+          <Argument type="boolean" name="didEncrypt"/>
+        </Method>
+        <Method name="addFilesList" returnType="void" visibility="private">
+          <Argument type="ArrayList&lt;File&gt;" name="Files_Encryption"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="encrypt_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

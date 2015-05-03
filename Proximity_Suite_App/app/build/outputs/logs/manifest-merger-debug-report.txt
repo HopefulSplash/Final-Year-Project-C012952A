@@ -52,7 +52,7 @@ ADDED from AndroidManifest.xml:13:5
 		ADDED from AndroidManifest.xml:13:18
 	android:theme
 		ADDED from AndroidManifest.xml:15:9
-activity#com.FYP_Project.Proximity_Suite.Proximity_Suite_App
+activity#com.FYP_Project.Proximity_Suite.Activity.App.Proximity_Suite_App
 ADDED from AndroidManifest.xml:16:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:17:13

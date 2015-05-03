@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Device_Service">
+  <ClassDiagramComponents>
+    <Class name="Device_Service" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="OBEX_OBJECT_PUSH_PROFILE" type="UUID" visibility="private" isFinal="true"/>
+        <Field name="OBEX_FILE_TRANSFER_PROFILE" type="UUID" visibility="private" isFinal="true"/>
+        <Field name="HANDS_FREE" type="UUID" visibility="private" isFinal="true"/>
+        <Field name="URL_ATTRIBUTE" type="int" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getBluetoothDevices" returnType="Map&lt;String, List&lt;String&gt;&gt;" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

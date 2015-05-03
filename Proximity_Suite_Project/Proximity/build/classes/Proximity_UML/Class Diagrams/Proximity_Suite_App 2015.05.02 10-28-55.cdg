@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Proximity_Suite_App">
+  <ClassDiagramComponents>
+    <Class name="Proximity_Suite_App" package="com.FYP_Project.Proximity_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="defaultUUID" type="String" visibility="private"/>
+        <Field name="mBluetoothAdapter" type="BluetoothAdapter" visibility="private"/>
+        <Field name="TAG" type="String" visibility="private" isFinal="true"/>
+        <Field name="PREFIX" type="String" visibility="private" isStatic="true" isFinal="true"/>
+        <Field name="server" type="AcceptThread" visibility="private"/>
+        <Field name="deviceName" type="String" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="onCreate" returnType="void" visibility="public">
+          <Argument type="Bundle" name="savedInstanceState"/>
+        </Method>
+        <Method name="onBackPressed" returnType="void" visibility="public"/>
+        <Method name="onPause" returnType="void" visibility="public"/>
+        <Method name="onClick" returnType="void" visibility="public">
+          <Argument type="View" name="v"/>
+        </Method>
+        <Method name="setHandlers" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

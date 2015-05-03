@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Files_Remove">
+  <ClassDiagramComponents>
+    <Class name="Files_Remove" package="Proximity_Encryption_Suite" visibility="public" xPosition="21.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="buttonGroup1" type="javax.swing.ButtonGroup" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="file_List" type="javax.swing.JList" visibility="private"/>
+        <Field name="file_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="file_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="folder_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="remove_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="remove_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="type_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="type_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="listModel" type="DefaultListModel" visibility="private" isFinal="true"/>
+        <Field name="Account_ID" type="int" visibility="private" isFinal="true"/>
+        <Field name="Current_Folder" type="String" visibility="private" isFinal="true"/>
+        <Field name="didRemove" type="boolean" visibility="private"/>
+        <Field name="task" type="Task" visibility="private"/>
+        <Field name="filelist" type="ArrayList&lt;File&gt;" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="Account_ID"/>
+          <Argument type="ArrayList&lt;File&gt;" name="Files_Encryption"/>
+          <Argument type="String" name="Folder"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="propertyChange" returnType="void" visibility="public">
+          <Argument type="PropertyChangeEvent" name="evt"/>
+        </Method>
+        <Method name="isDidRemove" returnType="boolean" visibility="public"/>
+        <Method name="setDidRemove" returnType="void" visibility="public">
+          <Argument type="boolean" name="didRemove"/>
+        </Method>
+        <Method name="addFilesList" returnType="void" visibility="private">
+          <Argument type="ArrayList&lt;File&gt;" name="Files_Encryption"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="type_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="getSelectedFolder" returnType="int" visibility="public">
+          <Argument type="String" name="folder_Name"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

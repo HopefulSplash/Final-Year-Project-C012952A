@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Suite_Window">
+  <ClassDiagramComponents>
+    <Class name="Suite_Window" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="filesdecrypt" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="filesAlreadydecrypt" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="filesEncrypt" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="filesAlreadyEncrypt" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="selectedIndex" type="int" visibility="private"/>
+        <Field name="model" type="TableModel" visibility="private"/>
+        <Field name="sorter" type="TableRowSorter&lt;TableModel&gt;" visibility="private"/>
+        <Field name="start" type="long" visibility="private"/>
+        <Field name="didDecrypt" type="boolean" visibility="private"/>
+        <Field name="selected" type="boolean" visibility="private"/>
+        <Field name="deviceID" type="int" visibility="private"/>
+        <Field name="addFiles" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="filesRemove" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="filelists" type="ArrayList&lt;File&gt;" visibility="private"/>
+        <Field name="accountID" type="int" visibility="private"/>
+        <Field name="accountName" type="String" visibility="private"/>
+        <Field name="accountPass" type="String" visibility="private"/>
+        <Field name="folderIDList" type="ArrayList&lt;Integer&gt;" visibility="private"/>
+        <Field name="folderNameList" type="ArrayList&lt;String&gt;" visibility="private"/>
+        <Field name="deviceAddress" type="String" visibility="private"/>
+        <Field name="deviceName" type="String" visibility="private"/>
+        <Field name="loginType" type="String" visibility="private"/>
+        <Field name="deviceIDList" type="ArrayList&lt;Integer&gt;" visibility="private"/>
+        <Field name="monitoringTask" type="Task" visibility="private"/>
+        <Field name="account_Create" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="account_Current" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="account_Delete" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="account_Modify" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="account_Separator1" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="account_Separator2" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="device_Add" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="device_Current" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="device_Delete" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="device_Manage" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="device_Separator2" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="device_Separator3" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="folder_Create" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="folder_Current" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="folder_Delete" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="folder_Manage" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="folder_Separator1" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="folder_Separator2" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="home_Exit" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="home_Login" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="home_Logout" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="home_Separator" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="jLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel2" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jLabel3" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="jPanel1" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="menu_Account" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="menu_Device" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="menu_Folder" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="menu_Home" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="menu_Social_Media" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="menu_Support" type="javax.swing.JMenu" visibility="private"/>
+        <Field name="progressBar" type="javax.swing.JProgressBar" visibility="private"/>
+        <Field name="proximity_Menu" type="javax.swing.JMenuBar" visibility="private"/>
+        <Field name="proximity_Separator1" type="javax.swing.JSeparator" visibility="private"/>
+        <Field name="proximity_Statusbar_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="proximity_System_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="proximity_Table_Button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="proximity_Table_Feature_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="proximity_Table_Scroll_Pane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="social_Facebook" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="social_Separator1" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="social_Twitter" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="social_Website" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="status_Device_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="status_Session_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="statusbar_Date_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="support_About" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="support_Guide" type="javax.swing.JMenuItem" visibility="private"/>
+        <Field name="support_Separator" type="javax.swing.JPopupMenu.Separator" visibility="private"/>
+        <Field name="table_Add_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Decrypt_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Deselect_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Encrypt_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Folder_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="table_Folder_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="table_Remove_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Search_Clear_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_Search_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="table_Search_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="table_Select_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="table_View" type="javax.swing.JTable" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="account_ID"/>
+          <Argument type="String" name="loginType"/>
+          <Argument type="String" name="DeviceAdddress"/>
+          <Argument type="int" name="deviceIsD"/>
+          <Argument type="String" name="dName"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getAccountDetails" returnType="void" visibility="public"/>
+        <Method name="getAccountFolders" returnType="void" visibility="private"/>
+        <Method name="updateFolderListGUI" returnType="void" visibility="private"/>
+        <Method name="getFolderFiles" returnType="void" visibility="private">
+          <Argument type="String" name="folderName"/>
+        </Method>
+        <Method name="getFoldersFiles" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;Integer&gt;" name="fileIDList"/>
+        </Method>
+        <Method name="removeFile" returnType="void" visibility="public">
+          <Argument type="int" name="fileID"/>
+        </Method>
+        <Method name="updateTableContents" returnType="void" visibility="public">
+          <Argument type="ArrayList&lt;String&gt;" name="fileDirList"/>
+          <Argument type="ArrayList&lt;String&gt;" name="fileStatusList"/>
+        </Method>
+        <Method name="getFileSize" returnType="String" visibility="public">
+          <Argument type="double" name="fileLength"/>
+        </Method>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="table_Add_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Remove_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Select_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="support_AboutActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="home_LogoutActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="home_ExitActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_CurrentActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="social_TwitterActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="social_FacebookActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="social_WebsiteActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Deselect_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Search_Clear_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="support_GuideActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="folder_CurrentActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="folder_CreateActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="clearTableFiles" returnType="void" visibility="private"/>
+        <Method name="folder_ManageActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_DeleteActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_ManageActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="folder_DeleteActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="home_LoginActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Encrypt_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Decrypt_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Folder_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="table_Search_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="account_ModifyActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="account_CreateActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="account_DeleteActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="account_CurrentActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="device_AddActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="formWindowClosing" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="searchAll" returnType="void" visibility="private"/>
+        <Method name="openWebpage" returnType="void" visibility="private">
+          <Argument type="String" name="url"/>
+        </Method>
+        <Method name="openFile" returnType="void" visibility="private">
+          <Argument type="File" name="file1"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

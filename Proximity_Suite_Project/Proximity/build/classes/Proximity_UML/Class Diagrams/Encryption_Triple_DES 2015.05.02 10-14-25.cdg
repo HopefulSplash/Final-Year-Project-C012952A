@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Encryption_Triple_DES">
+  <ClassDiagramComponents>
+    <Class name="Encryption_Triple_DES" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="encrypted" type="boolean" visibility="package"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="isEncrypted" returnType="boolean" visibility="public"/>
+        <Method name="setEncrypted" returnType="void" visibility="public">
+          <Argument type="boolean" name="encrypted"/>
+        </Method>
+        <Method name="encrypt" returnType="void" visibility="public">
+          <Argument type="String" name="key"/>
+          <Argument type="InputStream" name="is"/>
+          <Argument type="OutputStream" name="os"/>
+        </Method>
+        <Method name="decrypt" returnType="void" visibility="public">
+          <Argument type="String" name="key"/>
+          <Argument type="InputStream" name="is"/>
+          <Argument type="OutputStream" name="os"/>
+        </Method>
+        <Method name="encryptOrDecrypt" returnType="void" visibility="public">
+          <Argument type="String" name="key"/>
+          <Argument type="int" name="mode"/>
+          <Argument type="InputStream" name="is"/>
+          <Argument type="OutputStream" name="os"/>
+        </Method>
+        <Method name="doCopy" returnType="void" visibility="public">
+          <Argument type="InputStream" name="is"/>
+          <Argument type="OutputStream" name="os"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

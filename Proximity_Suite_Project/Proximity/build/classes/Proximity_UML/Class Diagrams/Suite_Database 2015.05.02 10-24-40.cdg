@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Suite_Database">
+  <ClassDiagramComponents>
+    <Class name="Suite_Database" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="JDBC_DRIVER" type="String" visibility="package" isFinal="true"/>
+        <Field name="DB_URL" type="String" visibility="package" isFinal="true"/>
+        <Field name="CONNECT_DB_URL" type="String" visibility="package" isFinal="true"/>
+        <Field name="USER" type="String" visibility="package" isFinal="true"/>
+        <Field name="PASS" type="String" visibility="package" isFinal="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="getJDBC_DRIVER" returnType="String" visibility="public"/>
+        <Method name="getDB_URL" returnType="String" visibility="public"/>
+        <Method name="getUSER" returnType="String" visibility="public"/>
+        <Method name="getPASS" returnType="String" visibility="public"/>
+        <Method name="startDatabase" returnType="void" visibility="public"/>
+        <Method name="getCONNECT_DB_URL" returnType="String" visibility="public"/>
+        <Method name="createDatabase" returnType="void" visibility="private"/>
+        <Method name="checkDBExists" returnType="boolean" visibility="private">
+          <Argument type="String" name="dbName"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

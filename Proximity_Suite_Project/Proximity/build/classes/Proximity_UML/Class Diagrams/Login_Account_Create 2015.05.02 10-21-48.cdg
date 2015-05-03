@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Login_Account_Create">
+  <ClassDiagramComponents>
+    <Class name="Login_Account_Create" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="Password_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="account_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="account_Recovery_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="answer_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="answer_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="answer_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="clear_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="confirm_Answer_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="confirm_Answer_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="confirm_Email_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="confirm_Password_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="confirm_email_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="confirm_password_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="createPasswordLabel1" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="email_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="email_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="email_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="password_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="password_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="password_Strength_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="question_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="username_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="username_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="username_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="parent_Window" type="String" visibility="private" isFinal="true"/>
+        <Field name="validUser" type="boolean" visibility="private"/>
+        <Field name="validPass" type="boolean" visibility="private"/>
+        <Field name="validEmail" type="boolean" visibility="private"/>
+        <Field name="validAnswer" type="boolean" visibility="private"/>
+        <Field name="darkGreen" type="Color" visibility="private"/>
+        <Field name="darkRed" type="Color" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="String" name="Parent"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="question_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="clear_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="formWindowClosing" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="checkUsernameExsists" returnType="boolean" visibility="private">
+          <Argument type="String" name="username"/>
+        </Method>
+        <Method name="checkEmailExsists" returnType="boolean" visibility="private">
+          <Argument type="String" name="email"/>
+        </Method>
+        <Method name="username_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="password_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="confirm_password_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="email_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="answer_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="confirm_Answer_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="confirm_email_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="validateEmail" returnType="boolean" visibility="private">
+          <Argument type="String" name="emailAddress"/>
+        </Method>
+        <Method name="convertToSha1" returnType="String" visibility="private">
+          <Argument type="String" name="input"/>
+        </Method>
+        <Method name="passwordStrength" returnType="int" visibility="private">
+          <Argument type="String" name="password"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

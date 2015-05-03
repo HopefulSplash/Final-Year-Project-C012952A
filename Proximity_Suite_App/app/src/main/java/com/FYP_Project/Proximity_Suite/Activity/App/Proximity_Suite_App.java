@@ -1,7 +1,7 @@
 /**
  * Defines the package to class belongs to.
  */
-package com.FYP_Project.Proximity_Suite;
+package com.FYP_Project.Proximity_Suite.Activity.App;
 /**
  * Import all of the necessary libraries.
  */
@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import com.FYP_Project.Proximity_Suite.R;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -31,11 +34,7 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
     /**
      * Default bluetooth adapter on the device.
      */
-    private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    /**
-     * String used to identify this application in the log.
-     */
-    private final String TAG = Proximity_Suite_App.class.getName();
+    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     /**
      * The prefix to identify devices of interest.
      */
@@ -43,11 +42,11 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
     /**
      * The Server thread.
      */
-    private AcceptThread server;
+    public AcceptThread server;
     /**
      * the device name
      */
-    private String deviceName;
+    private String originalName = mBluetoothAdapter.getName();
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,31 +54,33 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
         setContentView(R.layout.main);
         //checks if the device can support Bluetooth.
         if(mBluetoothAdapter == null) {
-            Log.e(TAG, "No Bluetooth Adapter available. Exiting...");
             this.finish();
         }
 
-        mBluetoothAdapter.setName("Harry's Phone");
+
         setHandlers();
     }
 
     @Override
     public void onBackPressed() {
-        this.onPause();
+        //this.onPause();
     }
     @Override
     public void onPause() {
         super.onPause();
         //clears all the data and resets the device name then closes the application.
-        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        mBluetoothAdapter.setName(deviceName.substring(PREFIX.length() - 1, deviceName.length() - 1));
-        System.exit(0);
-        int pid = android.os.Process.myPid();
-        android.os.Process.killProcess(pid);
+       // this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //int pid = android.os.Process.myPid();
+      //  android.os.Process.killProcess(pid);
     }
 
     @Override
     public void onClick(View v) {
+        //sets the devices name for testing
+        if (mBluetoothAdapter.getName().startsWith(PREFIX)) {
+            String t = mBluetoothAdapter.getName().substring(10);
+            mBluetoothAdapter.setName(t);
+        }
         //creates a button variable.
         Button btn = (Button) v;
         //checks if the start button is pressed.
@@ -102,10 +103,8 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
                     }
                 }
             }
-            //gets the device name
-            deviceName = mBluetoothAdapter.getName();
             //checks if the device name has been alter if not it will alter it.
-            if(!deviceName.startsWith(PREFIX)) {
+            if(! mBluetoothAdapter.getName().startsWith(PREFIX)) {
                 mBluetoothAdapter.setName(PREFIX + mBluetoothAdapter.getName());
             }
             //makes the device stay awake while its connected.
@@ -143,7 +142,7 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
             }
             //closes the application
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            this.onPause();
+           // this.onPause();
         }
     }
     /**
@@ -159,7 +158,7 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
     /**
      * Thread that handles an incoming connection.
      */
-    class AcceptThread extends Thread {
+    public class AcceptThread extends Thread {
         /**
          * Tag that will appear in the log.
          */
@@ -187,10 +186,7 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
             //continues to send data while there is an active connection.
             while (true) {
                 try {
-                    Log.i(ACCEPT_TAG, "Listening for a connection...");
-
                     socket = mServerSocket.accept();
-                    Log.i(ACCEPT_TAG, "Connected to " + socket.getRemoteDevice().getName());
 
                 } catch (IOException e) {
                     break;
@@ -208,7 +204,6 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
 
                     } catch (IOException e) {
                         //when the connection is lost the application will close.
-                        Log.e(ACCEPT_TAG, "Error obtaining InputStream from socket");
                         Button stop = (Button) findViewById(R.id.btn_stop_server);
                         stop.performClick();
                         try {

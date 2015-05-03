@@ -5,9 +5,10 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.almightybuserror.BT_Example"
+        applicationId "Proximity.Suite"
         minSdkVersion 8
         targetSdkVersion 8
+        testApplicationId "com.FYP_Project.Proximity_Suite.Activity.Test.Proximity_Suite_App"
     }
 
     buildTypes {

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Login_Account_Recover">
+  <ClassDiagramComponents>
+    <Class name="Login_Account_Recover" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="answer_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="answer_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="clear_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="email_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="email_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="email_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="password_Field" type="javax.swing.JPasswordField" visibility="private"/>
+        <Field name="password_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="question_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="question_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="recover_Username_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="recover_Username_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="reset_Password_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="reset_Password_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="username_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="username_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="darkGreen" type="Color" visibility="package"/>
+        <Field name="darkRed" type="Color" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="formWindowClosing" returnType="void" visibility="private">
+          <Argument type="java.awt.event.WindowEvent" name="evt"/>
+        </Method>
+        <Method name="reset_Password_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="convertToSha1" returnType="String" visibility="private">
+          <Argument type="String" name="input"/>
+        </Method>
+        <Method name="recover_Username_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="email_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="password_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="username_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="clear_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="question_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="answer_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="validateEmail" returnType="boolean" visibility="private">
+          <Argument type="String" name="emailAddress"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

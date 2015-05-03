@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Device_Monitoring_Thread">
+  <ClassDiagramComponents>
+    <Class name="Device_Monitoring_Thread" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="defaultUUID" type="UUID" visibility="protected"/>
+        <Field name="local" type="LocalDevice" visibility="private"/>
+        <Field name="agent" type="DiscoveryAgent" visibility="private"/>
+        <Field name="dout" type="DataOutputStream" visibility="private"/>
+        <Field name="conn" type="StreamConnection" visibility="private"/>
+        <Field name="devices" type="Vector&lt;RemoteDevice&gt;" visibility="private"/>
+        <Field name="services" type="Vector&lt;ServiceRecord&gt;" visibility="private" isFinal="true"/>
+        <Field name="connected" type="boolean" visibility="private" isVolatile="true"/>
+        <Field name="didConnect" type="int" visibility="private"/>
+        <Field name="deviceAddress" type="String" visibility="private"/>
+        <Field name="in" type="DataInputStream" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="run" returnType="void" visibility="public"/>
+        <Method name="findDevices" returnType="void" visibility="protected"/>
+        <Method name="findServices" returnType="void" visibility="protected">
+          <Argument type="RemoteDevice" name="device"/>
+        </Method>
+        <Method name="broadcastCommand" returnType="void" visibility="public" isSynchronized="true"/>
+        <Method name="closeConn" returnType="void" visibility="public"/>
+        <Method name="isConnected" returnType="boolean" visibility="public"/>
+        <Method name="setConnected" returnType="void" visibility="public">
+          <Argument type="boolean" name="connected"/>
+        </Method>
+        <Method name="getDidConnect" returnType="int" visibility="public"/>
+        <Method name="setDidConnect" returnType="void" visibility="public">
+          <Argument type="int" name="didConnect"/>
+        </Method>
+        <Method name="setDeviceAddress" returnType="void" visibility="public">
+          <Argument type="String" name="deviceAddress"/>
+        </Method>
+        <Method name="deviceDiscovered" returnType="void" visibility="public">
+          <Argument type="RemoteDevice" name="arg0"/>
+          <Argument type="DeviceClass" name="arg1"/>
+        </Method>
+        <Method name="inquiryCompleted" returnType="void" visibility="public">
+          <Argument type="int" name="arg0"/>
+        </Method>
+        <Method name="serviceSearchCompleted" returnType="void" visibility="public">
+          <Argument type="int" name="arg0"/>
+          <Argument type="int" name="arg1"/>
+        </Method>
+        <Method name="servicesDiscovered" returnType="void" visibility="public">
+          <Argument type="int" name="arg0"/>
+          <Argument type="ServiceRecord[]" name="arg1"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>

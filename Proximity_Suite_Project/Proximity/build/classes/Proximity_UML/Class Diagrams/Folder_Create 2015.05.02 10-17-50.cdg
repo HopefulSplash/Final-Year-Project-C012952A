@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Folder_Create">
+  <ClassDiagramComponents>
+    <Class name="Folder_Create" package="Proximity_Encryption_Suite" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="accept_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="button_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="cancel_Button" type="javax.swing.JButton" visibility="private"/>
+        <Field name="description_Area" type="javax.swing.JTextArea" visibility="private"/>
+        <Field name="description_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="description_ScrollPane" type="javax.swing.JScrollPane" visibility="private"/>
+        <Field name="folder_Details_Panel" type="javax.swing.JPanel" visibility="private"/>
+        <Field name="folder_Status_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="name_Field" type="javax.swing.JTextField" visibility="private"/>
+        <Field name="name_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="type_ComboBox" type="javax.swing.JComboBox" visibility="private"/>
+        <Field name="type_Label" type="javax.swing.JLabel" visibility="private"/>
+        <Field name="accountID" type="int" visibility="private" isFinal="true"/>
+        <Field name="validFolder" type="boolean" visibility="private"/>
+        <Field name="darkGreen" type="Color" visibility="private" isFinal="true"/>
+        <Field name="darkRed" type="Color" visibility="private" isFinal="true"/>
+        <Field name="darkGrey" type="Color" visibility="private" isFinal="true"/>
+        <Field name="createdFolder" type="boolean" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="java.awt.Frame" name="parent"/>
+          <Argument type="boolean" name="modal"/>
+          <Argument type="int" name="accountID"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="initComponents" returnType="void" visibility="private"/>
+        <Method name="cancel_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="accept_ButtonActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="checkFolderNameExsists" returnType="boolean" visibility="private">
+          <Argument type="String" name="folderName"/>
+        </Method>
+        <Method name="name_FieldCaretUpdate" returnType="void" visibility="private">
+          <Argument type="javax.swing.event.CaretEvent" name="evt"/>
+        </Method>
+        <Method name="type_ComboBoxActionPerformed" returnType="void" visibility="private">
+          <Argument type="java.awt.event.ActionEvent" name="evt"/>
+        </Method>
+        <Method name="isCreatedFolder" returnType="boolean" visibility="public"/>
+        <Method name="setCreatedFolder" returnType="void" visibility="public">
+          <Argument type="boolean" name="createdFolder"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations/>
+</ClassDiagram>
