@@ -21,8 +21,8 @@ public class Suite_Database {
 
     // JDBC driver name and database URL
     final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    final String DB_URL = "jdbc:mysql://localhost:3306";
-    final String CONNECT_DB_URL = "jdbc:mysql://localhost:3306/Proximity_Suite_DB";
+    final String DB_URL = "jdbc:mysql://localhost:8888";
+    final String CONNECT_DB_URL = "jdbc:mysql://localhost:8888/Proximity_Suite_DB";
 
     //  Suite_Database credentials
     final String USER = "root";

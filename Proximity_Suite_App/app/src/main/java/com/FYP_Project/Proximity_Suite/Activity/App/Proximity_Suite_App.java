@@ -63,15 +63,15 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-        //this.onPause();
+        this.onPause();
     }
     @Override
     public void onPause() {
         super.onPause();
         //clears all the data and resets the device name then closes the application.
-       // this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //int pid = android.os.Process.myPid();
-      //  android.os.Process.killProcess(pid);
+       this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class Proximity_Suite_App extends Activity implements OnClickListener {
             }
             //closes the application
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-           // this.onPause();
+            this.onPause();
         }
     }
     /**

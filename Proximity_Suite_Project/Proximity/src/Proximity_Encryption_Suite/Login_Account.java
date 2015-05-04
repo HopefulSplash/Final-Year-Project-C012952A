@@ -180,8 +180,9 @@ public class Login_Account extends javax.swing.JFrame {
                 long time_Difference = d1.getTime() - databaseDate.getTime();
                 long difference_Minutes = time_Difference / (60 * 1000) % 60;
                 long difference_Hour = time_Difference / (60 * 60 * 1000) % 24;
+                long difference_Days = time_Difference / (24 * 60 * 60 * 1000);
                 //checks if the time difference is withn the lockout period.
-                if (difference_Minutes >= 15 || difference_Hour != 0) {
+                if (difference_Minutes >= 15 || difference_Hour != 0 || difference_Days != 0) {
                     timeout = false;
                 } else {
                     timeout = true;
