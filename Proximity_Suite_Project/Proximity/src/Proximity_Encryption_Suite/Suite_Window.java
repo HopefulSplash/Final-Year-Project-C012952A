@@ -84,7 +84,7 @@ public class Suite_Window extends javax.swing.JFrame {
          *
          * @param aThis
          */
-        private Task(Suite_Window aThis) {
+        Task(Suite_Window aThis) {
             this.background_Frame = aThis;
         }
 
@@ -234,7 +234,7 @@ public class Suite_Window extends javax.swing.JFrame {
         /**
          * a method that will get an accounts ID
          */
-        private void getAccountID() {
+        public void getAccountID() {
             /*
              * declares and new instance of the Suite_Database class and then checks if the
              * the database exists and if is does not then creates it for the system.
@@ -1234,7 +1234,7 @@ public class Suite_Window extends javax.swing.JFrame {
 
                     Login_Account als = new Login_Account();
                     als.setVisible(true);
-                    
+
                     background_Frame.dispose();
 
                 }
@@ -2917,7 +2917,7 @@ public class Suite_Window extends javax.swing.JFrame {
         //clears the data and saves the relevant folder
         table_Search_Field.setText("");
         int tempFolder = table_Folder_ComboBox.getSelectedIndex();
-        
+
         filesEncrypt.clear();
         filesAlreadyEncrypt.clear();
         DefaultTableModel tableModel = (DefaultTableModel) table_View.getModel();
@@ -3003,7 +3003,7 @@ public class Suite_Window extends javax.swing.JFrame {
                     clearTableFiles();
                     getAccountFolders();
                     table_Folder_ComboBox.setSelectedIndex(tempFolder);
-                    
+
                 }
             }
         } else if (filesAlreadyEncrypt.isEmpty() && filesEncrypt.isEmpty()) {
@@ -3284,11 +3284,11 @@ public class Suite_Window extends javax.swing.JFrame {
     private long start = System.currentTimeMillis();
     private boolean didDecrypt = false;
     private boolean selected = false;
-    private int deviceID;
+    int deviceID;
     private ArrayList<File> addFiles = new ArrayList();
     private ArrayList<File> filesRemove = new ArrayList();
     private ArrayList<File> filelists = new ArrayList();
-    private int accountID;
+    int accountID;
     private String accountName;
     private String accountPass;
     private ArrayList<Integer> folderIDList = new ArrayList<>();
@@ -3297,7 +3297,7 @@ public class Suite_Window extends javax.swing.JFrame {
     private String deviceName;
     private String loginType;
     private ArrayList<Integer> deviceIDList = new ArrayList<>();
-private Task monitoringTask; 
+    private Task monitoringTask;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem account_Create;
     private javax.swing.JMenuItem account_Current;

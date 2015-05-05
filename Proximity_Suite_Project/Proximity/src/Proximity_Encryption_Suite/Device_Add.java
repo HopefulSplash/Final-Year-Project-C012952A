@@ -12,7 +12,6 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -167,7 +166,7 @@ public class Device_Add extends javax.swing.JDialog {
          * @param deviceAddress
          * @return
          */
-        private boolean check_Taken(String deviceAddress) {
+        public boolean check_Taken(String deviceAddress) {
             // define variable.
             boolean isTaken = false;
 

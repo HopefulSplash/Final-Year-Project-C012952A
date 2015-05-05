@@ -659,7 +659,7 @@ public class Login_Account_Create extends javax.swing.JDialog {
      * @param username
      * @return
      */
-    private boolean checkUsernameExsists(String username) {
+    public boolean checkUsernameExsists(String username) {
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
         /*
@@ -720,7 +720,7 @@ public class Login_Account_Create extends javax.swing.JDialog {
      * @param email
      * @return
      */
-    private boolean checkEmailExsists(String email) {
+    public boolean checkEmailExsists(String email) {
 
         // creates a variable call isTaken and sets it to false.
         boolean isTaken = false;
@@ -1186,7 +1186,7 @@ public class Login_Account_Create extends javax.swing.JDialog {
      * @param emailAddress
      * @return
      */
-    private boolean validateEmail(String emailAddress) {
+    public boolean validateEmail(String emailAddress) {
 
         /*
          * regular expression to use for checking the email address is valid.
@@ -1213,8 +1213,9 @@ public class Login_Account_Create extends javax.swing.JDialog {
      *
      * @param input
      * @return String
+     * @throws java.security.NoSuchAlgorithmException
      */
-    private String convertToSha1(String input) throws NoSuchAlgorithmException {
+    public String convertToSha1(String input) throws NoSuchAlgorithmException {
 
         /*
          * converts to string input into a SHA1 byte array.
@@ -1243,7 +1244,7 @@ public class Login_Account_Create extends javax.swing.JDialog {
      * @param password
      * @return
      */
-    private int passwordStrength(String password) {
+    public int passwordStrength(String password) {
         //patterns to match 
         int statusPercentage = 0;
         String[] simpleChecks = {".*[a-z]+.*", // lower
