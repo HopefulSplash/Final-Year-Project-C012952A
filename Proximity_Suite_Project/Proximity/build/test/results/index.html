@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+  <title>TestNG reports</title>
+
+    <link type="text/css" href="testng-reports.css" rel="stylesheet" />  
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="testng-reports.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['table']});
+      google.setOnLoadCallback(drawTable);
+      var suiteTableInitFunctions = new Array();
+      var suiteTableData = new Array();
+    </script>
+    <!--
+      <script type="text/javascript" src="jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>
+     -->
+  </head>
+
+  <body>
+    <div class="top-banner-root">
+      <span class="top-banner-title-font">Test results</span>
+      <br/>
+      <span class="top-banner-font-1">1 suite</span>
+    </div> <!-- top-banner-root -->
+    <div class="navigator-root">
+      <div class="navigator-suite-header">
+        <span>All suites</span>
+        <a href="#" class="collapse-all-link" title="Collapse/expand all the suites">
+          <img class="collapse-all-icon" src="collapseall.gif">
+          </img> <!-- collapse-all-icon -->
+        </a> <!-- collapse-all-link -->
+      </div> <!-- navigator-suite-header -->
+      <div class="suite">
+        <div class="rounded-window">
+          <div class="suite-header light-rounded-window-top">
+            <a href="#" class="navigator-link" panel-name="suite-Proximity">
+              <span class="suite-name border-passed">Proximity</span>
+            </a> <!-- navigator-link -->
+          </div> <!-- suite-header light-rounded-window-top -->
+          <div class="navigator-suite-content">
+            <div class="suite-section-title">
+              <span>Info</span>
+            </div> <!-- suite-section-title -->
+            <div class="suite-section-content">
+              <ul>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="test-xml-Proximity">
+                    <span>[unset file name]</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="testlist-Proximity">
+                    <span class="test-stats">1 test</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="group-Proximity">
+                    <span>0 groups</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="times-Proximity">
+                    <span>Times</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="reporter-Proximity">
+                    <span>Reporter output</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="ignored-methods-Proximity">
+                    <span>Ignored methods</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+                <li>
+                  <a href="#" class="navigator-link " panel-name="chronological-Proximity">
+                    <span>Chronological view</span>
+                  </a> <!-- navigator-link  -->
+                </li>
+              </ul>
+            </div> <!-- suite-section-content -->
+            <div class="result-section">
+              <div class="suite-section-title">
+                <span>Results</span>
+              </div> <!-- suite-section-title -->
+              <div class="suite-section-content">
+                <ul>
+                  <li>
+                    <span class="method-stats">48 methods,   48 passed</span>
+                  </li>
+                  <li>
+                    <span class="method-list-title passed">Passed methods</span>
+                    <span class="show-or-hide-methods passed">
+                      <a href="#" panel-name="suite-Proximity" class="hide-methods passed suite-Proximity"> (hide)</a> <!-- hide-methods passed suite-Proximity -->
+                      <a href="#" panel-name="suite-Proximity" class="show-methods passed suite-Proximity"> (show)</a> <!-- show-methods passed suite-Proximity -->
+                    </span>
+                    <div class="method-list-content passed suite-Proximity">
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_AESIT" hash-for-method="testDecrypt">testDecrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_Triple_DESIT" hash-for-method="testDecrypt">testDecrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_DESIT" hash-for-method="testDecrypt">testDecrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_AESIT" hash-for-method="testEncrypt">testEncrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_Triple_DESIT" hash-for-method="testEncrypt">testEncrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_DESIT" hash-for-method="testEncrypt">testEncrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_WindowIT" hash-for-method="testGetAccountDetails">testGetAccountDetails</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_DatabaseIT" hash-for-method="testGetCONNECT_DB_URL">testGetCONNECT_DB_URL</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_AddIT" hash-for-method="testGetCurrent_Folder">testGetCurrent_Folder</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_DatabaseIT" hash-for-method="testGetDB_URL">testGetDB_URL</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_DecryptionIT" hash-for-method="testGetFileEncryptionStatus">testGetFileEncryptionStatus</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_WindowIT" hash-for-method="testGetFileSize">testGetFileSize</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_DatabaseIT" hash-for-method="testGetJDBC_DRIVER">testGetJDBC_DRIVER</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_RemoveIT" hash-for-method="testGetSelectedFolder">testGetSelectedFolder</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_AddIT" hash-for-method="testGetSelectedFolder">testGetSelectedFolder</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_AddIT" hash-for-method="testIsDidAdd">testIsDidAdd</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_RemoveIT" hash-for-method="testIsDidRemove">testIsDidRemove</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_DecryptionIT" hash-for-method="testIsDid_Decrypt">testIsDid_Decrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_EncryptionIT" hash-for-method="testIsDid_Encrypt">testIsDid_Encrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_Triple_DESIT" hash-for-method="testIsEncrypted">testIsEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_DESIT" hash-for-method="testIsEncrypted">testIsEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_AESIT" hash-for-method="testIsEncrypted">testIsEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT" hash-for-method="testIsShouldAdd">testIsShouldAdd</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_RemoveIT" hash-for-method="testPropertyChange">testPropertyChange</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_WindowIT" hash-for-method="testRemoveFile">testRemoveFile</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.File_Loading_ThreadIT" hash-for-method="testRun">testRun</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT" hash-for-method="testSetAnswer">testSetAnswer</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_AddIT" hash-for-method="testSetDidAdd">testSetDidAdd</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_RemoveIT" hash-for-method="testSetDidRemove">testSetDidRemove</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_DecryptionIT" hash-for-method="testSetDid_Decrypt">testSetDid_Decrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Files_EncryptionIT" hash-for-method="testSetDid_Encrypt">testSetDid_Encrypt</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_Triple_DESIT" hash-for-method="testSetEncrypted">testSetEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_AESIT" hash-for-method="testSetEncrypted">testSetEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Encryption_DESIT" hash-for-method="testSetEncrypted">testSetEncrypted</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT" hash-for-method="testSetQuestion">testSetQuestion</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.File_Loading_ThreadIT" hash-for-method="testSetSpeficDir">testSetSpeficDir</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT" hash-for-method="testSetUsername">testSetUsername</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Suite_DatabaseIT" hash-for-method="testStartDatabase">testStartDatabase</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Device_Thread" hash-for-method="test_Check_Device">test_Check_Device</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Device" hash-for-method="test_Check_Device">test_Check_Device</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Account" hash-for-method="test_Check_Email">test_Check_Email</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Account" hash-for-method="test_Check_Username">test_Check_Username</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Account" hash-for-method="test_Convert_SHA1">test_Convert_SHA1</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Device_Monitoring_ThreadIT" hash-for-method="test_Device_Thread">test_Device_Thread</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Main" hash-for-method="test_Get_Account_ID">test_Get_Account_ID</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Main" hash-for-method="test_Get_File_ID">test_Get_File_ID</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Account" hash-for-method="test_Password_Strength">test_Password_Strength</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Proximity" title="Proximity_Encryption_Suite.Test_Account" hash-for-method="test_Valid_Email">test_Valid_Email</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                    </div> <!-- method-list-content passed suite-Proximity -->
+                  </li>
+                </ul>
+              </div> <!-- suite-section-content -->
+            </div> <!-- result-section -->
+          </div> <!-- navigator-suite-content -->
+        </div> <!-- rounded-window -->
+      </div> <!-- suite -->
+    </div> <!-- navigator-root -->
+    <div class="wrapper">
+      <div class="main-panel-root">
+        <div panel-name="suite-Proximity" class="panel Proximity">
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Files_RemoveIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetSelectedFolder">
+                  </a> <!-- testGetSelectedFolder -->
+                  <span class="method-name">testGetSelectedFolder</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsDidRemove">
+                  </a> <!-- testIsDidRemove -->
+                  <span class="method-name">testIsDidRemove</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testPropertyChange">
+                  </a> <!-- testPropertyChange -->
+                  <span class="method-name">testPropertyChange</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetDidRemove">
+                  </a> <!-- testSetDidRemove -->
+                  <span class="method-name">testSetDidRemove</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Files_EncryptionIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsDid_Encrypt">
+                  </a> <!-- testIsDid_Encrypt -->
+                  <span class="method-name">testIsDid_Encrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetDid_Encrypt">
+                  </a> <!-- testSetDid_Encrypt -->
+                  <span class="method-name">testSetDid_Encrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Suite_WindowIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetAccountDetails">
+                  </a> <!-- testGetAccountDetails -->
+                  <span class="method-name">testGetAccountDetails</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetFileSize">
+                  </a> <!-- testGetFileSize -->
+                  <span class="method-name">testGetFileSize</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testRemoveFile">
+                  </a> <!-- testRemoveFile -->
+                  <span class="method-name">testRemoveFile</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Encryption_AESIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testDecrypt">
+                  </a> <!-- testDecrypt -->
+                  <span class="method-name">testDecrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testEncrypt">
+                  </a> <!-- testEncrypt -->
+                  <span class="method-name">testEncrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsEncrypted">
+                  </a> <!-- testIsEncrypted -->
+                  <span class="method-name">testIsEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetEncrypted">
+                  </a> <!-- testSetEncrypted -->
+                  <span class="method-name">testSetEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Test_Main</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Get_Account_ID">
+                  </a> <!-- test_Get_Account_ID -->
+                  <span class="method-name">test_Get_Account_ID</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Get_File_ID">
+                  </a> <!-- test_Get_File_ID -->
+                  <span class="method-name">test_Get_File_ID</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Files_AddIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetCurrent_Folder">
+                  </a> <!-- testGetCurrent_Folder -->
+                  <span class="method-name">testGetCurrent_Folder</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetSelectedFolder">
+                  </a> <!-- testGetSelectedFolder -->
+                  <span class="method-name">testGetSelectedFolder</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsDidAdd">
+                  </a> <!-- testIsDidAdd -->
+                  <span class="method-name">testIsDidAdd</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetDidAdd">
+                  </a> <!-- testSetDidAdd -->
+                  <span class="method-name">testSetDidAdd</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsShouldAdd">
+                  </a> <!-- testIsShouldAdd -->
+                  <span class="method-name">testIsShouldAdd</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetAnswer">
+                  </a> <!-- testSetAnswer -->
+                  <span class="method-name">testSetAnswer</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetQuestion">
+                  </a> <!-- testSetQuestion -->
+                  <span class="method-name">testSetQuestion</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetUsername">
+                  </a> <!-- testSetUsername -->
+                  <span class="method-name">testSetUsername</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Device_Monitoring_ThreadIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Device_Thread">
+                  </a> <!-- test_Device_Thread -->
+                  <span class="method-name">test_Device_Thread</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Suite_DatabaseIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetCONNECT_DB_URL">
+                  </a> <!-- testGetCONNECT_DB_URL -->
+                  <span class="method-name">testGetCONNECT_DB_URL</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetDB_URL">
+                  </a> <!-- testGetDB_URL -->
+                  <span class="method-name">testGetDB_URL</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetJDBC_DRIVER">
+                  </a> <!-- testGetJDBC_DRIVER -->
+                  <span class="method-name">testGetJDBC_DRIVER</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testStartDatabase">
+                  </a> <!-- testStartDatabase -->
+                  <span class="method-name">testStartDatabase</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Encryption_DESIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testDecrypt">
+                  </a> <!-- testDecrypt -->
+                  <span class="method-name">testDecrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testEncrypt">
+                  </a> <!-- testEncrypt -->
+                  <span class="method-name">testEncrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsEncrypted">
+                  </a> <!-- testIsEncrypted -->
+                  <span class="method-name">testIsEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetEncrypted">
+                  </a> <!-- testSetEncrypted -->
+                  <span class="method-name">testSetEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Encryption_Triple_DESIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testDecrypt">
+                  </a> <!-- testDecrypt -->
+                  <span class="method-name">testDecrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testEncrypt">
+                  </a> <!-- testEncrypt -->
+                  <span class="method-name">testEncrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsEncrypted">
+                  </a> <!-- testIsEncrypted -->
+                  <span class="method-name">testIsEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetEncrypted">
+                  </a> <!-- testSetEncrypted -->
+                  <span class="method-name">testSetEncrypted</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Test_Account</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Check_Email">
+                  </a> <!-- test_Check_Email -->
+                  <span class="method-name">test_Check_Email</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Check_Username">
+                  </a> <!-- test_Check_Username -->
+                  <span class="method-name">test_Check_Username</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Convert_SHA1">
+                  </a> <!-- test_Convert_SHA1 -->
+                  <span class="method-name">test_Convert_SHA1</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Password_Strength">
+                  </a> <!-- test_Password_Strength -->
+                  <span class="method-name">test_Password_Strength</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Valid_Email">
+                  </a> <!-- test_Valid_Email -->
+                  <span class="method-name">test_Valid_Email</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Files_DecryptionIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testGetFileEncryptionStatus">
+                  </a> <!-- testGetFileEncryptionStatus -->
+                  <span class="method-name">testGetFileEncryptionStatus</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testIsDid_Decrypt">
+                  </a> <!-- testIsDid_Decrypt -->
+                  <span class="method-name">testIsDid_Decrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetDid_Decrypt">
+                  </a> <!-- testSetDid_Decrypt -->
+                  <span class="method-name">testSetDid_Decrypt</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Test_Device_Thread</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Check_Device">
+                  </a> <!-- test_Check_Device -->
+                  <span class="method-name">test_Check_Device</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.File_Loading_ThreadIT</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="testRun">
+                  </a> <!-- testRun -->
+                  <span class="method-name">testRun</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="testSetSpeficDir">
+                  </a> <!-- testSetSpeficDir -->
+                  <span class="method-name">testSetSpeficDir</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+          <div class="suite-Proximity-class-passed">
+            <div class="main-panel-header rounded-window-top">
+              <img src="passed.png"/>
+              <span class="class-name">Proximity_Encryption_Suite.Test_Device</span>
+            </div> <!-- main-panel-header rounded-window-top -->
+            <div class="main-panel-content rounded-window-bottom">
+              <div class="method">
+                <div class="method-content">
+                  <a name="test_Check_Device">
+                  </a> <!-- test_Check_Device -->
+                  <span class="method-name">test_Check_Device</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+            </div> <!-- main-panel-content rounded-window-bottom -->
+          </div> <!-- suite-Proximity-class-passed -->
+        </div> <!-- panel Proximity -->
+        <div panel-name="test-xml-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+            <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE suite SYSTEM &quot;http://testng.org/testng-1.0.dtd&quot;&gt;
+&lt;suite name=&quot;Proximity&quot;&gt;
+  &lt;test name=&quot;Proximity_Encryption_Suite.Run_All_Test&quot; junit=&quot;true&quot; preserve-order=&quot;false&quot;&gt;
+    &lt;classes&gt;
+      &lt;class name=&quot;Proximity_Encryption_Suite.Run_All_Test&quot;/&gt;
+    &lt;/classes&gt;
+  &lt;/test&gt; &lt;!-- Proximity_Encryption_Suite.Run_All_Test --&gt;
+&lt;/suite&gt; &lt;!-- Proximity --&gt;
+            </pre>
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="testlist-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">Tests for Proximity</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+            <ul>
+              <li>
+                <span class="test-name">Proximity_Encryption_Suite.Run_All_Test (1 class)</span>
+              </li>
+            </ul>
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="group-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">Groups for Proximity</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="times-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">Times for Proximity</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+            <div class="times-div">
+              <script type="text/javascript">
+suiteTableInitFunctions.push('tableData_Proximity');
+function tableData_Proximity() {
+var data = new google.visualization.DataTable();
+data.addColumn('number', 'Number');
+data.addColumn('string', 'Method');
+data.addColumn('string', 'Class');
+data.addColumn('number', 'Time (ms)');
+data.addRows(48);
+data.setCell(0, 0, 0)
+data.setCell(0, 1, 'testSetSpeficDir')
+data.setCell(0, 2, 'Proximity_Encryption_Suite.File_Loading_ThreadIT')
+data.setCell(0, 3, 513);
+data.setCell(1, 0, 1)
+data.setCell(1, 1, 'testDecrypt')
+data.setCell(1, 2, 'Proximity_Encryption_Suite.Encryption_AESIT')
+data.setCell(1, 3, 154);
+data.setCell(2, 0, 2)
+data.setCell(2, 1, 'testGetCurrent_Folder')
+data.setCell(2, 2, 'Proximity_Encryption_Suite.Files_AddIT')
+data.setCell(2, 3, 150);
+data.setCell(3, 0, 3)
+data.setCell(3, 1, 'testGetSelectedFolder')
+data.setCell(3, 2, 'Proximity_Encryption_Suite.Files_AddIT')
+data.setCell(3, 3, 104);
+data.setCell(4, 0, 4)
+data.setCell(4, 1, 'testIsDidAdd')
+data.setCell(4, 2, 'Proximity_Encryption_Suite.Files_AddIT')
+data.setCell(4, 3, 68);
+data.setCell(5, 0, 5)
+data.setCell(5, 1, 'testSetAnswer')
+data.setCell(5, 2, 'Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT')
+data.setCell(5, 3, 62);
+data.setCell(6, 0, 6)
+data.setCell(6, 1, 'testSetDidAdd')
+data.setCell(6, 2, 'Proximity_Encryption_Suite.Files_AddIT')
+data.setCell(6, 3, 58);
+data.setCell(7, 0, 7)
+data.setCell(7, 1, 'testIsDid_Encrypt')
+data.setCell(7, 2, 'Proximity_Encryption_Suite.Files_EncryptionIT')
+data.setCell(7, 3, 58);
+data.setCell(8, 0, 8)
+data.setCell(8, 1, 'testGetSelectedFolder')
+data.setCell(8, 2, 'Proximity_Encryption_Suite.Files_RemoveIT')
+data.setCell(8, 3, 55);
+data.setCell(9, 0, 9)
+data.setCell(9, 1, 'testSetUsername')
+data.setCell(9, 2, 'Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT')
+data.setCell(9, 3, 50);
+data.setCell(10, 0, 10)
+data.setCell(10, 1, 'testRun')
+data.setCell(10, 2, 'Proximity_Encryption_Suite.File_Loading_ThreadIT')
+data.setCell(10, 3, 48);
+data.setCell(11, 0, 11)
+data.setCell(11, 1, 'testSetDid_Decrypt')
+data.setCell(11, 2, 'Proximity_Encryption_Suite.Files_DecryptionIT')
+data.setCell(11, 3, 47);
+data.setCell(12, 0, 12)
+data.setCell(12, 1, 'testGetFileEncryptionStatus')
+data.setCell(12, 2, 'Proximity_Encryption_Suite.Files_DecryptionIT')
+data.setCell(12, 3, 41);
+data.setCell(13, 0, 13)
+data.setCell(13, 1, 'testPropertyChange')
+data.setCell(13, 2, 'Proximity_Encryption_Suite.Files_RemoveIT')
+data.setCell(13, 3, 41);
+data.setCell(14, 0, 14)
+data.setCell(14, 1, 'testIsDidRemove')
+data.setCell(14, 2, 'Proximity_Encryption_Suite.Files_RemoveIT')
+data.setCell(14, 3, 39);
+data.setCell(15, 0, 15)
+data.setCell(15, 1, 'testIsDid_Decrypt')
+data.setCell(15, 2, 'Proximity_Encryption_Suite.Files_DecryptionIT')
+data.setCell(15, 3, 38);
+data.setCell(16, 0, 16)
+data.setCell(16, 1, 'testSetDid_Encrypt')
+data.setCell(16, 2, 'Proximity_Encryption_Suite.Files_EncryptionIT')
+data.setCell(16, 3, 37);
+data.setCell(17, 0, 17)
+data.setCell(17, 1, 'testGetAccountDetails')
+data.setCell(17, 2, 'Proximity_Encryption_Suite.Suite_WindowIT')
+data.setCell(17, 3, 36);
+data.setCell(18, 0, 18)
+data.setCell(18, 1, 'testSetQuestion')
+data.setCell(18, 2, 'Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT')
+data.setCell(18, 3, 36);
+data.setCell(19, 0, 19)
+data.setCell(19, 1, 'testIsShouldAdd')
+data.setCell(19, 2, 'Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT')
+data.setCell(19, 3, 35);
+data.setCell(20, 0, 20)
+data.setCell(20, 1, 'testSetDidRemove')
+data.setCell(20, 2, 'Proximity_Encryption_Suite.Files_RemoveIT')
+data.setCell(20, 3, 35);
+data.setCell(21, 0, 21)
+data.setCell(21, 1, 'testRemoveFile')
+data.setCell(21, 2, 'Proximity_Encryption_Suite.Suite_WindowIT')
+data.setCell(21, 3, 27);
+data.setCell(22, 0, 22)
+data.setCell(22, 1, 'test_Check_Email')
+data.setCell(22, 2, 'Proximity_Encryption_Suite.Test_Account')
+data.setCell(22, 3, 19);
+data.setCell(23, 0, 23)
+data.setCell(23, 1, 'test_Check_Username')
+data.setCell(23, 2, 'Proximity_Encryption_Suite.Test_Account')
+data.setCell(23, 3, 18);
+data.setCell(24, 0, 24)
+data.setCell(24, 1, 'testGetFileSize')
+data.setCell(24, 2, 'Proximity_Encryption_Suite.Suite_WindowIT')
+data.setCell(24, 3, 16);
+data.setCell(25, 0, 25)
+data.setCell(25, 1, 'testStartDatabase')
+data.setCell(25, 2, 'Proximity_Encryption_Suite.Suite_DatabaseIT')
+data.setCell(25, 3, 10);
+data.setCell(26, 0, 26)
+data.setCell(26, 1, 'test_Device_Thread')
+data.setCell(26, 2, 'Proximity_Encryption_Suite.Device_Monitoring_ThreadIT')
+data.setCell(26, 3, 10);
+data.setCell(27, 0, 27)
+data.setCell(27, 1, 'test_Check_Device')
+data.setCell(27, 2, 'Proximity_Encryption_Suite.Test_Device')
+data.setCell(27, 3, 9);
+data.setCell(28, 0, 28)
+data.setCell(28, 1, 'test_Check_Device')
+data.setCell(28, 2, 'Proximity_Encryption_Suite.Test_Device_Thread')
+data.setCell(28, 3, 7);
+data.setCell(29, 0, 29)
+data.setCell(29, 1, 'test_Get_File_ID')
+data.setCell(29, 2, 'Proximity_Encryption_Suite.Test_Main')
+data.setCell(29, 3, 5);
+data.setCell(30, 0, 30)
+data.setCell(30, 1, 'test_Get_Account_ID')
+data.setCell(30, 2, 'Proximity_Encryption_Suite.Test_Main')
+data.setCell(30, 3, 5);
+data.setCell(31, 0, 31)
+data.setCell(31, 1, 'testDecrypt')
+data.setCell(31, 2, 'Proximity_Encryption_Suite.Encryption_DESIT')
+data.setCell(31, 3, 3);
+data.setCell(32, 0, 32)
+data.setCell(32, 1, 'testSetEncrypted')
+data.setCell(32, 2, 'Proximity_Encryption_Suite.Encryption_Triple_DESIT')
+data.setCell(32, 3, 1);
+data.setCell(33, 0, 33)
+data.setCell(33, 1, 'testDecrypt')
+data.setCell(33, 2, 'Proximity_Encryption_Suite.Encryption_Triple_DESIT')
+data.setCell(33, 3, 1);
+data.setCell(34, 0, 34)
+data.setCell(34, 1, 'test_Valid_Email')
+data.setCell(34, 2, 'Proximity_Encryption_Suite.Test_Account')
+data.setCell(34, 3, 1);
+data.setCell(35, 0, 35)
+data.setCell(35, 1, 'test_Password_Strength')
+data.setCell(35, 2, 'Proximity_Encryption_Suite.Test_Account')
+data.setCell(35, 3, 1);
+data.setCell(36, 0, 36)
+data.setCell(36, 1, 'testIsEncrypted')
+data.setCell(36, 2, 'Proximity_Encryption_Suite.Encryption_AESIT')
+data.setCell(36, 3, 1);
+data.setCell(37, 0, 37)
+data.setCell(37, 1, 'testIsEncrypted')
+data.setCell(37, 2, 'Proximity_Encryption_Suite.Encryption_Triple_DESIT')
+data.setCell(37, 3, 0);
+data.setCell(38, 0, 38)
+data.setCell(38, 1, 'testEncrypt')
+data.setCell(38, 2, 'Proximity_Encryption_Suite.Encryption_AESIT')
+data.setCell(38, 3, 0);
+data.setCell(39, 0, 39)
+data.setCell(39, 1, 'testSetEncrypted')
+data.setCell(39, 2, 'Proximity_Encryption_Suite.Encryption_AESIT')
+data.setCell(39, 3, 0);
+data.setCell(40, 0, 40)
+data.setCell(40, 1, 'test_Convert_SHA1')
+data.setCell(40, 2, 'Proximity_Encryption_Suite.Test_Account')
+data.setCell(40, 3, 0);
+data.setCell(41, 0, 41)
+data.setCell(41, 1, 'testGetJDBC_DRIVER')
+data.setCell(41, 2, 'Proximity_Encryption_Suite.Suite_DatabaseIT')
+data.setCell(41, 3, 0);
+data.setCell(42, 0, 42)
+data.setCell(42, 1, 'testSetEncrypted')
+data.setCell(42, 2, 'Proximity_Encryption_Suite.Encryption_DESIT')
+data.setCell(42, 3, 0);
+data.setCell(43, 0, 43)
+data.setCell(43, 1, 'testIsEncrypted')
+data.setCell(43, 2, 'Proximity_Encryption_Suite.Encryption_DESIT')
+data.setCell(43, 3, 0);
+data.setCell(44, 0, 44)
+data.setCell(44, 1, 'testGetDB_URL')
+data.setCell(44, 2, 'Proximity_Encryption_Suite.Suite_DatabaseIT')
+data.setCell(44, 3, 0);
+data.setCell(45, 0, 45)
+data.setCell(45, 1, 'testEncrypt')
+data.setCell(45, 2, 'Proximity_Encryption_Suite.Encryption_Triple_DESIT')
+data.setCell(45, 3, 0);
+data.setCell(46, 0, 46)
+data.setCell(46, 1, 'testEncrypt')
+data.setCell(46, 2, 'Proximity_Encryption_Suite.Encryption_DESIT')
+data.setCell(46, 3, 0);
+data.setCell(47, 0, 47)
+data.setCell(47, 1, 'testGetCONNECT_DB_URL')
+data.setCell(47, 2, 'Proximity_Encryption_Suite.Suite_DatabaseIT')
+data.setCell(47, 3, 0);
+window.suiteTableData['Proximity']= { tableData: data, tableDiv: 'times-div-Proximity'}
+return data;
+}
+              </script>
+              <span class="suite-total-time">Total running time: 1 seconds</span>
+              <div id="times-div-Proximity">
+              </div> <!-- times-div-Proximity -->
+            </div> <!-- times-div -->
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="reporter-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">Reporter output for Proximity</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="ignored-methods-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">0 ignored methods</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+        <div panel-name="chronological-Proximity" class="panel">
+          <div class="main-panel-header rounded-window-top">
+            <span class="header-content">Methods in chronological order</span>
+          </div> <!-- main-panel-header rounded-window-top -->
+          <div class="main-panel-content rounded-window-bottom">
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Device_Monitoring_ThreadIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">test_Device_Thread</span>
+                <span class="method-start">0 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Encryption_AESIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testDecrypt</span>
+                <span class="method-start">10 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetEncrypted</span>
+                <span class="method-start">165 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testEncrypt</span>
+                <span class="method-start">165 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsEncrypted</span>
+                <span class="method-start">165 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Encryption_DESIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testDecrypt</span>
+                <span class="method-start">166 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetEncrypted</span>
+                <span class="method-start">170 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testEncrypt</span>
+                <span class="method-start">170 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsEncrypted</span>
+                <span class="method-start">171 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Encryption_Triple_DESIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testDecrypt</span>
+                <span class="method-start">171 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetEncrypted</span>
+                <span class="method-start">172 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testEncrypt</span>
+                <span class="method-start">173 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsEncrypted</span>
+                <span class="method-start">173 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.File_Loading_ThreadIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testSetSpeficDir</span>
+                <span class="method-start">174 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testRun</span>
+                <span class="method-start">687 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Files_AddIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testGetCurrent_Folder</span>
+                <span class="method-start">737 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testGetSelectedFolder</span>
+                <span class="method-start">887 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsDidAdd</span>
+                <span class="method-start">992 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetDidAdd</span>
+                <span class="method-start">1060 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Files_DecryptionIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testGetFileEncryptionStatus</span>
+                <span class="method-start">1119 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsDid_Decrypt</span>
+                <span class="method-start">1160 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetDid_Decrypt</span>
+                <span class="method-start">1198 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Files_EncryptionIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testIsDid_Encrypt</span>
+                <span class="method-start">1246 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetDid_Encrypt</span>
+                <span class="method-start">1305 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Files_RemoveIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testGetSelectedFolder</span>
+                <span class="method-start">1343 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testPropertyChange</span>
+                <span class="method-start">1399 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetDidRemove</span>
+                <span class="method-start">1440 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsDidRemove</span>
+                <span class="method-start">1475 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testSetUsername</span>
+                <span class="method-start">1515 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testIsShouldAdd</span>
+                <span class="method-start">1565 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetAnswer</span>
+                <span class="method-start">1601 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testSetQuestion</span>
+                <span class="method-start">1663 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Suite_DatabaseIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testGetJDBC_DRIVER</span>
+                <span class="method-start">1700 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testStartDatabase</span>
+                <span class="method-start">1700 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testGetCONNECT_DB_URL</span>
+                <span class="method-start">1710 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testGetDB_URL</span>
+                <span class="method-start">1710 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Suite_WindowIT</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">testGetAccountDetails</span>
+                <span class="method-start">1710 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testGetFileSize</span>
+                <span class="method-start">1747 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">testRemoveFile</span>
+                <span class="method-start">1764 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Test_Account</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">test_Check_Username</span>
+                <span class="method-start">1819 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">test_Convert_SHA1</span>
+                <span class="method-start">1854 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">test_Password_Strength</span>
+                <span class="method-start">1866 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">test_Check_Email</span>
+                <span class="method-start">1880 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">test_Valid_Email</span>
+                <span class="method-start">1913 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Test_Device</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">test_Check_Device</span>
+                <span class="method-start">1938 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Test_Device_Thread</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">test_Check_Device</span>
+                <span class="method-start">1962 ms</span>
+              </div> <!-- test-method -->
+            </div> <!-- chronological-class -->
+            <div class="chronological-class">
+              <div class="chronological-class-name">Proximity_Encryption_Suite.Test_Main</div> <!-- chronological-class-name -->
+              <div class="test-method">
+                <span class="method-name">test_Get_Account_ID</span>
+                <span class="method-start">1988 ms</span>
+              </div> <!-- test-method -->
+              <div class="test-method">
+                <span class="method-name">test_Get_File_ID</span>
+                <span class="method-start">2038 ms</span>
+              </div> <!-- test-method -->
+          </div> <!-- main-panel-content rounded-window-bottom -->
+        </div> <!-- panel -->
+      </div> <!-- main-panel-root -->
+    </div> <!-- wrapper -->
+  </body>
+</html>

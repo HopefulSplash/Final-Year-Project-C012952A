@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="48" passed="48">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Proximity" duration-ms="2108" started-at="2015-05-05T17:16:33Z" finished-at="2015-05-05T17:16:35Z">
+    <groups>
+    </groups>
+    <test name="Proximity_Encryption_Suite.Run_All_Test" duration-ms="2108" started-at="2015-05-05T17:16:33Z" finished-at="2015-05-05T17:16:35Z">
+      <class name="Proximity_Encryption_Suite.Encryption_AESIT">
+        <test-method status="PASS" signature="testDecrypt()[pri:0, instance:testDecrypt(Proximity_Encryption_Suite.Encryption_AESIT)]" name="testDecrypt" duration-ms="154" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDecrypt -->
+        <test-method status="PASS" signature="testEncrypt()[pri:0, instance:testEncrypt(Proximity_Encryption_Suite.Encryption_AESIT)]" name="testEncrypt" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEncrypt -->
+        <test-method status="PASS" signature="testSetEncrypted()[pri:0, instance:testSetEncrypted(Proximity_Encryption_Suite.Encryption_AESIT)]" name="testSetEncrypted" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetEncrypted -->
+        <test-method status="PASS" signature="testIsEncrypted()[pri:0, instance:testIsEncrypted(Proximity_Encryption_Suite.Encryption_AESIT)]" name="testIsEncrypted" duration-ms="1" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsEncrypted -->
+      </class> <!-- Proximity_Encryption_Suite.Encryption_AESIT -->
+      <class name="Proximity_Encryption_Suite.Files_EncryptionIT">
+        <test-method status="PASS" signature="testIsDid_Encrypt()[pri:0, instance:testIsDid_Encrypt(Proximity_Encryption_Suite.Files_EncryptionIT)]" name="testIsDid_Encrypt" duration-ms="58" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsDid_Encrypt -->
+        <test-method status="PASS" signature="testSetDid_Encrypt()[pri:0, instance:testSetDid_Encrypt(Proximity_Encryption_Suite.Files_EncryptionIT)]" name="testSetDid_Encrypt" duration-ms="37" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetDid_Encrypt -->
+      </class> <!-- Proximity_Encryption_Suite.Files_EncryptionIT -->
+      <class name="Proximity_Encryption_Suite.Device_Monitoring_ThreadIT">
+        <test-method status="PASS" signature="test_Device_Thread()[pri:0, instance:test_Device_Thread(Proximity_Encryption_Suite.Device_Monitoring_ThreadIT)]" name="test_Device_Thread" duration-ms="10" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Device_Thread -->
+      </class> <!-- Proximity_Encryption_Suite.Device_Monitoring_ThreadIT -->
+      <class name="Proximity_Encryption_Suite.Encryption_DESIT">
+        <test-method status="PASS" signature="testDecrypt()[pri:0, instance:testDecrypt(Proximity_Encryption_Suite.Encryption_DESIT)]" name="testDecrypt" duration-ms="3" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDecrypt -->
+        <test-method status="PASS" signature="testSetEncrypted()[pri:0, instance:testSetEncrypted(Proximity_Encryption_Suite.Encryption_DESIT)]" name="testSetEncrypted" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetEncrypted -->
+        <test-method status="PASS" signature="testEncrypt()[pri:0, instance:testEncrypt(Proximity_Encryption_Suite.Encryption_DESIT)]" name="testEncrypt" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEncrypt -->
+        <test-method status="PASS" signature="testIsEncrypted()[pri:0, instance:testIsEncrypted(Proximity_Encryption_Suite.Encryption_DESIT)]" name="testIsEncrypted" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsEncrypted -->
+      </class> <!-- Proximity_Encryption_Suite.Encryption_DESIT -->
+      <class name="Proximity_Encryption_Suite.Suite_DatabaseIT">
+        <test-method status="PASS" signature="testStartDatabase()[pri:0, instance:testStartDatabase(Proximity_Encryption_Suite.Suite_DatabaseIT)]" name="testStartDatabase" duration-ms="10" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testStartDatabase -->
+        <test-method status="PASS" signature="testGetJDBC_DRIVER()[pri:0, instance:testGetJDBC_DRIVER(Proximity_Encryption_Suite.Suite_DatabaseIT)]" name="testGetJDBC_DRIVER" duration-ms="0" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetJDBC_DRIVER -->
+        <test-method status="PASS" signature="testGetDB_URL()[pri:0, instance:testGetDB_URL(Proximity_Encryption_Suite.Suite_DatabaseIT)]" name="testGetDB_URL" duration-ms="0" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetDB_URL -->
+        <test-method status="PASS" signature="testGetCONNECT_DB_URL()[pri:0, instance:testGetCONNECT_DB_URL(Proximity_Encryption_Suite.Suite_DatabaseIT)]" name="testGetCONNECT_DB_URL" duration-ms="0" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetCONNECT_DB_URL -->
+      </class> <!-- Proximity_Encryption_Suite.Suite_DatabaseIT -->
+      <class name="Proximity_Encryption_Suite.File_Loading_ThreadIT">
+        <test-method status="PASS" signature="testSetSpeficDir()[pri:0, instance:testSetSpeficDir(Proximity_Encryption_Suite.File_Loading_ThreadIT)]" name="testSetSpeficDir" duration-ms="513" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetSpeficDir -->
+        <test-method status="PASS" signature="testRun()[pri:0, instance:testRun(Proximity_Encryption_Suite.File_Loading_ThreadIT)]" name="testRun" duration-ms="48" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRun -->
+      </class> <!-- Proximity_Encryption_Suite.File_Loading_ThreadIT -->
+      <class name="Proximity_Encryption_Suite.Files_DecryptionIT">
+        <test-method status="PASS" signature="testGetFileEncryptionStatus()[pri:0, instance:testGetFileEncryptionStatus(Proximity_Encryption_Suite.Files_DecryptionIT)]" name="testGetFileEncryptionStatus" duration-ms="41" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetFileEncryptionStatus -->
+        <test-method status="PASS" signature="testIsDid_Decrypt()[pri:0, instance:testIsDid_Decrypt(Proximity_Encryption_Suite.Files_DecryptionIT)]" name="testIsDid_Decrypt" duration-ms="38" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsDid_Decrypt -->
+        <test-method status="PASS" signature="testSetDid_Decrypt()[pri:0, instance:testSetDid_Decrypt(Proximity_Encryption_Suite.Files_DecryptionIT)]" name="testSetDid_Decrypt" duration-ms="47" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetDid_Decrypt -->
+      </class> <!-- Proximity_Encryption_Suite.Files_DecryptionIT -->
+      <class name="Proximity_Encryption_Suite.Test_Device_Thread">
+        <test-method status="PASS" signature="test_Check_Device()[pri:0, instance:test_Check_Device(Proximity_Encryption_Suite.Test_Device_Thread)]" name="test_Check_Device" duration-ms="7" started-at="2015-05-05T18:16:35Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Check_Device -->
+      </class> <!-- Proximity_Encryption_Suite.Test_Device_Thread -->
+      <class name="Proximity_Encryption_Suite.Test_Device">
+        <test-method status="PASS" signature="test_Check_Device()[pri:0, instance:test_Check_Device(Proximity_Encryption_Suite.Test_Device)]" name="test_Check_Device" duration-ms="9" started-at="2015-05-05T18:16:35Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Check_Device -->
+      </class> <!-- Proximity_Encryption_Suite.Test_Device -->
+      <class name="Proximity_Encryption_Suite.Files_AddIT">
+        <test-method status="PASS" signature="testGetCurrent_Folder()[pri:0, instance:testGetCurrent_Folder(Proximity_Encryption_Suite.Files_AddIT)]" name="testGetCurrent_Folder" duration-ms="150" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetCurrent_Folder -->
+        <test-method status="PASS" signature="testGetSelectedFolder()[pri:0, instance:testGetSelectedFolder(Proximity_Encryption_Suite.Files_AddIT)]" name="testGetSelectedFolder" duration-ms="104" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetSelectedFolder -->
+        <test-method status="PASS" signature="testIsDidAdd()[pri:0, instance:testIsDidAdd(Proximity_Encryption_Suite.Files_AddIT)]" name="testIsDidAdd" duration-ms="68" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsDidAdd -->
+        <test-method status="PASS" signature="testSetDidAdd()[pri:0, instance:testSetDidAdd(Proximity_Encryption_Suite.Files_AddIT)]" name="testSetDidAdd" duration-ms="58" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetDidAdd -->
+      </class> <!-- Proximity_Encryption_Suite.Files_AddIT -->
+      <class name="Proximity_Encryption_Suite.Test_Account">
+        <test-method status="PASS" signature="test_Check_Username()[pri:0, instance:test_Check_Username(Proximity_Encryption_Suite.Test_Account)]" name="test_Check_Username" duration-ms="18" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Check_Username -->
+        <test-method status="PASS" signature="test_Convert_SHA1()[pri:0, instance:test_Convert_SHA1(Proximity_Encryption_Suite.Test_Account)]" name="test_Convert_SHA1" duration-ms="0" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Convert_SHA1 -->
+        <test-method status="PASS" signature="test_Password_Strength()[pri:0, instance:test_Password_Strength(Proximity_Encryption_Suite.Test_Account)]" name="test_Password_Strength" duration-ms="1" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Password_Strength -->
+        <test-method status="PASS" signature="test_Check_Email()[pri:0, instance:test_Check_Email(Proximity_Encryption_Suite.Test_Account)]" name="test_Check_Email" duration-ms="19" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Check_Email -->
+        <test-method status="PASS" signature="test_Valid_Email()[pri:0, instance:test_Valid_Email(Proximity_Encryption_Suite.Test_Account)]" name="test_Valid_Email" duration-ms="1" started-at="2015-05-05T18:16:35Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Valid_Email -->
+      </class> <!-- Proximity_Encryption_Suite.Test_Account -->
+      <class name="Proximity_Encryption_Suite.Encryption_Triple_DESIT">
+        <test-method status="PASS" signature="testDecrypt()[pri:0, instance:testDecrypt(Proximity_Encryption_Suite.Encryption_Triple_DESIT)]" name="testDecrypt" duration-ms="1" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDecrypt -->
+        <test-method status="PASS" signature="testSetEncrypted()[pri:0, instance:testSetEncrypted(Proximity_Encryption_Suite.Encryption_Triple_DESIT)]" name="testSetEncrypted" duration-ms="1" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetEncrypted -->
+        <test-method status="PASS" signature="testIsEncrypted()[pri:0, instance:testIsEncrypted(Proximity_Encryption_Suite.Encryption_Triple_DESIT)]" name="testIsEncrypted" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsEncrypted -->
+        <test-method status="PASS" signature="testEncrypt()[pri:0, instance:testEncrypt(Proximity_Encryption_Suite.Encryption_Triple_DESIT)]" name="testEncrypt" duration-ms="0" started-at="2015-05-05T18:16:33Z" finished-at="2015-05-05T18:16:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEncrypt -->
+      </class> <!-- Proximity_Encryption_Suite.Encryption_Triple_DESIT -->
+      <class name="Proximity_Encryption_Suite.Files_RemoveIT">
+        <test-method status="PASS" signature="testGetSelectedFolder()[pri:0, instance:testGetSelectedFolder(Proximity_Encryption_Suite.Files_RemoveIT)]" name="testGetSelectedFolder" duration-ms="55" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetSelectedFolder -->
+        <test-method status="PASS" signature="testPropertyChange()[pri:0, instance:testPropertyChange(Proximity_Encryption_Suite.Files_RemoveIT)]" name="testPropertyChange" duration-ms="41" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testPropertyChange -->
+        <test-method status="PASS" signature="testSetDidRemove()[pri:0, instance:testSetDidRemove(Proximity_Encryption_Suite.Files_RemoveIT)]" name="testSetDidRemove" duration-ms="35" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetDidRemove -->
+        <test-method status="PASS" signature="testIsDidRemove()[pri:0, instance:testIsDidRemove(Proximity_Encryption_Suite.Files_RemoveIT)]" name="testIsDidRemove" duration-ms="39" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsDidRemove -->
+      </class> <!-- Proximity_Encryption_Suite.Files_RemoveIT -->
+      <class name="Proximity_Encryption_Suite.Test_Main">
+        <test-method status="PASS" signature="test_Get_Account_ID()[pri:0, instance:test_Get_Account_ID(Proximity_Encryption_Suite.Test_Main)]" name="test_Get_Account_ID" duration-ms="5" started-at="2015-05-05T18:16:35Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Get_Account_ID -->
+        <test-method status="PASS" signature="test_Get_File_ID()[pri:0, instance:test_Get_File_ID(Proximity_Encryption_Suite.Test_Main)]" name="test_Get_File_ID" duration-ms="5" started-at="2015-05-05T18:16:35Z" finished-at="2015-05-05T18:16:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- test_Get_File_ID -->
+      </class> <!-- Proximity_Encryption_Suite.Test_Main -->
+      <class name="Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT">
+        <test-method status="PASS" signature="testSetUsername()[pri:0, instance:testSetUsername(Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT)]" name="testSetUsername" duration-ms="50" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetUsername -->
+        <test-method status="PASS" signature="testIsShouldAdd()[pri:0, instance:testIsShouldAdd(Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT)]" name="testIsShouldAdd" duration-ms="35" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testIsShouldAdd -->
+        <test-method status="PASS" signature="testSetAnswer()[pri:0, instance:testSetAnswer(Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT)]" name="testSetAnswer" duration-ms="62" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetAnswer -->
+        <test-method status="PASS" signature="testSetQuestion()[pri:0, instance:testSetQuestion(Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT)]" name="testSetQuestion" duration-ms="36" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSetQuestion -->
+      </class> <!-- Proximity_Encryption_Suite.Login_Account_Recover_PasswordIT -->
+      <class name="Proximity_Encryption_Suite.Suite_WindowIT">
+        <test-method status="PASS" signature="testGetAccountDetails()[pri:0, instance:testGetAccountDetails(Proximity_Encryption_Suite.Suite_WindowIT)]" name="testGetAccountDetails" duration-ms="36" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetAccountDetails -->
+        <test-method status="PASS" signature="testGetFileSize()[pri:0, instance:testGetFileSize(Proximity_Encryption_Suite.Suite_WindowIT)]" name="testGetFileSize" duration-ms="16" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetFileSize -->
+        <test-method status="PASS" signature="testRemoveFile()[pri:0, instance:testRemoveFile(Proximity_Encryption_Suite.Suite_WindowIT)]" name="testRemoveFile" duration-ms="27" started-at="2015-05-05T18:16:34Z" finished-at="2015-05-05T18:16:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRemoveFile -->
+      </class> <!-- Proximity_Encryption_Suite.Suite_WindowIT -->
+    </test> <!-- Proximity_Encryption_Suite.Run_All_Test -->
+  </suite> <!-- Proximity -->
+</testng-results>
